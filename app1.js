@@ -16,7 +16,7 @@ con.connect(function(err) {
 });
 con.connect(function(error) {
   if (error) throw error;
-  con.query("SELECT * FROM customers", function (error, result, fields) {
+  con.query("SELECT * FROM userprofile", function (error, result, fields) {
     if (error) throw error;
     console.log(result);
   });
