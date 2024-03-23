@@ -22,8 +22,7 @@ con.connect(function(err) {
     // โดยใช้ render method ของ EJS template engine
     app.get('/', (req, res) => {
       res.render('pages/index', { 
-        data: result ,
-        time: "18/01/2000"
+       result ,
       });
     });
   });
