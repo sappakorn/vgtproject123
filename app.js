@@ -13,7 +13,7 @@ var con = mysql.createConnection({
   user: "root",
   password: "OZIxac77163",
   database: "myproject",
-
+  port:"11990"
 });
 
 con.connect(function (err) {
@@ -29,7 +29,7 @@ con.connect(function (err) {
         data: result
       });
     });
-    
+
   });
 });
 
