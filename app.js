@@ -24,7 +24,7 @@ con.connect(function (err) {
     console.log(result);
     console.log("ejs ??? ")
     app.get('/', (req, res) => {
-      res.render('/pages/index', {
+      res.render('/pages/indexx', {
         data: result
       });
     });
