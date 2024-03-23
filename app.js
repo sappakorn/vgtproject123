@@ -12,7 +12,7 @@ var con = mysql.createConnection({
 
 con.connect(function(err) {
   if (err) throw err;
-  console.log("You are connected!");
+  console.log("You are connectedd!");
 
   // Query ข้อมูลภายใน function con.connect()
   con.query("SELECT * FROM userprofile", function (error, result, fields) {
