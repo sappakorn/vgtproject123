@@ -9,7 +9,7 @@ app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'ejs');
 
 var con = mysql.createConnection({
-  host: "node60666-vgtproject.th1.proen.cloud:11991",
+  host: "node60666-vgtproject.th1.proen.cloud",
   user: "root",
   password: "OZIxac77163",
   database: "myproject",
