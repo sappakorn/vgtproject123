@@ -14,19 +14,19 @@ con.connect(function(err) {
   if (err) throw err;
   console.log("You are connected!");
 });
+con.connect(function(error) {
+  if (error) throw error;
+  con.query("SELECT * FROM customers", function (error, result, fields) {
+    if (error) throw error;
+    console.log(result);
+  });
+});
 con.end(); 
 
 app.set('view engine' , 'ejs')
 
 app.get('/',(req,res)=>{
   res.render('pages/index')
-  con.connect(function(err) {
-    if (err) throw err;
-    con.query("SELECT * FROM customers", function (err, result, fields) {
-      if (err) throw err;
-      console.log(result);
-    });
-  });
   
 })
 
