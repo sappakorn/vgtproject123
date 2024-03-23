@@ -22,7 +22,11 @@ con.connect(function(err) {
     // โดยใช้ render method ของ EJS template engine
     app.get('/', (req, res) => {
       res.render('pages/index', { 
-        data: result ,
+        data:{
+          usrname:"sappakorn",
+          password:"123456",
+          
+        } 
       });
     });
   });
