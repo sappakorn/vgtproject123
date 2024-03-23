@@ -7,7 +7,8 @@ var con = mysql.createConnection({
   host: "node60666-vgtproject.th1.proen.cloud",
   user: "root",
   password: "OZIxac77163",
-  database: "myproject"
+  database: "myproject",
+  port:"11991"
 });
 
 con.connect(function(err) {
