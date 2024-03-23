@@ -12,8 +12,7 @@ var con = mysql.createConnection({
   host: "node60666-vgtproject.th1.proen.cloud",
   user: "root",
   password: "OZIxac77163",
-  database: "myproject",
-  port:"3306"
+  database: "myproject"
 });
 
 con.connect(function (err) {
@@ -25,7 +24,7 @@ con.connect(function (err) {
     
 
     app.get('/', (req, res) => {
-      res.render('/pages/index', {
+      res.render('index', {
         data: result
       });
     });
