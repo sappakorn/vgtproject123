@@ -22,13 +22,14 @@ con.connect(function(err) {
     // โดยใช้ render method ของ EJS template engine
     app.get('/', (req, res) => {
       res.render('pages/index', { 
-       data:result 
+        data: result ,
       });
     });
   });
 });
 
-
+// ไม่ต้องเชื่อมต่อฐานข้อมูล
+// con.end(); 
 
 app.set('view engine', 'ejs');
 
