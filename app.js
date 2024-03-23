@@ -20,12 +20,14 @@ con.connect(function(err) {
     console.log(result);
     // ส่ง response กลับไปยัง client หลังจาก query เสร็จสมบูรณ์
     // โดยใช้ render method ของ EJS template engine
+    const id = result.username
+    const pass = result.password
     app.get('/', (req, res) => {
       res.render('pages/index', { 
         data:{
-          usrname:"sappakorn",
-          password:"123456",
-          
+          usrname:id,
+          password:pass,
+
         } 
       });
     });
