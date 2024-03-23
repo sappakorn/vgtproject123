@@ -21,7 +21,10 @@ con.connect(function(err) {
     // ส่ง response กลับไปยัง client หลังจาก query เสร็จสมบูรณ์
     // โดยใช้ render method ของ EJS template engine
     app.get('/', (req, res) => {
-      res.render('pages/index', { data: result });
+      res.render('pages/index', { 
+        data: result ,
+        time: "18/01/2000"
+      });
     });
   });
 });
