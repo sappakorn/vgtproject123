@@ -8,7 +8,7 @@ var con = mysql.createConnection({
   user: "root",
   password: "OZIxac77163",
   database: "myproject",
-  port:"11991"
+  
 });
 
 con.connect(function(err) {
