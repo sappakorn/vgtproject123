@@ -2,7 +2,7 @@ const express = require('express');
 const mysql = require('mysql');
 const ejs = require('ejs')
 const app = express();
-const port = 11991;
+const port = 3000;
 const path = require('path')
 
 app.set('views', path.join(__dirname, 'views'));
@@ -24,7 +24,7 @@ con.connect(function (err) {
     console.log(result);
     console.log("ejs ??? ")
     app.get('/', (req, res) => {
-      res.render('pages/index', {
+      res.render('/pages/index', {
         data: result
       });
     });
@@ -33,4 +33,4 @@ con.connect(function (err) {
 
 
 
-app.listen(port, () => console.log('Server is running on port 11991'));
+app.listen(port, () => console.log('Server is running on port 3000'));
