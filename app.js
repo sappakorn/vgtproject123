@@ -5,7 +5,7 @@ const app = express();
 const port = 11991;
 const path = require('path')
 
-app.set('views', path.join(__dirname, 'views'));
+
 app.set('view engine', 'ejs');
 
 var con = mysql.createConnection({
