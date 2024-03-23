@@ -1,0 +1,23 @@
+{
+  "name": "fullproject",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "dev": "nodemon app1.js"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "cors": "^2.8.5",
+    "dotenv": "^16.4.5",
+    "ejs": "^3.1.9",
+    "express": "^4.19.1",
+    "mariadb": "^3.3.0",
+    "mysql": "^2.18.1",
+    "mysqljs": "^0.0.2-security",
+    "nodemon": "^3.1.0"
+  }
+}
