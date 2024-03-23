@@ -2,7 +2,7 @@ const express = require('express');
 const mysql = require('mysql');
 const ejs = require('ejs')
 const app = express();
-const port = 3306;
+const port = 3030;
 
 
 app.set('view engine', 'ejs');
@@ -21,12 +21,6 @@ con.connect(function (err) {
     if (error) throw error;
     console.log(result);
 
-    app.get('/', (req, res) => {
-      res.render('index', {
-        data: result
-      });
-      
-    });
 
   });
 });
