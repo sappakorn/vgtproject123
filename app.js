@@ -4,7 +4,6 @@ const ejs = require('ejs')
 const app = express();
 const port = 11512;
 
-
 app.set('view engine', 'ejs');
 
 var con = mysql.createConnection({
@@ -14,26 +13,19 @@ var con = mysql.createConnection({
   database: "myproject"
 });
 
-
 app.get('/', function(req, res) {
-
   const sql = "SELECT * FROM userprofile";
   con.query(sql, function(err, result) {
     if (err) throw err;
-    
     res.render('pages/index', { data: result });
   });
 });
 
 
-
 const sql = "INSERT INTO userprofile (username, password, fullname) VALUES ('spk1','111111','Kspk')";
 con.query(sql, function (err, result) {
-
   if (err) throw err;
-
   console.log("1 record inserted");
-
 });
 
 
