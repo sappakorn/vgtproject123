@@ -23,11 +23,13 @@ con.connect(function (err) {
     if (error) throw error;
     console.log(result);
     console.log("ejs ??? ")
+
     app.get('/', (req, res) => {
-      res.render('/pages/', {
+      res.render('/pages/index', {
         data: result
       });
     });
+    
   });
 });
 
