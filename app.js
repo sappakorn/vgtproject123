@@ -21,9 +21,9 @@ app.get('/', function(req, res) {
   });
 });
 
-app.get('/register', function(req,res){
-  res.redirect('pages/register');
-})
+app.get('/register', function(req, res) {
+  res.render('pages/register');
+});
 
 const sql = "INSERT INTO userprofile (username, password, fullname) VALUES ('spk1','111111','Kspk')";
 con.query(sql, function (err, result) {
