@@ -22,7 +22,7 @@ app.get('/', function(req, res) {
 });
 
 app.get('/register', function(req,res){
-  navigator('/pages/index')
+  res.redirect('/pages/register');
 })
 
 const sql = "INSERT INTO userprofile (username, password, fullname) VALUES ('spk1','111111','Kspk')";
