@@ -33,10 +33,10 @@ app.get('/', function(req, res) {
 });
 
 app.get('/register', function(req, res) {
-  res.render('pages/register');
+  res.render('register');
 });
 
-app.post('/auth_register', function(req,res,error){
+app.post('/auth_register', function(req,res){
   const username = req.body.username;
   const password = req.body.password;
   const password2 = req.body.password2;
@@ -45,8 +45,7 @@ app.post('/auth_register', function(req,res,error){
   const sql = "INSERT INTO userprofile (username, password,password2,phone,fullname) VALUES (?,?,?,?,?)";
   con.query(sql, [username, password,password2,phone_number, fullname], function (err, result) {
     if (err) throw err;
-    res.render('pages/index',{});
-
+    res.render('pages/index',{ });
   });
   if(error){
     console.log(error)
