@@ -29,10 +29,8 @@ var con = mysql.createConnection({
 //
 
 app.get('/', function(req, res) {
-  
+  res.render('pages/index', { });
 });
-
-
 
 app.get('/register', function(req, res) {
   res.render('pages/register');
