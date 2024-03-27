@@ -33,7 +33,7 @@ app.get('/', function(req, res) {
 });
 
 app.get('/register', function(req, res) {
-  res.render('register');
+  res.render('pages/register');
 });
 
 app.post('/auth_register', function(req,res){
