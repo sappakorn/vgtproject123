@@ -47,9 +47,7 @@ app.post('/auth_register', function(req,res){
     if (err) throw err;
     res.render('pages/index',{ });
   });
-  if(error){
-    console.log(error)
-  }
+  
 })
 
 
