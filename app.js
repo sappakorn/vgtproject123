@@ -45,7 +45,7 @@ app.post('/auth_register', function(req,res,error){
   const sql = "INSERT INTO userprofile (username, password,password2,phone,fullname) VALUES (?,?,?,?,?)";
   con.query(sql, [username, password,password2,phone_number, fullname], function (err, result) {
     if (err) throw err;
-    res.render('pages/auth_register',{});
+    res.render('pages/index',{});
 
   });
   if(error){
