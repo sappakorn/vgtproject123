@@ -4,10 +4,57 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>ชื่อของเจ้าของร้าน</title>
-    <link rel="stylesheet" href="/custom/bootstrap-5.3.3-dist/bootstrap-5.3.3-dist/css/bootstrap.min.css">
+    
+    
+    <!-- boostrap css -->
+  
+    <link rel="stylesheet" href="/bootstrap/css/bootstrap.min.css">
+    
+    <!--  -->
     
 </head>
 <body>
-    
+    <div class="container mb-2" style="box-shadow: 0px 5px 10px rgba(0, 0, 0, 0.120); ">
+        <nav class="navbar navbar-expand-lg ">
+          <div class="container-fluid ps-0 pe-2 pt-2">
+            <a class="navbar-brand" style=" height: 80px;width: 200px;" href="#"><img style=" width: 110%;height:50px" src="/img/logo-sm.png" alt=""></a>
+            <div >
+              <a href="shopping_cart"><img src="/img/shopping-cart.png" style="height: 25px;width: 25px;" alt=""></a>
+              
+              <p class="text-center " style="color:#ffffff;position: relative;top: -35px;left:12px;height: 25px;width: 25px;border-radius: 100%; background-color: rgb(255, 179, 16);">
+                <b>
+                  1
+                </b>
+              </p>
+            </div> 
+            
+          </div>
+          
+        </nav>
+        </div>
+        <div class="container">
+            <div class="row  ps-1 my-2">
+              <% product_list.forEach(product => { %>
+                <div class="col-lg-3 col-6  mt-2">
+                  <div class="card m-0" style="width: 10.7rem;height:13rem;box-shadow: rgba(0, 0, 0, 0.07) 0px 1px 2px, rgba(0, 0, 0, 0.07) 0px 2px 4px, rgba(0, 0, 0, 0.07) 0px 4px 8px, rgba(0, 0, 0, 0.07) 0px 8px 16px, rgba(0, 0, 0, 0.07) 0px 16px 32px, rgba(0, 0, 0, 0.07) 0px 32px 64px;">
+                    <div class="d-flex justify-content-center  mt-3">
+                      <img src="<%= product.product_img %>" style="max-width: 100px;height:auto;object-fit: cover;" class="card-img-top " >
+                    </div>
+                    
+                    <div class=" mt-4">
+                      <p class="card-title ps-2"><%= product.productname %> | <%=product.product_type%></p>
+                      <p class="card-text ps-2" style="font-size:13px">ราคา <%= product.price %> บาท/กก.</p>
+                    </div>
+                    
+                  </div> 
+                </div>
+              <% }); %>
+            </div>
+        </div>
+
+
+    <!-- boostrap js -->
+    <script src="/bootstrap/js/bootstrap.bundle.min.js"></script>
+    <!--  -->
 </body>
 </html>
