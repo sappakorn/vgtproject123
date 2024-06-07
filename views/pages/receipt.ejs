@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>ใบเสร็จ</title>
+    <!-- boostrap css -->
+    <link rel="stylesheet" href="/bootstrap/css/bootstrap.min.css">
+    <!--  -->
+  <style>
+    .invoice {
+      border: 1px solid #eee;
+      padding: 20px;
+      margin-bottom: 20px;
+    }
+    .invoice p {
+      margin-bottom: 5px;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <div class="row justify-content-center">
+      <div class="col-md-8">
+        <div class="invoice">
+          <h2 class="text-center mb-4">ใบเสร็จ</h2>
+          <div class="row">
+            <div class="col-md-6">
+              <p><strong>รหัสการสั่งซื้อ:</strong> #12345</p>
+              <p><strong>วันที่:</strong> 13 เมษายน 2024</p>
+            </div>
+            <div class="col-md-6 text-right">
+              <p><strong>ชื่อลูกค้า:</strong> John Doe</p>
+              <p><strong>อีเมล:</strong> johndoe@example.com</p>
+            </div>
+          </div>
+          <table class="table">
+            <thead>
+              <tr>
+                <th>สินค้า</th>
+                <th>จำนวน</th>
+                <th>ราคาต่อหน่วย</th>
+                <th>ราคารวม</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>Product 1</td>
+                <td>2</td>
+                <td>$20.00</td>
+                <td>$40.00</td>
+              </tr>
+              <tr>
+                <td>Product 2</td>
+                <td>1</td>
+                <td>$30.00</td>
+                <td>$30.00</td>
+              </tr>
+              <!-- Add more rows for other products -->
+            </tbody>
+          </table>
+          <div class="text-right">
+            <p><strong>ยอดรวมทั้งหมด:</strong> $70.00</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="container">
+    <a class="btn btn-secondary " href="history">ย้อนกลับ</a>
+    
+    <div class="btn btn-primary ">
+      พิมพ์
+    </div>
+  </div>
+  
+</body>
+</html>

@@ -1,60 +1,225 @@
-้<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="en">
+
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>ชื่อของเจ้าของร้าน</title>
-    
-    
-    <!-- boostrap css -->
-  
-    <link rel="stylesheet" href="/bootstrap/css/bootstrap.min.css">
-    
-    <!--  -->
-    
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>ชื่อร้าน</title>
+
+  <!-- jquery -->
+  <script src="jquery/jquery.js"></script>
+  <!--  -->
+
+  <!--  -->
+  <script src="ajax/ajax.js"></script>
+  <!--  -->
+
+  <!-- boostrap css -->
+
+  <link rel="stylesheet" href="/bootstrap/css/bootstrap.min.css">
+
+  <!--  -->
+
+  <style>
+    * {
+      padding: 0px;
+      margin: 0px;
+    }
+
+    #fixed-bottoms {
+      padding-top: 10px;
+      border-top: 1px solid #2d2c2c;
+      background-color: #242424;
+    }
+  </style>
+
+
+
+
+
 </head>
+
 <body>
-    <div class="container mb-2" style="box-shadow: 0px 5px 10px rgba(0, 0, 0, 0.120); ">
-        <nav class="navbar navbar-expand-lg ">
-          <div class="container-fluid ps-0 pe-2 pt-2">
-            <a class="navbar-brand" style=" height: 80px;width: 200px;" href="#"><img style=" width: 110%;height:50px" src="/img/logo-sm.png" alt=""></a>
-            <div >
-              <a href="shopping_cart"><img src="/img/shopping-cart.png" style="height: 25px;width: 25px;" alt=""></a>
-              
-              <p class="text-center " style="color:#ffffff;position: relative;top: -35px;left:12px;height: 25px;width: 25px;border-radius: 100%; background-color: rgb(255, 179, 16);">
-                <b>
-                  1
-                </b>
-              </p>
-            </div> 
-            
-          </div>
-          
-        </nav>
-        </div>
-        <div class="container">
-            <div class="row  ps-1 my-2">
-              <% product_list.forEach(product => { %>
-                <div class="col-lg-3 col-6  mt-2">
-                  <div class="card m-0" style="width: 10.7rem;height:13rem;box-shadow: rgba(0, 0, 0, 0.07) 0px 1px 2px, rgba(0, 0, 0, 0.07) 0px 2px 4px, rgba(0, 0, 0, 0.07) 0px 4px 8px, rgba(0, 0, 0, 0.07) 0px 8px 16px, rgba(0, 0, 0, 0.07) 0px 16px 32px, rgba(0, 0, 0, 0.07) 0px 32px 64px;">
-                    <div class="d-flex justify-content-center  mt-3">
-                      <img src="<%= product.product_img %>" style="max-width: 100px;height:auto;object-fit: cover;" class="card-img-top " >
-                    </div>
-                    
-                    <div class=" mt-4">
-                      <p class="card-title ps-2"><%= product.productname %> | <%=product.product_type%></p>
-                      <p class="card-text ps-2" style="font-size:13px">ราคา <%= product.price %> บาท/กก.</p>
-                    </div>
-                    
-                  </div> 
+  <div class="container-fluid mt-0 fixed-top"
+    style="box-shadow: 0px 5px 10px rgba(0, 0, 0, 0.120); background-color: #ffffff;">
+    <nav class="navbar navbar-expand-lg d-flex justify-content-between align-items-center">
+      <a class="navbar-brand" style="height: 50px;width: 200px;" href="menu">
+        <img style="width:100%; height:40px;" src="/img/logo-sm.png" alt="">
+      </a>
+      <div style="display: flex; align-items: center;">
+        <a href="cart"><img src="/img/shopping-cart.png" style="height: 30px; width: 30px; margin-right: 10px;"
+            alt=""></a>
+        <p style="position: relative; 
+            top: -8.8px;
+            font: bold;
+            left: -17px;
+            color: #ffffff; 
+            height: 26px; width: 26px; 
+            border-radius: 50%; 
+            background-color: rgb(255, 200, 0); font-size: 16px; line-height: 26px;
+            " class="text-center m-0" id="numberOfItems"><strong>0</strong></p>
+      </div>
+    </nav>
+    <hr>
+    <div class="d-flex justify-content-between pb-2" id="findbrabra">
+
+      <!-- Dropdown -->
+      <div class="btn-group">
+        <button type="button" class="btn btn-primary  dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">
+          ชนิดผัก
+        </button>
+        <ul class="dropdown-menu">
+          <% type_list.forEach(producttype=> { %>
+            <li>
+              <%= producttype.product_type %>
+            </li>
+            <% }); %>
+        </ul>
+      </div>
+      <!--  -->
+
+      <!-- ค้นหาแบบพิม -->
+      <input class="form-control ms-3" oninput="searchProduct(this)" type="text" id="searchBox"
+        placeholder="ค้นหาสินค้า...">
+      <!--  -->
+
+    </div>
+  </div>
+
+
+
+  <div class="">
+    <br>
+    <br>
+    <br>
+    <br>
+    <br>
+    <br>
+  </div>
+
+  <div class="container">
+    <div>
+      <!-- เพิ่ม ID เพื่อให้ง่ายต่อการเข้าถึง -->
+      <div class="mt-5 display-1 text-center no-results-message" style="display: none;">ไม่มีสินค้าที่ค้นหา</div>
+    </div>
+    <div class="row ps-2">
+      <% product_list.forEach(product=> { %>
+        <div class="col mt-2 product-item"
+          style="max-height: auto; padding-right: 0px !important; padding-left: 0px !important; margin-right: 0px !important;">
+          <form id="productForm" method="post" class="d-flex justify-content-center " action="/add_to_cart"
+            onsubmit="updateCartItemCount()">
+            <div class="card pt-2" id="product-items" style="width: 11rem;">
+
+              <img src="<%= product.product_img %>" class="card-img-top" alt="..."
+                style="height: 100px !important; object-fit: contain;">
+
+              <h5 class="card-title text-center  ">
+                <%= product.productname %>
+              </h5>
+
+              <div class="card-body ">
+                <div>
+                  <p class="card-text text-center ">
+                    <%= product.price %> บาท / <%= product.unit %>
+                  </p>
                 </div>
-              <% }); %>
+              </div>
+
+              <div class="p-2 ">
+                <button type="submit" class="btn btn-success addToCartButton form-control "
+                  style="font-size: 0.8rem;">เพิ่ม</button>
+              </div>
+
+
+
+              <!-- ซ่อนไว้ -->
+              <input name="product_id" class="d-none" value="<%= product.product_id %>">
+              <input name="productType" class="d-none" value="<%= product.unit %>">
+              <input name="productName" class="d-none" value="<%= product.productname %>">
+              <input name="productPrice" class="d-none" value="<%= product.price %>">
+              <input name="numberOfitem" class="d-none">
+              <!--  -->
+
             </div>
+          </form>
         </div>
+        <% }); %>
+    </div>
+  </div>
 
 
-    <!-- boostrap js -->
-    <script src="/bootstrap/js/bootstrap.bundle.min.js"></script>
-    <!--  -->
+  <script>
+    $(document).ready(function () {
+      updateCartItemCount(); //ฟังก์ชันแสดงจำนวนสินค้าที่มีในตะกร้า
+    });
+
+    // ฟังก์ชันสำหรับอัปเดตจำนวนสินค้าที่แสดงใน <P>
+    function updateCartItemCount() {
+      // เรียกใช้ API เพื่อดึงข้อมูลจำนวนสินค้าใน session
+      $.get('/cart_items_count', function (data) {
+        // อัปเดตจำนวนสินค้าใน <P> tag
+        if (data.count === 0) {
+          $('#numberOfItems').text("0");
+        } else {
+          $('#numberOfItems').text(data.count);
+        }
+
+      })
+        .fail(function (error) {
+
+          console.log("ตะกร้าว่าง")
+        });
+    }
+  </script>
+
+  <script>
+
+    function searchProduct(input) {
+      var searchText = input.value.toLowerCase();
+      var products = document.getElementsByClassName('product-item');
+      var hasMatch = false;
+      Array.from(products).forEach(function (product) {
+        var productName = product.getElementsByClassName('card-title')[0].innerText.toLowerCase();
+        if (productName.includes(searchText)) {
+          product.style.display = 'block';
+          hasMatch = true;
+        } else {
+          product.style.display = 'none';
+        }
+      });
+      // เรียกใช้ฟังก์ชัน showNoResultsMessage เมื่อไม่มีสินค้าที่ตรงความต้องการ
+      if (!hasMatch) {
+        showNoResultsMessage();
+      } else {
+        hideNoResultsMessage();
+      }
+    }
+
+    function showNoResultsMessage() {
+      // ใช้ document.querySelector เพื่อเลือก element ที่มี class="no-results-message"
+      var noResultsMessage = document.querySelector('.no-results-message');
+      noResultsMessage.style.display = 'block';
+    }
+
+    function hideNoResultsMessage() {
+      // ใช้ document.querySelector เพื่อเลือก element ที่มี class="no-results-message"
+      var noResultsMessage = document.querySelector('.no-results-message');
+      noResultsMessage.style.display = 'none';
+    }
+
+
+
+  </script>
+
+
+
+
+  <!-- boostrap js -->
+  <script src="/bootstrap/js/bootstrap.bundle.min.js"></script>
+  <!--  -->
+
+
+
 </body>
+
 </html>

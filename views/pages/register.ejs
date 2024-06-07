@@ -1,84 +1,114 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>สมัครสมาชิก</title>
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>สมัครสมาชิก</title>
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.4.1/font/bootstrap-icons.css">
+        <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet">  
 
-    <!-- boostrap css -->
+        <!-- boostrap css -->
   
-    <link rel="stylesheet" href="/bootstrap/css/bootstrap.min.css">
+        <link rel="stylesheet" href="/bootstrap/css/bootstrap.min.css">
     
-    <!--  -->
+        <!--  -->
 
 </head>
 <body>
-    <div class="container-fluid  "  style="background-color: #ffffff;color:#000000;">
-      
-        <div class="row justify-content-center"">
-          <div class="col-md-6">
-            <div class="text-center ">
-              <img  src="https://firebasestorage.googleapis.com/v0/b/vgtproject-4de15.appspot.com/o/logobig.png?alt=media&token=48d2e0b1-b136-4c69-b12b-37968ed7a718" style="max-width: 45%; heith:auto;" alt="">
-            </div>
-              
-              <div class="mt-4 mx-2 " >
-                <h4 class="card-title text-center mb-4">สมัครสมาชิก</h4>
-                <form action="auth_register" method="post">
-                  <div class="form-group d-flex ">        
-                          <div class="input-group mb-3 ">
-                          <span class="input-group-text" id="basic-addon1"> <img src="/img/cell-phone.png" style="max-width: 25px; heith:auto;" alt=""></span>
-                          <input type="text" class="form-control" name="phone_number" placeholder="เบอร์โทรศัพท์" >
-                          </div>
-                  </div>
-                  <div class="form-group d-flex ">        
-                    <div class="input-group mb-3 ">
-                    <span class="input-group-text" id="basic-addon1"> <img src="/img/cell-phone.png" style="max-width: 25px; heith:auto;" alt=""></span>
-                    <input type="text" class="form-control" name="username" placeholder="ชื่อผู้ใช้" >
+        <div class="container-fluid  "  style="background-color: #ffffff;color:#000000;">
+            <div class="row justify-content-center"">
+              <div class="col-md-6">
+                <div class="text-center ">
+                  <img  src="/img/logobig.png" style="max-width: 45%; height:auto;" alt="">
+                </div>
+                  
+                  <div class="mt-4 mx-2 " >
+                    <h4 class="card-title text-center mb-4" style="color:#FF9110; font-size: 33px;">สมัครสมาชิก</h4>
+                    <form action="/api/auth/register" method="post">
+
+                      <div class="form-group d-flex ">        
+                              <div class="input-group mb-3 ">
+                              <span class="input-group-text" id="basic-addon1"> <img src="/img/cell-phone.png" style="max-width: 25px; height:auto;" alt=""></span>
+                              <input type="text" class="form-control" name="phone_number" placeholder="เบอร์โทรศัพท์" >
+                              </div>
+                      </div>
+
+                      <div class="form-group d-flex ">        
+                        <div class="input-group mb-3 ">
+                        <span class="input-group-text" id="basic-addon1"> <img src="/img/cell-phone.png" style="max-width: 25px; height:auto;" alt=""></span>
+                        <input type="text" class="form-control" name="name_shop" placeholder="ชื่อร้าน" >
+                        </div>
+                      </div>
+                      
+                      <div class="form-group d-flex ">        
+                              <div class="input-group mb-3 ">
+                              <span class="input-group-text" id="basic-addon1"> <img src="/img/lock.png" style="max-width: 22px; height:auto;" alt=""></span>
+                              <input type="password" class="form-control" name="password" placeholder="รหัสผ่าน" >
+                              </div>
+                      </div>
+
+                      <div class="form-group d-flex ">        
+                              <div class="input-group mb-3 ">
+                              <span class="input-group-text" id="basic-addon1"> <img src="/img/lock.png" style="max-width: 22px; height:auto;" alt=""></span>
+                              <input type="password" class="form-control" name="password2" placeholder="ยืนยันรหัสผ่าน" >
+                              </div>
+                      </div> 
+
+                      <div class="form-group d-flex ">        
+                              <div class="input-group mb-3 ">
+                              <span class="input-group-text" id="basic-addon1"> <img src="/img/user.png" style="max-width: 22px;height:auto;" alt=""></span>
+                              <input type="text" class="form-control" placeholder="ชื่อจริง" name="first_name" >
+                              </div>
+                      </div>
+
+                      <div class="form-group d-flex ">        
+                        <div class="input-group mb-3 ">
+                        <span class="input-group-text" id="basic-addon1"> <img src="/img/user.png" style="max-width: 22px;height:auto;" alt=""></span>
+                        <input type="text" class="form-control" placeholder="นามสกุล" name="last_name" >
+                        </div>
+                      </div>
+
+                      <div class="form-group d-flex ">        
+                        <div class="input-group mb-3 ">
+                        <span class="input-group-text" id="basic-addon1"> <img src="/img/user.png" style="max-width: 22px;height:auto;" alt=""></span>
+                        <input type="text" class="form-control" placeholder="ที่อยู่ของร้าน" name="location_shop" >
+                        </div>
+                      </div>
+
+                      <div class="mt-5">
+                        <button class="w-100 p-2 d-block custom-btn" >สมัครสมาชิก</button>
+                      </div> 
+                      
+                    </form>
+                    <div class=" text-center mt-3"><a href="/" style="text-decoration:none ;color:#3E3E3E ">ล็อกอิน</a></div >
+                    <div class="vh-100">
                     </div>
                   </div>
-                  
-                  <div class="form-group d-flex ">        
-                          <div class="input-group mb-3 ">
-                          <span class="input-group-text" id="basic-addon1"> <img src="/img/lock.png" style="max-width: 22px; heith:auto;" alt=""></span>
-                          <input type="password" class="form-control" name="password" placeholder="รหัสผ่าน" >
-                          </div>
-                  </div>
-                  <div class="form-group d-flex ">        
-                          <div class="input-group mb-3 ">
-                          <span class="input-group-text" id="basic-addon1"> <img src="/img/lock.png" style="max-width: 22px; heith:auto;" alt=""></span>
-                          <input type="password" class="form-control" name="password2" placeholder="ยืนยันรหัสผ่าน" >
-                          </div>
-                  </div>
-  
-                  <div class="form-group d-flex ">        
-                          <div class="input-group mb-3 ">
-                          <span class="input-group-text" id="basic-addon1"> <img src="/img/user.png" style="max-width: 22px; heith:auto;" alt=""></span>
-                          <input type="text" class="form-control" placeholder="ชื่อ-นามสกุล" name="fullname" >
-                          </div>
-                  </div>
-                 
-                  
-
-                  <div class="text-center mt-4">
-                    <button   class="border border-warning form-control  " style="color:#ffffff;background-image: linear-gradient(to right, #ff9f00, #f49200, #e88500, #dc7900, #d06d00, #d06d00, #d06d00, #d06d00, #dc7900, #e88500, #f49200, #ff9f00);" > <b>สมัครสมาชิก</b> </button>
-                  </div>
-                  
-                </form>
-    
-                <div class=" text-center mt-3"><a href="/" style="text-decoration:none ;color:#3E3E3E ">ล็อกอิน</a></div >
-
-
-                <div class="vh-100">
-                </div>
               </div>
+            </div>
           </div>
-        </div>
-      </div>
+
+<style>
+.custom-btn {
+  border-radius:35px;
+  background : #FF9110;
+  border:2px solid transparent;
+  color:#fff;
+  height:48px;
+  font-size: 20px;
+}
+input{
+    border: 1px solid #ffd3a1 !important ;
     
-      
-      <!-- boostrap js -->
-      <script src="/bootstrap/js/bootstrap.bundle.min.js"></script>
-      <!--  -->
-</body>
+}
+span{
+  border: 1px solid #ffd3a1 !important ;
+}
+</style>
+
+<!-- boostrap js -->
+<script src="/bootstrap/js/bootstrap.bundle.min.js"></script>
+<!--  -->
+
 </body>
 </html>
