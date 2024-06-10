@@ -1,7 +1,7 @@
 const express = require('express');
 const router = express.Router();
 const con = require("../../config/database");
-const argon2 = require('argon2');
+const bcrypt = require('bcrypt');
 
 router.post('/', async function (req, res, next) {
 
@@ -21,24 +21,23 @@ router.post('/', async function (req, res, next) {
   try {
 
     // เข้ารหัสรหัสผ่าน
-    const hashedPassword = await argon2.hash(password);
-    const sql = "INSERT INTO usersprofile (phone, password,first_name,last_name,location_shop,name_shop) VALUES (?,?,?,?,?,?)";
+    const hashedPassword = await bcrypt.hash(password, 10); 
+    const sql = "INSERT INTO usersprofile (phone, password, first_name, last_name, location_shop, name_shop) VALUES (?,?,?,?,?,?)";
     con.query(sql, [phone_number, hashedPassword, first_name, last_name, location_shop, name_shop], function (err, result) {
 
       if (err) {
         /* sweet alert *********************** */
-        return res.status(500).send(err.message); // ส่งข้อความ error กลับไปถ้ามีข้อผิดพลาด
+        return res.status(500).send(err.message); 
       }
-      console.log("register success ")
+      console.log("register success ");
       res.redirect('/');
     });
 
   } catch (err) {
-    console.log("err ", err)
+    console.log("err ", err);
     /* sweet alert *********************** */
     return res.status(500).send("การเข้ารหัสรหัสผ่านล้มเหลว โปรดตรวจสอบรหัสผ่านหรือติดต่อแอดมิน");
   }
-
 
 });
 
