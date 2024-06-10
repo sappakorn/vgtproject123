@@ -192,21 +192,27 @@ app.post('/add_to_cart', function (req, res) {
   const productName = req.body.productName;
   const productPrice = req.body.productPrice;
   const productType = req.body.productType;
+  
+  let count_product = 1;
 
-  // เพิ่มข้อมูลสินค้าลงในsession
+  // สร้าง session Oject สินค้า
   if (!req.session.cartItems) {
     req.session.cartItems = [];
   }
 
-
-
-  //Object cartItem 
-  req.session.cartItems.push({
+  const findProduct = req.session.cartItems.findIndex(item => item.product_id === product_id)
+  if(findProduct !== -1){
+    req.session.cartItems[findProduct].count_product += 1;
+  }else{
+    req.session.cartItems.push({
     product_id:product_id,
     productName: productName,
     productPrice: productPrice,
-    productType: productType
-  });
+    productType: productType,
+    count_product : count_product
+    });
+  }
+  
   console.log(req.session);
 
   res.redirect('/home');

@@ -21,7 +21,7 @@ router.post('/', (req, res) => {
 
         cartItems.forEach((item, index) => {
             const productId = item.product_id;
-            const quantityToReduce = 1;
+            const quantityToReduce = item.count_product;
             console.log(quantityToReduce)
             // ตรวจสอบปริมาณสินค้าที่มีอยู่ในสต็อก
             const checkStockSql = "SELECT quantity FROM products WHERE product_id = ?";
