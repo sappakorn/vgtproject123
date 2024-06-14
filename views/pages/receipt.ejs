@@ -4,10 +4,16 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>ใบเสร็จ</title>
-    <!-- boostrap css -->
-    <link rel="stylesheet" href="/bootstrap/css/bootstrap.min.css">
-    <!--  -->
+  <!-- bootstrap css -->
+  <link rel="stylesheet" href="/bootstrap/css/bootstrap.min.css">
+  
+  <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/1.3.4/jspdf.min.js"></script>
+
   <style>
+    body {
+      font-family: 'YourFontName', sans-serif;
+    }
     .invoice {
       border: 1px solid #eee;
       padding: 20px;
@@ -19,60 +25,69 @@
   </style>
 </head>
 <body>
-  <div class="container">
+  <div class="container-fluid mt-0 pb-2"
+    style="box-shadow: 0px 5px 10px rgba(0, 0, 0, 0.120); background-color: #ffffff;">
+    <nav class="navbar navbar-expand-lg d-flex justify-content-between align-items-center">
+      <a class="navbar-brand" style="height: 50px;width: 200px;" href="#">
+        <img style="width:100%; height:40px;" src="/img/logo-sm.png" alt="">
+      </a>
+    </nav>
+  </div>
+
+  <div class="container mt-5">
     <div class="row justify-content-center">
       <div class="col-md-8">
-        <div class="invoice">
+        <div id="html-content-holder" class="invoice">
           <h2 class="text-center mb-4">ใบเสร็จ</h2>
           <div class="row">
             <div class="col-md-6">
-              <p><strong>รหัสการสั่งซื้อ:</strong> #12345</p>
+              <p><strong>ร้าน:</strong> นิดผักสด</p>
               <p><strong>วันที่:</strong> 13 เมษายน 2024</p>
-            </div>
-            <div class="col-md-6 text-right">
-              <p><strong>ชื่อลูกค้า:</strong> John Doe</p>
-              <p><strong>อีเมล:</strong> johndoe@example.com</p>
             </div>
           </div>
           <table class="table">
-            <thead>
+            <thead class="text-center">
               <tr>
-                <th>สินค้า</th>
-                <th>จำนวน</th>
-                <th>ราคาต่อหน่วย</th>
-                <th>ราคารวม</th>
+                <th scope="col">รายการ</th>
+                <th scope="col">ชื่อสินค้า</th>
+                <th scope="col">ราคา/หน่วย</th>
+                <th scope="col">จำนวน</th>
               </tr>
             </thead>
             <tbody>
-              <tr>
-                <td>Product 1</td>
-                <td>2</td>
-                <td>$20.00</td>
-                <td>$40.00</td>
-              </tr>
-              <tr>
-                <td>Product 2</td>
-                <td>1</td>
-                <td>$30.00</td>
-                <td>$30.00</td>
-              </tr>
-              <!-- Add more rows for other products -->
+              <% if (cart_item.length === 0) { %>
+                <tr>
+                  <td colspan="4" class="text-center">
+                    <h1 style="background: rgb(171, 171, 171);">ตะกร้าสินค้าว่าง</h1>
+                  </td>
+                </tr>
+              <% } else { %>
+                <% let count = 1; %>
+                <% cart_item.forEach(cartitem => { %>
+                  <tr class="text-center">
+                    <td><%= count %></td>
+                    <td><%= cartitem.productName %></td>
+                    <td><%= cartitem.productPrice %> / <%= cartitem.productType %></td>
+                    <td><%= cartitem.count_product %></td>
+                  </tr>
+                  <% count++; %>
+                <% }); %>
+              <% } %>
             </tbody>
           </table>
           <div class="text-right">
-            <p><strong>ยอดรวมทั้งหมด:</strong> $70.00</p>
+            <p><strong>ยอดรวมทั้งหมด:</strong> <%= totalPrice %> บาท</p>
           </div>
         </div>
       </div>
     </div>
-  </div>
-  <div class="container">
-    <a class="btn btn-secondary " href="history">ย้อนกลับ</a>
-    
-    <div class="btn btn-primary ">
-      พิมพ์
+    <div id="editor"></div>
+    <div class="container d-flex justify-content-center">
+      <a class="btn btn-success me-3" href="/end_of_sale" >จบรายการ</a> <!-- จบรายการ -->
+      <button id="generatePDF" class="btn btn-primary" >บันทึกรูปภาพ</button> <!-- บันทึกรูปภาพและจบรายการด้วย -->
     </div>
   </div>
+  
   
 </body>
 </html>

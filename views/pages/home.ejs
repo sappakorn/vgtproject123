@@ -102,13 +102,13 @@
       <!-- เพิ่ม ID เพื่อให้ง่ายต่อการเข้าถึง -->
       <div class="mt-5 display-1 text-center no-results-message" style="display: none;">ไม่มีสินค้าที่ค้นหา</div>
     </div>
-    <div class="row ps-2">
+    <div class="row">
       <% product_list.forEach(product=> { %>
         <div class="col mt-2 product-item"
           style="max-height: auto; padding-right: 0px !important; padding-left: 0px !important; margin-right: 0px !important;">
           <form id="productForm" method="post" class="d-flex justify-content-center " action="/add_to_cart"
             onsubmit="updateCartItemCount()">
-            <div class="card pt-2" id="product-items" style="width: 11rem;">
+            <div class="card pt-2" id="product-items" style="width: 10rem;">
 
               <img src="<%= product.product_img %>" class="card-img-top" alt="..."
                 style="height: 100px !important; object-fit: contain;">

@@ -68,10 +68,10 @@ router.post('/', (req, res) => {
                                     });
                                 }
 
-                                req.session.cartItems = null
+                                /* req.session.cartItems = null */
                                 console.log(req.session.cartItems)
-                                console.log("ทำรายการสำเร็จ")
-                                res.redirect('/cart');
+                                console.log("บันทึกลงฐานข้อมูลแล้ว")
+                                res.redirect('/receipt');
                             });
                         }
                     });

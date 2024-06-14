@@ -1,15 +1,15 @@
 const express = require('express');
 const app = express();
 const path = require('path');
-const mysql = require('mysql');
-const ejs = require('ejs')
+const ejs = require('ejs');
 const PORT = process.env.PORT || 11512;
 const bodyParser = require('body-parser');
 const multer = require('multer');
 const con = require("./config/database");
 const cookieSession = require('cookie-session');
-const $ = require('jquery');
 const crypto = require('crypto');
+
+
 
 
 //สร้างcookie_session 
@@ -47,6 +47,7 @@ app.set('view engine', 'ejs');
 //login
 const authLoginRouter = require('./api/auth/login');
 app.use('/api/auth/login', authLoginRouter);
+
 
 function redirectIfLoggedIn(req, res, next) {
   if (req.session && req.session.user) {
@@ -138,10 +139,26 @@ app.get('/history', function (req, res) {
 
 //ใบเสร็จ
 app.get('/receipt', function (req, res) {
-  res.render('pages/receipt', {});
+  
+  let sum = 0;
+  req.session.cartItems.forEach(item => {
+    count_p = item.count_product; //นับจำนวน
+    totalprice = count_p * item.productPrice; //ราคาทั้งหมดของ product นั้น
+    sum += totalprice; //ราคารวมทั้งหมด 
+  });
+  res.render('pages/receipt', {
+    cart_item: req.session.cartItems, //ข้อมูลสินค้าที่อยู่ในตระกร้า
+    totalPrice:  sum.toFixed(2)
+  });
+  
+  
 });
 
-
+app.get('/end_of_sale',function (req,res){
+  req.session.cartItems = null;
+  console.log(req.session.cartItems)
+  res.redirect('/home');
+})
 
 
 //หน้า home หลังจากที่ login มีการแสดงสินค้า
@@ -218,12 +235,14 @@ app.post('/add_to_cart', function (req, res) {
   res.redirect('/home');
 });
 
+// delete items
 app.get('/delete_all', function (req, res) {
   req.session.cartItems = null
   console.log(req.session.cartItems)
   res.redirect('/cart');
 })
 
+//นับจำนวนสินค้า
 app.get('/cart_items_count', function (req, res) {
 
   if (req.session.cartItems == undefined) {
@@ -236,26 +255,28 @@ app.get('/cart_items_count', function (req, res) {
 });
 
 
-
+//API cart
 app.get('/cart', function (req, res) {
-  let totalPrice = 0;
+  let sum = 0;
   if (!req.session.cartItems || req.session.cartItems.length === 0) {
     res.render('pages/cart', {
-      totalPrice: totalPrice,
+      totalPrice: sum,
       cart_item: [] // ส่งอาร์เรย์ว่างไปยังหน้า cart เพื่อให้แสดงคำว่า "ว่าง"
     });
   } else {
     req.session.cartItems.forEach(item => {
-      totalPrice += parseInt(item.productPrice);
+      count_p = item.count_product;
+      totalprice = count_p * item.productPrice;
+      sum += totalprice;
     });
     res.render('pages/cart', {
       cart_item: req.session.cartItems,
-      totalPrice: totalPrice
+      totalPrice: sum
     });
   }
 });
 
-
+// ลบรายกา ตามตำแหน่ง Arrays 
 app.post('/remove-item-cart', (req, res) => {
   const itemIndex = parseInt(req.body.itemIndex);
 
@@ -270,8 +291,9 @@ app.post('/remove-item-cart', (req, res) => {
 });
 
 
-
-const authSummaryRouter = require('./api/auth/summary')
+//รวมราคาสินค้า แหละ ตัดสต็อก
+const authSummaryRouter = require('./api/auth/summary');
+const { count } = require('console');
 app.use('/api/auth/summary', authSummaryRouter)
 
 
@@ -289,8 +311,6 @@ const storage = multer.diskStorage({
 });
 
 const upload = multer({ storage: storage });
-
-
 
  app.post('/upload', upload.single('file'), (req, res) => {
 
@@ -329,9 +349,7 @@ const upload = multer({ storage: storage });
  
  
 
-
-
-/* ใช้ตัวแปรพอร์ตที่ เก็บเลขพอร์ตไว้ในตัวแปร */
+//รันที่PORT
 app.listen(PORT, () => console.log(`Server is running on port ${PORT}`));
 
 
