@@ -2,7 +2,7 @@ const express = require('express');
 const app = express();
 const path = require('path');
 const ejs = require('ejs');
-const PORT = process.env.PORT || 11512;
+const PORT = process.env.PORT || 11512; //11512
 const bodyParser = require('body-parser');
 const multer = require('multer');
 const con = require("./models/config/database");
@@ -300,10 +300,11 @@ app.post('/increase_product', function(req, res) {
           const countProduct = req.session.cartItems[itemIndex].count_product;
 
           // ตรวจสอบว่าเกิน availableQuantity หรือไม่
-          if (countProduct > availableQuantity) {
+          if (availableQuantity === 0) {
               // alert แจ้งเตือน 
               console.log("สินค้าไม่เพียงพอ");
               res.redirect('/cart');
+              return;
           }
 
           // เพิ่มจำนวน count_product และลด availableQuantity ถ้ามีสินค้าเหลืออยู่
