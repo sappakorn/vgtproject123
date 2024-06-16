@@ -5,7 +5,7 @@ const ejs = require('ejs');
 const PORT = process.env.PORT || 11512;
 const bodyParser = require('body-parser');
 const multer = require('multer');
-const con = require("./config/database");
+const con = require("./models/config/database");
 const cookieSession = require('cookie-session');
 const crypto = require('crypto');
 
@@ -32,6 +32,14 @@ module.exports = {
 
 app.use((req, res, next) => {
   req.session.user = req.session.user || {};
+
+  req.session.alert = {
+    danger: false,
+    success: false,
+    warning: false,
+    info: false
+  };
+
   next();
 });
 
@@ -86,6 +94,9 @@ app.use('/ajax', express.static(__dirname + '/node_modules/ajax/lib'))
 //
 
 
+app.get('/', function(req,res){
+  res.render('pages/index',{ session: req.session })
+})
 
 
 //route menu
@@ -96,9 +107,9 @@ app.get('/menu', function (req, res) {
 
 
 
-//หน้าแรก
-const router = require('./api/route');
-app.use('/', router)
+/* //หน้าแรก
+const router = require('./api/apiroute/route');
+app.use('/', router) */
 
 
 
@@ -137,6 +148,8 @@ app.get('/history', function (req, res) {
 
 
 
+
+
 //ใบเสร็จ
 app.get('/receipt', function (req, res) {
   
@@ -150,8 +163,7 @@ app.get('/receipt', function (req, res) {
     cart_item: req.session.cartItems, //ข้อมูลสินค้าที่อยู่ในตระกร้า
     totalPrice:  sum.toFixed(2)
   });
-  
-  
+
 });
 
 app.get('/end_of_sale',function (req,res){
@@ -209,7 +221,9 @@ app.post('/add_to_cart', function (req, res) {
   const productName = req.body.productName;
   const productPrice = req.body.productPrice;
   const productType = req.body.productType;
-  
+  const quantity  = parseInt(req.body.quantity);
+  const trueqtt = quantity-1;
+
   let count_product = 1;
 
   // สร้าง session Oject สินค้า
@@ -220,13 +234,15 @@ app.post('/add_to_cart', function (req, res) {
   const findProduct = req.session.cartItems.findIndex(item => item.product_id === product_id)
   if(findProduct !== -1){
     req.session.cartItems[findProduct].count_product += 1;
+    req.session.cartItems[findProduct].quantity -= 1;
   }else{
     req.session.cartItems.push({
     product_id:product_id,
     productName: productName,
     productPrice: productPrice,
     productType: productType,
-    count_product : count_product
+    count_product : count_product,
+    quantity : trueqtt
     });
   }
   
@@ -241,6 +257,65 @@ app.get('/delete_all', function (req, res) {
   console.log(req.session.cartItems)
   res.redirect('/cart');
 })
+
+// ปุ่ม - 
+app.post('/decrease_product',function (req,res){
+    const productId = req.body.decrease_id;
+    
+    if (req.session.cartItems && Array.isArray(req.session.cartItems)) {
+
+      // หารายการที่มี product_id ตรงกับที่ส่งมา               ฟังก์ชัน callback       
+      const itemIndex = req.session.cartItems.findIndex(item => item.product_id === productId);
+  
+      if (itemIndex !== -1) {
+      
+        //ลบหนึงทุกครั้งที่ count_product มากกว่า 0
+        if(req.session.cartItems[itemIndex].count_product > 0){
+          req.session.cartItems[itemIndex].count_product -= 1;
+          req.session.cartItems[itemIndex].quantity += 1;
+          // count_product เหลือ 0 เอารายการออก
+          if (req.session.cartItems[itemIndex].count_product === 0){
+            req.session.cartItems.splice(itemIndex, 1);
+          }
+
+        }
+      }
+    }
+    console.log(req.session.cartItems);
+    res.redirect('/cart'); 
+
+})
+
+//ปุ่ม+
+app.post('/increase_product', function(req, res) {
+  const productId = req.body.increase_id;
+
+  if (req.session.cartItems && Array.isArray(req.session.cartItems)) {
+      // ค้นหาดัชนีของสินค้าที่ตรงกับ productId
+      const itemIndex = req.session.cartItems.findIndex(item => item.product_id === productId);
+
+      if (itemIndex !== -1) {
+          // เช็คจำนวนสินค้าที่เหลือ
+          const availableQuantity = req.session.cartItems[itemIndex].quantity;
+          const countProduct = req.session.cartItems[itemIndex].count_product;
+
+          // ตรวจสอบว่าเกิน availableQuantity หรือไม่
+          if (countProduct > availableQuantity) {
+              // alert แจ้งเตือน 
+              console.log("สินค้าไม่เพียงพอ");
+              res.redirect('/cart');
+          }
+
+          // เพิ่มจำนวน count_product และลด availableQuantity ถ้ามีสินค้าเหลืออยู่
+          req.session.cartItems[itemIndex].count_product += 1;
+          req.session.cartItems[itemIndex].quantity -= 1;
+      }
+  }
+
+  console.log(req.session.cartItems);
+  res.redirect('/cart');
+});
+
 
 //นับจำนวนสินค้า
 app.get('/cart_items_count', function (req, res) {

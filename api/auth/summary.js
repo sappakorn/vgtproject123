@@ -1,6 +1,6 @@
 const express = require('express');
 const router = express.Router();
-const con = require("../../config/database");
+const con = require("../../models/config/database");
 
 router.post('/', (req, res) => {
 

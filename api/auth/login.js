@@ -1,6 +1,6 @@
 const express = require('express');
 const router = express.Router();
-const con = require("../../config/database");
+const con = require("../../models/config/database");
 const bcrypt = require('bcryptjs'); 
 const { generateSessionKey } = require('../../app');
 
@@ -10,7 +10,12 @@ router.post('/', async (req, res) => {
   const password = req.body.password;
 
   if (!phone || !password) {
-    return res.status(400).send("โปรดกรอกหมายเลขโทรศัพท์และรหัสผ่าน");
+    
+    req.session.alert.danger = true
+    console.log("โปรดตรวจสอบหมายเลข")
+    res.redirect('../../');
+    
+    return; 
   }
 
   const sql = "SELECT * FROM usersprofile WHERE phone = ?";
@@ -37,14 +42,14 @@ router.post('/', async (req, res) => {
           res.redirect('../../menu');
 
         } else {
-          res.status(401).send("เข้าสู่ระบบไม่สำเร็จ โปรดตรวจสอบหมายเลขโทรศัพท์หรือรหัสผ่าน");
+          res.status(401).send("เข้าสู่ระบบไม่สำเร็จโปรดตรวจสอบหมายเลขโทรศัพท์หรือรหัสผ่าน");
         }
       } catch (error) {
         console.error(error);
         res.status(500).send("การตรวจสอบรหัสผ่านล้มเหลว");
       }
     } else {
-      res.status(401).send("เข้าสู่ระบบไม่สำเร็จ โปรดตรวจสอบหมายเลขโทรศัพท์หรือรหัสผ่าน");
+      res.status(401).send("เข้าสู่ระบบไม่สำเร็จโปรดตรวจสอบหมายเลขโทรศัพท์หรือรหัสผ่าน");
     }
   });
 });

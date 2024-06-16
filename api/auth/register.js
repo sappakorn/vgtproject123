@@ -1,6 +1,6 @@
 const express = require('express');
 const router = express.Router();
-const con = require("../../config/database");
+const con = require("../../models/config/database");
 const bcrypt = require('bcryptjs');
 
 router.post('/', async function (req, res, next) {
