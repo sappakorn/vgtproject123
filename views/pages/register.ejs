@@ -15,6 +15,54 @@
 
 </head>
 <body>
+
+  <% if (typeof messageerror !== 'undefined') { %>
+    <!-- Modal -->
+    <div class="modal fade " id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+      <div class="modal-dialog modal-dialog-centered ">
+        <div class="modal-content " style="border-radius: 30px;">
+          <div class="modal-header">
+            <h5 class="modal-title" id="exampleModalLabel">
+              <img src="/img/error.png" style="height: 50px; width: 50px;">
+            </h5>
+          </div>
+          <div class="modal-body" style="font-size: 30px;">
+            <%= messageerror %>
+          </div>
+          <div class="modal-footer">
+            <a href="../../register" type="button" class="btn btn-primary" >ปิด</a>
+          </div>
+        </div>   
+      </div>
+    </div>
+  <% } %> 
+  <% if (typeof messageerrorss !== 'undefined') { %>
+    <!-- Modal -->
+    <div class="modal fade " id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+      <div class="modal-dialog modal-dialog-centered ">
+        <div class="modal-content " style="border-radius: 30px;">
+          <div class="modal-header">
+            <h5 class="modal-title" id="exampleModalLabel">
+              <img src="/img/check.png" style="height: 50px; width: 50px;">
+            </h5>
+          </div>
+          <div class="modal-body" style="font-size: 30px;">
+            <%= messageerrorss %>
+          </div>
+          <div class="modal-footer">
+            <a href="../../register" type="button" class="btn btn-primary" >ปิด</a>
+          </div>
+        </div>   
+      </div>
+    </div>
+    <script>
+      setTimeout(() => {
+          window.location.href = '../../';
+      }, 1500); 
+    </script>
+  <% } %>
+
+
         <div class="container-fluid  "  style="background-color: #ffffff;color:#000000;">
             <div class="row justify-content-center"">
               <div class="col-md-6">
@@ -97,6 +145,20 @@
   height:48px;
   font-size: 20px;
 }
+.modal-header, .modal-footer {
+      border: none; /* Remove the borders */
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+
+    .modal-title img {
+      display: block;
+    }
+
+    .modal-body {
+      text-align: center;
+    }
 input{
     border: 1px solid #ffd3a1 !important ;
     
@@ -108,8 +170,15 @@ span{
 
 <!-- boostrap js -->
 <script src="/bootstrap/js/bootstrap.bundle.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"></script>
 <!--  -->
 
-
+<% if (typeof messageerror !== 'undefined') { %>
+  <script>
+    // Check if there is a message error and show the modal
+      var myModal = new bootstrap.Modal(document.getElementById('exampleModal'));
+      myModal.show();
+  </script>
+<% } %>
 </body>
 </html>

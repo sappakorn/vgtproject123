@@ -62,7 +62,7 @@
     </nav>
     <hr>
     <div class="d-flex justify-content-between pb-2" id="findbrabra">
-
+    
       <!-- Dropdown -->
       <div class="btn-group">
         <button type="button" class="btn btn-primary  dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">
@@ -77,7 +77,7 @@
         </ul>
       </div>
       <!--  -->
-
+   
       <!-- ค้นหาแบบพิม -->
       <input class="form-control ms-3" oninput="searchProduct(this)" type="text" id="searchBox"
         placeholder="ค้นหาสินค้า...">
@@ -103,6 +103,7 @@
       <div class="mt-5 display-1 text-center no-results-message" style="display: none;">ไม่มีสินค้าที่ค้นหา</div>
     </div>
     <div class="row">
+       
       <% product_list.forEach(product=> { %>
         <div class="col mt-2 product-item"
           style="max-height: auto; padding-right: 0px !important; padding-left: 0px !important; margin-right: 0px !important;">
@@ -146,6 +147,7 @@
           </form>
         </div>
         <% }); %>
+        
     </div>
   </div>
 

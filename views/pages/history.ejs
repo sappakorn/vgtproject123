@@ -21,31 +21,33 @@
 </div>
     
 <div class="container-sm  pt-2 border  rounded mb-3 " style="box-shadow: 0px 5px 10px rgba(0, 0, 0, 0.120);background-color: #ffffff; " >
-    <form action="check-order" method="post" >
-        <div class="d-flex justify-content-between ">
-            <div>
-            <div class="p-1 rounded" style="border: 1px solid #e5e5e5; background-color: #e5e5e5; ">
-                <strong>หมายเลขใบเสร็จ: 123456</strong>
-            </div>
-            
-        </div>
-        <div class="p-1 rounded">
-            <strong>1000.00 บาท</strong>
-                
-        </div>     
-        </div>
+    <form method="post" action="/history_info">
+        <% history_p.forEach(product=> { %>
+        <ul>
+            <li>
+                <%=product.user_id %>
+            </li>
+            <li>
+                <%=product.date_time %>
+            </li>
+            <li>
+                <%=product.product_name %>
+            </li>
+            <li>
+                <%=product.summary %>
+            </li>
+            <li>
+                <%=product.shop_name %>
+            </li>
+
+        </ul>
+        
+        <button type="submit" class="btn btn-primary form-control"  >ดูรายละเอียด</button>
+        <% }); %>
+    </form>
+    
         
 
-        <hr>
-        <div class="d-flex justify-content-between pb-2">
-            <div class=" text-black ">
-                วันที่ 13/เมษา/2555   เวลา 4.23 น.
-            </div>
-            <a href="receipt" class="btn btn-primary " >ดูรายละเอียด</a>
-            
-        </div>            
-    </form> 
-        
 </div>
 
 

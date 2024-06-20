@@ -13,10 +13,17 @@ router.post('/', async function (req, res, next) {
   const location_shop = req.body.location_shop;
   const name_shop = req.body.name_shop;
 
-  if (password !== password2) {
-    /* sweet alert *********************** */
-    return res.status(400).send("รหัสผ่านไม่ตรงกัน");
+  // ตรวจสอบข้อมูลครบถ้วนหรือไม่
+  if (!phone_number || !password || !password2 || !first_name || !last_name || !location_shop || !name_shop) {
+    return res.render('pages/register', { messageerror: "กรุณากรอกข้อมูลให้ครบทุกช่อง" });
+
   }
+ // ตรวจสอบว่ารหัสผ่านและการยืนยันรหัสผ่านตรงกันหรือไม่
+  if (password !== password2) {
+    return res.render('pages/register', { messageerror: "รหัสผ่านไม่ตรงกัน" });
+  }
+
+
 
   try {
 
@@ -26,17 +33,16 @@ router.post('/', async function (req, res, next) {
     con.query(sql, [phone_number, hashedPassword, first_name, last_name, location_shop, name_shop], function (err, result) {
 
       if (err) {
-        /* sweet alert *********************** */
-        return res.status(500).send(err.message); 
+        /*  มีหมายเลขนี้แล้ว */
+        return res.render('pages/register', { messageerror: "หมายเลขนี้ถูกใช้แล้ว" }); 
       }
-      console.log("register success ");
-      res.redirect('/');
+      return res.render('pages/index',{ messageerror: "ลงทะเบียนสำเร็จ"});
     });
 
   } catch (err) {
     console.log("err ", err);
-    /* sweet alert *********************** */
-    return res.status(500).send("การเข้ารหัสรหัสผ่านล้มเหลว โปรดตรวจสอบรหัสผ่านหรือติดต่อแอดมิน");
+    /* sweet alert สมัครสมาชิก */
+    return res.render('pages/register', { messageerror: "มีข้อผิดพลาดในการลงทะเบียน โปรดลองใหม่ภายหลัง" });
   }
 
 });

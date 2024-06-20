@@ -26,6 +26,20 @@
     button{
       font-size: 15px !important;
     }
+    .modal-header, .modal-footer {
+      border: none !important; /* Remove the borders */
+      display: flex !important;
+      justify-content: center !important;
+      align-items: center !important;
+    }
+
+    .modal-title img {
+      display: block !important;
+    }
+
+    .modal-body {
+      text-align: center !important;
+    }
   </style>
 
 
@@ -40,7 +54,7 @@
       </a>
     </nav>
 </div>
-  
+<% if(typeof totalPrice !== 'undefined') { %>
   <div class="container-fluid   bg-primary pt-3 pb-2 ">
     <div class="total-price">
       <div class="  mx-5  ">
@@ -53,7 +67,6 @@
   <table class="table table-striped" >
     <thead class="text-center ">
       <tr>
-        
         <th scope="col">ชื่อสินค้า</th>
         <th scope="col">ราคา/หน่วย</th>
         <th colspan="6"></th>
@@ -113,26 +126,103 @@
               </tr>
 
               <% count++; %>
-                <% }); %>
-                  <% } %>
-
+            <% }); %>
+          <% } %>
+        
     </tbody>
   </table>
 
 
   <div class="d-flex justify-content-between mx-3 mb-5 ">
-    <form action="./api/auth/summary" method="post">
-      <button class="btn btn-outline-success">ยืนยันและบันทึก</button>
-    </form>
+    
+    <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal">
+      ยืนยันและบันทึก
+    </button>
 
     <a href="/home" class="btn bg-body-secondary ms-2 ">ย้อนกลับ</a>
     <a class="btn btn-danger  ms-auto" href="/delete_all">ลบทั้งหมด</a>
   </div>
 
   </div>
+<% } %> 
 
 
 
+<!-- Modal -->
+<div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered ">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h1 class="modal-title fs-5" id="exampleModalLabel">ยืนการซื้อ</h1>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        กรุณาตรวจสอบรายการและกดยืนยันการขาย
+      </div>
+      <div class="modal-footer">
+
+        <form action="./api/auth/summary" method="post">
+          <button class="btn btn-success">ยืนยันและบันทึก</button>
+        </form>
+        <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Close</button>
+        
+      </div>
+    </div>
+  </div>
+</div>
+
+<% if (typeof message_save !== 'undefined') { %>
+  <!-- Modal -->
+  <div class="modal fade " id="modalsave" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered ">
+      <div class="modal-content " style="border-radius: 30px;">
+        <div class="modal-header">
+          <h5 class="modal-title" id="successModal">
+            <img src="/img/check.png" style="height: 50px; width: 50px;">
+          </h5>
+        </div>
+        <div class="modal-body" style="font-size: 30px;">
+          <%= message_save %>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    setTimeout(() => {
+      window.location.href = '/receipt';
+    }, 1000); 
+  </script> 
+
+ <% } %> 
+
+
+<% if (typeof messageerror !== 'undefined') { %>
+    <!-- Modal -->
+    <div class="modal fade " id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+      <div class="modal-dialog modal-dialog-centered ">
+        <div class="modal-content " style="border-radius: 30px;">
+          <div class="modal-header">
+            <h5 class="modal-title" id="successModal">
+              <img src="/img/error.png" style="height: 50px; width: 50px;">
+            </h5>
+          </div>
+          <div class="modal-body" style="font-size: 30px;">
+            <%= messageerror %>
+          </div>
+          <div class="modal-footer">
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <script>
+      setTimeout(() => {
+        window.location.href = '/cart';
+      }, 1000); 
+    </script> 
+
+   <% } %> 
 
 
 
@@ -140,7 +230,25 @@
   <script src="/bootstrap/js/bootstrap.bundle.min.js"></script>
   <!--  -->
 
+  
 
+   
+
+   <% if (typeof messageerror !== 'undefined') { %>
+    <script>
+      // Check if there is a message error and show the modal
+      var myModal = new bootstrap.Modal(document.getElementById('exampleModal'));
+      myModal.show();
+    </script>
+  <% } %>
+
+  <% if (typeof message_save !== 'undefined') { %>
+    <script>
+      // Check if there is a message error and show the modal
+      var myModal = new bootstrap.Modal(document.getElementById('modalsave'));
+      myModal.show();
+    </script>
+  <% } %>
 
 </body>
 

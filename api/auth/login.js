@@ -11,12 +11,10 @@ router.post('/', async (req, res) => {
 
   if (!phone || !password) {
     
-    req.session.alert.danger = true
-    console.log("โปรดตรวจสอบหมายเลข")
-    res.redirect('../../');
-    
-    return; 
+    return res.render('pages/', { messageerror: "โปรดกรอกข้อมูลให้ครบถ้วน" });
+
   }
+  
 
   const sql = "SELECT * FROM usersprofile WHERE phone = ?";
   con.query(sql, [phone], async (err, result) => {
@@ -39,14 +37,17 @@ router.post('/', async (req, res) => {
           res.setHeader('x-session-key', sessionKey);
           console.log("login success");
           console.log(req.session.user.id);
-          res.redirect('../../menu');
-
+          return res.render('pages/menu', { messageerror : "เข้าสู่ระบบสำเร็จ" });
+         
+         
         } else {
-          res.status(401).send("เข้าสู่ระบบไม่สำเร็จโปรดตรวจสอบหมายเลขโทรศัพท์หรือรหัสผ่าน");
+
+          return res.render('pages/', { messageerror: "กรอกรหัสผ่านไม่ถูกต้อง" });
+
         }
       } catch (error) {
         console.error(error);
-        res.status(500).send("การตรวจสอบรหัสผ่านล้มเหลว");
+        res.status(500).send("การเข้าสู่ระบบล้มเหลว");
       }
     } else {
       res.status(401).send("เข้าสู่ระบบไม่สำเร็จโปรดตรวจสอบหมายเลขโทรศัพท์หรือรหัสผ่าน");

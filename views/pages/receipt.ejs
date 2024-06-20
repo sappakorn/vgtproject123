@@ -1,93 +1,358 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>ใบเสร็จ</title>
   <!-- bootstrap css -->
   <link rel="stylesheet" href="/bootstrap/css/bootstrap.min.css">
-  
+
   <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/1.3.4/jspdf.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/0.4.1/html2canvas.min.js"></script>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Kanit:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap" rel="stylesheet">
+
 
   <style>
+    *{
+      font-family: "Kanit", sans-serif;
+      font-weight: 500;
+      font-style: normal;
+    }
+    :root {
+      /* 	Responsive Sizing */
+      --size: 25vmin;
+    }
+    
+    /* General Layout */
     body {
-      font-family: 'YourFontName', sans-serif;
+      
+      font-family: sans-serif;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      background-color: rgb(255, 255, 255);
     }
-    .invoice {
-      border: 1px solid #eee;
-      padding: 20px;
-      margin-bottom: 20px;
+
+    .back {
+      font-size: 70%;
+      
     }
-    .invoice p {
-      margin-bottom: 5px;
+
+
+
+    @media print {
+
+      body>*:not(.print) {
+        display: none;
+      }
+      .front {
+        
+        color-adjust: exact;
+        -webkit-print-color-adjust: exact;
+        background-color: #071c33;
+        color: #fff;
+      }
+      .container {
+        padding-top: 20px;
+        border: 1px solid #071c33;
+        width: 80mm;
+      }
+    
+      @page {
+        margin: 0;
+      }
+
     }
   </style>
-</head>
-<body>
-  <div class="container-fluid mt-0 pb-2"
-    style="box-shadow: 0px 5px 10px rgba(0, 0, 0, 0.120); background-color: #ffffff;">
-    <nav class="navbar navbar-expand-lg d-flex justify-content-between align-items-center">
-      <a class="navbar-brand" style="height: 50px;width: 200px;" href="#">
-        <img style="width:100%; height:40px;" src="/img/logo-sm.png" alt="">
-      </a>
-    </nav>
-  </div>
 
-  <div class="container mt-5">
-    <div class="row justify-content-center">
-      <div class="col-md-8">
-        <div id="html-content-holder" class="invoice">
-          <h2 class="text-center mb-4">ใบเสร็จ</h2>
-          <div class="row">
-            <div class="col-md-6">
-              <p><strong>ร้าน:</strong> นิดผักสด</p>
-              <p><strong>วันที่:</strong> 13 เมษายน 2024</p>
-            </div>
-          </div>
-          <table class="table">
-            <thead class="text-center">
-              <tr>
-                <th scope="col">รายการ</th>
-                <th scope="col">ชื่อสินค้า</th>
-                <th scope="col">ราคา/หน่วย</th>
-                <th scope="col">จำนวน</th>
-              </tr>
-            </thead>
-            <tbody>
-              <% if (cart_item.length === 0) { %>
-                <tr>
-                  <td colspan="4" class="text-center">
-                    <h1 style="background: rgb(171, 171, 171);">ตะกร้าสินค้าว่าง</h1>
-                  </td>
-                </tr>
-              <% } else { %>
-                <% let count = 1; %>
-                <% cart_item.forEach(cartitem => { %>
-                  <tr class="text-center">
-                    <td><%= count %></td>
-                    <td><%= cartitem.productName %></td>
-                    <td><%= cartitem.productPrice %> / <%= cartitem.productType %></td>
-                    <td><%= cartitem.count_product %></td>
+</head>
+
+<body>
+  
+      <br><br>
+      <br>
+      <div class="print">
+
+        <div class="container back">
+          <div class="right" >
+
+            <div > 
+                <h1 style="text-align: center;">
+                  <strong>ใบเสร็จ</strong>
+                </h1>
+
+              <div>
+                <div class="">
+                 <h5><strong>ร้าน:</strong>นิดผักสด</h5>
+                 <h5><strong>วันที่:</strong>วันที่:<%=time %></h5>
+                </div>
+              </div>
+              <table class="table">
+                <thead>
+                  <tr style="font-size: 15px;">
+                    <th scope="col">รายการ</th>
+                    <th scope="col">ชื่อสินค้า</th>
+                    <th scope="col">ราคา/หน่วย</th>
+                    <th scope="col">จำนวน</th>
                   </tr>
-                  <% count++; %>
-                <% }); %>
-              <% } %>
-            </tbody>
-          </table>
-          <div class="text-right">
-            <p><strong>ยอดรวมทั้งหมด:</strong> <%= totalPrice %> บาท</p>
+                </thead>
+                <tbody style="font-size: 13px;">
+
+                  <tr>
+                    <td>1</td>
+                    <td>
+                      <%= namepro %>
+                    </td>
+                    <td>
+                      <%= price %> / <%= unit %>
+                    </td>
+                    <td>
+                      <%= count_p %>
+                    </td>
+                  </tr>
+                  <tr>
+                    <td>1</td>
+                    <td>
+                      ผักสอ
+                    </td>
+                    <td>
+                      10000 / 20
+                    </td>
+                    <td>
+                      10000
+                    </td>
+                  </tr>
+                  <tr>
+                    <td>1</td>
+                    <td>
+                      ผักสอ
+                    </td>
+                    <td>
+                      10000 / 20
+                    </td>
+                    <td>
+                      10000
+                    </td>
+                  </tr>
+                  <tr>
+                    <td>1</td>
+                    <td>
+                      ผักสอ
+                    </td>
+                    <td>
+                      10000 / 20
+                    </td>
+                    <td>
+                      10000
+                    </td>
+                  </tr>
+                  <tr>
+                    <td>1</td>
+                    <td>
+                      ผักสอ
+                    </td>
+                    <td>
+                      10000 / 20
+                    </td>
+                    <td>
+                      10000
+                    </td>
+                  </tr>
+                  <tr>
+                    <td>1</td>
+                    <td>
+                      ผักสอ
+                    </td>
+                    <td>
+                      10000 / 20
+                    </td>
+                    <td>
+                      10000
+                    </td>
+                  </tr>
+                  <tr>
+                    <td>1</td>
+                    <td>
+                      ผักสอ
+                    </td>
+                    <td>
+                      10000 / 20
+                    </td>
+                    <td>
+                      10000
+                    </td>
+                  </tr>
+                  <tr>
+                    <td>1</td>
+                    <td>
+                      ผักสอ
+                    </td>
+                    <td>
+                      10000 / 20
+                    </td>
+                    <td>
+                      10000
+                    </td>
+                  </tr> <tr>
+                    <td>1</td>
+                    <td>
+                      ผักสอ
+                    </td>
+                    <td>
+                      10000 / 20
+                    </td>
+                    <td>
+                      10000
+                    </td>
+                  </tr>
+                  <tr>
+                    <td>1</td>
+                    <td>
+                      ผักสอ
+                    </td>
+                    <td>
+                      10000 / 20
+                    </td>
+                    <td>
+                      10000
+                    </td>
+                  </tr>
+                  <tr>
+                    <td>1</td>
+                    <td>
+                      ผักสอ
+                    </td>
+                    <td>
+                      10000 / 20
+                    </td>
+                    <td>
+                      10000
+                    </td>
+                  </tr>
+                  <tr>
+                    <td>1</td>
+                    <td>
+                      ผักสอ
+                    </td>
+                    <td>
+                      10000 / 20
+                    </td>
+                    <td>
+                      10000
+                    </td>
+                  </tr>
+                  <tr>
+                    <td>1</td>
+                    <td>
+                      ผักสอ
+                    </td>
+                    <td>
+                      10000 / 20
+                    </td>
+                    <td>
+                      10000
+                    </td>
+                  </tr>
+                  <tr>
+                    <td>1</td>
+                    <td>
+                      ผักสอ
+                    </td>
+                    <td>
+                      10000 / 20
+                    </td>
+                    <td>
+                      10000
+                    </td>
+                  </tr>
+                  <tr>
+                    <td>1</td>
+                    <td>
+                      ผักสอ
+                    </td>
+                    <td>
+                      10000 / 20
+                    </td>
+                    <td>
+                      10000
+                    </td>
+                  </tr> 
+
+                </tbody>
+              </table>
+              <div>
+                <p style="font-size: 18px;"><strong>ยอดรวมทั้งหมด:</strong>
+                  <%= sum_prodcut %> บาท
+                </p>
+              </div>
+            </div>
           </div>
         </div>
       </div>
-    </div>
-    <div id="editor"></div>
-    <div class="container d-flex justify-content-center">
-      <a class="btn btn-success me-3" href="/end_of_sale" >จบรายการ</a> <!-- จบรายการ -->
-      <button id="generatePDF" class="btn btn-primary" >บันทึกรูปภาพ</button> <!-- บันทึกรูปภาพและจบรายการด้วย -->
-    </div>
-  </div>
-  
-  
+      <div>
+        <a href="#!" class="button btn btn-info">
+        Download
+      </a>
+
+      <a class="btn btn-secondary me-3" href="/home">กลับหน้าหลัก</a>
+      </div>
+      
+      <% if (typeof messageerror !=='undefined' ) {%>
+        <!-- Modal -->
+        <div class="modal fade " id="successModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+          <div class="modal-dialog modal-dialog-centered ">
+            <div class="modal-content " style="border-radius: 30px;">
+              <div class="modal-header">
+                <h5 class="modal-title" id="successModal">
+                  <img src=" /img/check.png" style="height: 50px; width: 50px;">
+                </h5>
+              </div>
+              <div class="modal-body" style="font-size: 30px;">
+                <%= messageerror %>
+              </div>
+              <div class="modal-footer">
+              </div>
+            </div>
+          </div>
+        </div>
+        <script>
+          setTimeout(() => {
+            window.location.href = '/home';
+          }, 1000); 
+        </script>
+    
+      <% } %>
+
+      <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-HwwvtgBNo3bZJJLYd8oVXjrBZt8cqVSpeBNS5n7C8IVInixGAoxmnlMuBnhbgrkm"
+        crossorigin="anonymous"></script>
+
+      <!-- <script>
+    const button = document.querySelector('a.btn-info');
+    button.addEventListener('click', () => {
+      /* const printContent = document.querySelector('#html-content-holder').innerHTML; */
+      window.print()
+    });
+  </script>
+   -->
+      <script>
+        const button = document.querySelector('a');
+        button.addEventListener('click', () => { window.print() });
+      </script>
+
+      <% if (typeof messageerror !=='undefined' ) {%>
+        <script>
+          // Check if there is a message success and show the modal
+          var successModal = new bootstrap.Modal(document.getElementById('successModal'));
+          successModal.show();
+        </script>
+        <% } %>
+
 </body>
+
 </html>

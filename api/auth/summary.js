@@ -1,6 +1,13 @@
 const express = require('express');
 const router = express.Router();
 const con = require("../../models/config/database");
+const moment = require('moment');
+require('moment/locale/th');
+
+function getCurrentTime() {
+    return moment().locale('th').format('D MMMM YYYY HH:mm:ss');
+}
+
 
 router.post('/', (req, res) => {
 
@@ -9,7 +16,7 @@ router.post('/', (req, res) => {
     if (!cartItems || cartItems.length === 0) {
         //เช็กว่าตะกร้าสินค้าว่างหรือไม่มีตะกร้า
         console.log("Cart is Empty ")
-        return res.status(400).send('Cart is empty');
+        return res.render('pages/cart', { messageerror: "กรุณาเลือกสินค้าก่อน" });
     }
 
     con.beginTransaction(err => {
@@ -69,9 +76,17 @@ router.post('/', (req, res) => {
                                 }
 
                                 /* req.session.cartItems = null */
-                                console.log(req.session.cartItems)
+                                const currentTime = getCurrentTime()
+                                req.session.datetime = currentTime;
+                                /* 
+                                insert history 
+                                
+                                */
+                                req.session.cartItems = null;
+                                console.log(req.session)
                                 console.log("บันทึกลงฐานข้อมูลแล้ว")
-                                res.redirect('/receipt');
+                                return res.render('pages/cart', { message_save: "บันทึกข้อมูลสำเร็จ" });
+                                
                             });
                         }
                     });

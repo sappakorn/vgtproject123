@@ -8,7 +8,7 @@ const multer = require('multer');
 const con = require("./models/config/database");
 const cookieSession = require('cookie-session');
 const crypto = require('crypto');
-
+const puppeteer = require('puppeteer')
 
 
 
@@ -32,13 +32,6 @@ module.exports = {
 
 app.use((req, res, next) => {
   req.session.user = req.session.user || {};
-
-  req.session.alert = {
-    danger: false,
-    success: false,
-    warning: false,
-    info: false
-  };
 
   next();
 });
@@ -92,7 +85,7 @@ app.use('/jquery', express.static(__dirname + '/node_modules/jquery/dist'))
 /* ajax */
 app.use('/ajax', express.static(__dirname + '/node_modules/ajax/lib'))
 //
-
+app.use('/receipt_js', express.static(__dirname + '/script/receipt.js'))
 
 app.get('/', function(req,res){
   res.render('pages/index',{ session: req.session })
@@ -123,6 +116,12 @@ const authRegisterRouter = require('./api/auth/register');
 app.use('/api/auth/register', authRegisterRouter);
 
 
+const history = require('./models/history');
+app.use('/history_card',history);
+
+const history_info = require('./models/history_info')
+app.use('/history_info',history_info)
+
 
 
 //route register
@@ -132,18 +131,12 @@ app.get('/register', function (req, res) {
 //
 
 
-
 //qrcode
 app.get('/qrcode', function (req, res) {
   res.render('pages/qrcode', {});
 });
 
 
-
-//ประวัติการขาย
-app.get('/history', function (req, res) {
-  res.render('pages/history', {});
-});
 
 
 
@@ -153,23 +146,26 @@ app.get('/history', function (req, res) {
 //ใบเสร็จ
 app.get('/receipt', function (req, res) {
   
-  let sum = 0;
-  req.session.cartItems.forEach(item => {
-    count_p = item.count_product; //นับจำนวน
-    totalprice = count_p * item.productPrice; //ราคาทั้งหมดของ product นั้น
-    sum += totalprice; //ราคารวมทั้งหมด 
-  });
-  res.render('pages/receipt', {
-    cart_item: req.session.cartItems, //ข้อมูลสินค้าที่อยู่ในตระกร้า
-    totalPrice:  sum.toFixed(2)
-  });
+  
+  res.render('pages/receipt',
+  {
+      count_p : 20,
+      sum_prodcut :2000,
+      namepro : 'คะน้า',
+      unit : 'มัด',
+      price : 100,
+      time: '18/18/1234'
+  }
+
+);
 
 });
 
 app.get('/end_of_sale',function (req,res){
   req.session.cartItems = null;
   console.log(req.session.cartItems)
-  res.redirect('/home');
+
+  return res.render('pages/receipt', { messageerror : "ทำรายการสำเร็จ" });
 })
 
 
@@ -372,7 +368,10 @@ const authSummaryRouter = require('./api/auth/summary');
 const { count } = require('console');
 app.use('/api/auth/summary', authSummaryRouter)
 
-
+//ประวัติการขาย
+app.get('/history', function (req, res) {
+  res.render('pages/history', {});
+});
 
 
 
@@ -391,7 +390,8 @@ const upload = multer({ storage: storage });
  app.post('/upload', upload.single('file'), (req, res) => {
 
   if (!req.file) {
-    return res.status(400).send('No files were uploaded.');
+
+    return res.status(400).send('กรุณาเลือกรูป');
   }
 
   const user_id = req.session.user.id;
@@ -416,10 +416,11 @@ const upload = multer({ storage: storage });
   con.query(add_stock, [productname, unit, price, quantity, fullpath,product_type, user_id], function (err, result) {
     if (err) {
       console.log(err)
-      return res.status(500).send('Error occurred while adding product.');
+      return res.status(500).send('กรุณากรอกข้อมูลให้ถูกต้อง');
     }
 
     res.redirect("/home");
+    
   });
 }); 
  
