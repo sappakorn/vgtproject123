@@ -7,11 +7,19 @@
     <!-- boostrap css -->
     <link rel="stylesheet" href="/bootstrap/css/bootstrap.min.css">
     <!--  -->
+    <link href="https://fonts.googleapis.com/css2?family=Kanit:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap" rel="stylesheet">
 
+    <style>
+      *{
+      font-family: "Kanit", sans-serif;
+      font-weight: 500;
+      font-style: normal;
+      }
+    </style>
  
 </head>
 <body>
-    <div class="container-fluid mt-0 pb-2"
+  <div class="container-fluid mt-0 pb-2"
     style="box-shadow: 0px 5px 10px rgba(0, 0, 0, 0.120); background-color: #ffffff;">
     <nav class="navbar navbar-expand-lg d-flex justify-content-between align-items-center">
       <a class="navbar-brand" style="height: 50px;width: 200px;" href="menu">
@@ -19,46 +27,41 @@
       </a>
     </nav>
 </div>
-    
-<div class="container-sm  pt-2 border  rounded mb-3 " style="box-shadow: 0px 5px 10px rgba(0, 0, 0, 0.120);background-color: #ffffff; " >
-    <form method="post" action="/history_info">
-        <% history_p.forEach(product=> { %>
-        <ul>
-            <li>
-                <%=product.user_id %>
-            </li>
-            <li>
-                <%=product.date_time %>
-            </li>
-            <li>
-                <%=product.product_name %>
-            </li>
-            <li>
-                <%=product.summary %>
-            </li>
-            <li>
-                <%=product.shop_name %>
-            </li>
+    <H1 class=" mt-2 text-center">ประวัติการขาย</H1>
 
-        </ul>
-        
-        <button type="submit" class="btn btn-primary form-control"  >ดูรายละเอียด</button>
-        <% }); %>
-    </form>
-    
-        
+<div class="container ps-4 d-grid" >
+  <div class="row">
+    <% result.forEach(items => { %>
+    <div class="col col-xl-3 my-2">
+      <form method="post" action="/history_info" >
+      <div class="card " style="box-shadow: 0px 5px 10px rgba(0, 0, 0, 0.120);background-color: #ffffff; width: 18rem;" >
+        <div class="card-body ">
+          <h5 class="card-title"> คุณ: ไดโน </h5>
+          <p class="card-text" style="font-size: 15px;"> 
+          เบอร์ติดต่อ : 055555555 <br>
+          วันที่ : <%= items.date_time  %> 
+          </p>
+          <div>
+            <h5 class="text-center  p-2" style="border-radius: 15px; background-color: rgb(255, 238, 126);">ยอดรวม: <%= items.summary %></h5>
+          </div>
+          <div class="d-flex justify-content-center">
+            <button href="#" class="btn btn-primary">ดูรายละเอียด</button>
+          </div>
+          
 
+          <!-- history_id  -->
+          <input class="d-none" name="history_id" value="<%= items.id %>" >
+        </div>
+      </div> 
+    </form> 
+
+    </div>
+    
+    <% }); %>
+  </div>
+    
 </div>
 
-
-
-     
-
-
-           
-   
-
-    
 
 
 

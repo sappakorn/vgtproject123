@@ -8,14 +8,11 @@ function getCurrentTime() {
     return moment().locale('th').format('D MMMM YYYY HH:mm:ss');
 }
 
-
 router.post('/', (req, res) => {
-
     const cartItems = req.session.cartItems;
-    
+
     if (!cartItems || cartItems.length === 0) {
-        //เช็กว่าตะกร้าสินค้าว่างหรือไม่มีตะกร้า
-        console.log("Cart is Empty ")
+        console.log("Cart is Empty ");
         return res.render('pages/cart', { messageerror: "กรุณาเลือกสินค้าก่อน" });
     }
 
@@ -25,12 +22,23 @@ router.post('/', (req, res) => {
         }
 
         let errorOccurred = false;
+        let sum = 0;
+        const orderData = {
+            product_name: [],
+            summary: [],
+            quantity: [],
+            shop_name: [],
+            product_id: [],
+            product_type: [],
+            product_price:[]
+        };
 
         cartItems.forEach((item, index) => {
             const productId = item.product_id;
             const quantityToReduce = item.count_product;
-            console.log(quantityToReduce)
-            // ตรวจสอบปริมาณสินค้าที่มีอยู่ในสต็อก
+            const totalprice = quantityToReduce * item.productPrice;
+            sum += totalprice;
+
             const checkStockSql = "SELECT quantity FROM products WHERE product_id = ?";
             con.query(checkStockSql, [productId], (err, results) => {
                 if (err) {
@@ -47,16 +55,14 @@ router.post('/', (req, res) => {
                     });
                 }
 
-                //นำเอาปริมาณสินค้า ปัจจุบันมาเช็คว่า น้อยกว่าจำนวนที่จะลดลงไหม
                 const currentStock = results[0].quantity;
                 if (currentStock < quantityToReduce) {
                     errorOccurred = true;
                     return con.rollback(() => {
                         res.status(400).send('สินค้าไม่เพียงพอ' + productId);
                     });
-                }else{
-
-                    qtt = currentStock - quantityToReduce;
+                } else {
+                    const qtt = currentStock - quantityToReduce;
                     const updateStock = "UPDATE products SET quantity = ? WHERE product_id = ?";
                     con.query(updateStock, [qtt, productId], (err, results) => {
                         if (err) {
@@ -66,7 +72,6 @@ router.post('/', (req, res) => {
                             });
                         }
 
-                        // เมื่ออัปเดตสินค้าทั้งหมดในตะกร้าแล้ว ให้ทำการ Commit การเปลี่ยนแปลง
                         if (index === cartItems.length - 1 && !errorOccurred) {
                             con.commit(err => {
                                 if (err) {
@@ -75,27 +80,50 @@ router.post('/', (req, res) => {
                                     });
                                 }
 
-                                /* req.session.cartItems = null */
-                                const currentTime = getCurrentTime()
+                                const currentTime = getCurrentTime();
                                 req.session.datetime = currentTime;
-                                /* 
-                                insert history 
-                                
-                                */
-                                req.session.cartItems = null;
-                                console.log(req.session)
-                                console.log("บันทึกลงฐานข้อมูลแล้ว")
-                                return res.render('pages/cart', { message_save: "บันทึกข้อมูลสำเร็จ" });
-                                
+
+                                const user_idd = parseInt(req.session.user.id);
+                                const qr_nameshop = "SELECT name_shop FROM usersprofile WHERE user_id = ?";
+                                con.query(qr_nameshop, [user_idd], function(err, reslt) {
+                                    if (err) {
+                                        return con.rollback(() => {
+                                            res.status(500).send('Error fetching shop name');
+                                        });
+                                    }
+                                    const shop_name = reslt[0].name_shop;
+                                    orderData.shop_name.push(shop_name);
+                                    
+                                    cartItems.forEach(item => {
+                                        orderData.product_name.push(item.productName);
+                                        orderData.quantity.push(item.count_product);
+                                        orderData.product_id.push(item.product_id);
+                                        orderData.product_type.push(item.productType);
+                                        orderData.product_price.push(item.productPrice)
+                                    });
+
+                                    const insert_history = "INSERT INTO history_product(user_id, date_time, order_data,summary) VALUES (?, ?, ?, ?)";
+                                    con.query(insert_history, [user_idd, currentTime, JSON.stringify(orderData),sum], function(err, result2) {
+                                        if (err) {
+                                            return con.rollback(() => {
+                                                res.status(500).send('Error inserting history');
+                                            });
+                                        }
+
+                                        req.session.cartItems = null;
+                                        console.log(sum);
+                                        console.log(req.session);
+                                        console.log("บันทึกลงฐานข้อมูลแล้ว");
+                                        return res.render('pages/cart', { message_save: "บันทึกข้อมูลสำเร็จ" });
+                                    });
+                                });
                             });
                         }
                     });
                 }
-         
             });
         });
     });
-    
 });
 
 module.exports = router;

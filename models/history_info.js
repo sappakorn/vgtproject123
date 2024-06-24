@@ -7,22 +7,23 @@ const con = require("../models/config/database");
 
 history_info.post('/', async (req, res) => {
 
-    const id = req.session.user.id
-
-    try {
-        const sql = "SELECT * FROM history WHERE user_id";
-        con.query(sql, [id], async (err, result) => {
-            if (err) {
-                return res.status(500).send(err.message); 
-            }
-            res.render('pages/history',{history_p : result})
-
-           
-        });
-        
-    } catch (error) {
-        
-    }
+    const history_id = req.body.history_id
+    const show_history = "SELECT * FROM history_product WHERE id = ?";
+    con.query(show_history,[history_id], function(err, result) {
+        if (err) {
+            console.error("Error querying database:", err);
+            res.render('pages/error', { error: err });
+        } else {
+            const Date_time = result[0].date_time;
+            const sum = result[0].summary;
+            const orderData = JSON.parse(result[0].order_data);
+            res.render('./pages/history_info', {
+              orderData: orderData,
+              Date_time : Date_time,
+              sum : sum
+             });
+        }
+    });
   
 });
 

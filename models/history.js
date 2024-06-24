@@ -7,23 +7,19 @@ const con = require("../models/config/database");
 
 history.post('/', async (req, res) => {
 
-    const id = req.session.user.id
+    const show_history = "SELECT * FROM history_product ";
+    con.query(show_history, function(err, result) {
+        if (err) {
+            console.error("Error querying database:", err);
+            res.redirect('../pages/menu')
+        } else {
 
-    try {
-        const sql = "SELECT * FROM history WHERE user_id";
-        con.query(sql, [id], async (err, result) => {
-            if (err) {
-                return res.status(500).send(err.message); 
-            }
-            res.render('pages/history',{history_p : result})
+            res.render('./pages/history', {
+                result : result,        
+            });
+        }
+    });
 
-           
-        });
-        
-    } catch (error) {
-        
-    }
-  
 });
 
 module.exports = history;

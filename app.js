@@ -73,7 +73,7 @@ const checkKey = (req, res, next) => {
 
 
 // กำหนดให้ middleware ตรวจสอบคีย์ก่อนที่จะทำการเข้าถึงหน้าต่าง ๆ
-app.use(['/menu', '/home', '/add_product','/stock', '/qrcode', '/history', '/receipt', '/cart','/upload'], checkKey);
+app.use(['/menu', '/home', '/add_product','/stock', '/qrcode', '/history', '/receipt', '/cart','/upload','history_info','history'], checkKey);
 
 
 // Serve Bootstrap CSS โดยใช้ express.static()
@@ -98,7 +98,9 @@ app.get('/menu', function (req, res) {
 });
 
 
-
+app.get('/homepage',function(req,res){
+  res.render('pages/homepage',{})
+})
 
 /* //หน้าแรก
 const router = require('./api/apiroute/route');
@@ -115,12 +117,14 @@ app.use('/api/auth/logout', authLogoutRouter)
 const authRegisterRouter = require('./api/auth/register');
 app.use('/api/auth/register', authRegisterRouter);
 
-
+// แสดงประวัติทุกอย่างเป็น card
 const history = require('./models/history');
 app.use('/history_card',history);
 
+// แสดงรายละเอียดประวัติ
 const history_info = require('./models/history_info')
 app.use('/history_info',history_info)
+
 
 
 
@@ -142,22 +146,26 @@ app.get('/qrcode', function (req, res) {
 
 
 
-
 //ใบเสร็จ
 app.get('/receipt', function (req, res) {
   
-  
-  res.render('pages/receipt',
-  {
-      count_p : 20,
-      sum_prodcut :2000,
-      namepro : 'คะน้า',
-      unit : 'มัด',
-      price : 100,
-      time: '18/18/1234'
-  }
-
-);
+  const show_history = "SELECT * FROM history_product ORDER BY id DESC LIMIT 1";
+  con.query(show_history, function(err, result) {
+      if (err) {
+          console.error("Error querying database:", err);
+          res.render('pages/error', { error: err });
+      } else {
+          const historyData = result[0]; // ดึงข้อมูลแถวแรกที่ได้จากการ query
+          const Date_time = result[0].date_time;
+          const sum = result[0].summary;
+          const orderData = JSON.parse(result[0].order_data);
+          res.render('pages/receipt', {
+            orderData: orderData,
+            Date_time : Date_time,
+            sum : sum
+           });
+      }
+  });
 
 });
 
@@ -227,10 +235,24 @@ app.post('/add_to_cart', function (req, res) {
     req.session.cartItems = [];
   }
 
+  if (req.session.cartItems && Array.isArray(req.session.cartItems)) {
   const findProduct = req.session.cartItems.findIndex(item => item.product_id === product_id)
   if(findProduct !== -1){
+   
+
+    const availableQuantity = req.session.cartItems[findProduct].quantity;
+
+      // ตรวจสอบว่าเกิน availableQuantity หรือไม่
+    if (availableQuantity === 0) {
+        // alert แจ้งเตือน 
+        console.log("สินค้าไม่เพียงพอ");
+        res.redirect('/home');
+        return;
+    }
     req.session.cartItems[findProduct].count_product += 1;
     req.session.cartItems[findProduct].quantity -= 1;
+    
+
   }else{
     req.session.cartItems.push({
     product_id:product_id,
@@ -240,11 +262,11 @@ app.post('/add_to_cart', function (req, res) {
     count_product : count_product,
     quantity : trueqtt
     });
+    }
   }
-  
   console.log(req.session);
-
   res.redirect('/home');
+
 });
 
 // delete items
@@ -293,7 +315,7 @@ app.post('/increase_product', function(req, res) {
       if (itemIndex !== -1) {
           // เช็คจำนวนสินค้าที่เหลือ
           const availableQuantity = req.session.cartItems[itemIndex].quantity;
-          const countProduct = req.session.cartItems[itemIndex].count_product;
+          
 
           // ตรวจสอบว่าเกิน availableQuantity หรือไม่
           if (availableQuantity === 0) {
@@ -367,11 +389,6 @@ app.post('/remove-item-cart', (req, res) => {
 const authSummaryRouter = require('./api/auth/summary');
 const { count } = require('console');
 app.use('/api/auth/summary', authSummaryRouter)
-
-//ประวัติการขาย
-app.get('/history', function (req, res) {
-  res.render('pages/history', {});
-});
 
 
 

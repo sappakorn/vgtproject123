@@ -16,6 +16,6 @@ const mysql = require('mysql');
     user: "root",
     password: "OZIxac77163",
     database: "project_nenu"
-});   
+});    
 
 module.exports = con;

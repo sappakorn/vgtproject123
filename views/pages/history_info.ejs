@@ -51,9 +51,7 @@
         display: none;
       }
       .front {
-
-        /* color-adjust: exact;
-        -webkit-print-color-adjust: exact; */
+        
         background-color: #071c33;
         color: #fff;
       }
@@ -90,7 +88,7 @@
               <div>
                 <div class="">
                  <h5><strong>ร้าน:</strong>   <%= orderData.shop_name %></h5>
-                 <strong style="font-size: 15px;"> วันที่ :  <%= Date_time  %></strong> 
+                 <strong style="font-size: 15px;"> วันที่ : </strong> 
                 </div>
               </div>
               <table class="table">
@@ -133,37 +131,10 @@
         Download
       </a>
 
-      <a class="btn btn-secondary me-3" href="/home">กลับหน้าหลัก</a>
+      <a class="btn btn-secondary me-3" href="../menu">กลับหน้าหลัก</a>
       </div>
       
 
-   
-
-      <% if (typeof messageerror !=='undefined' ) {%>
-        <!-- Modal -->
-        <div class="modal fade " id="successModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-          <div class="modal-dialog modal-dialog-centered ">
-            <div class="modal-content " style="border-radius: 30px;">
-              <div class="modal-header">
-                <h5 class="modal-title" id="successModal">
-                  <img src=" /img/check.png" style="height: 50px; width: 50px;">
-                </h5>
-              </div>
-              <div class="modal-body" style="font-size: 30px;">
-                <%= messageerror %>
-              </div>
-              <div class="modal-footer">
-              </div>
-            </div>
-          </div>
-        </div>
-        <script>
-          setTimeout(() => {
-            window.location.href = '/home';
-          }, 1000); 
-        </script>
-    
-      <% } %>
 
       <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/js/bootstrap.bundle.min.js"
         integrity="sha384-HwwvtgBNo3bZJJLYd8oVXjrBZt8cqVSpeBNS5n7C8IVInixGAoxmnlMuBnhbgrkm"
