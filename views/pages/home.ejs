@@ -37,9 +37,27 @@
       border-top: 1px solid #2d2c2c;
       background-color: #242424;
     }
+    .position-relative {
+      position: relative;
+    }
+
+    .product-img {
+      width: 100%;
+      height: auto;
+    }
+
+    .soldOutImage {
+      top: 30px;
+      left: 7px;
+      width: 93%;
+      height: 30%;
+      object-fit: cover;
+      opacity: 0.9;
+      z-index: 10;
+      pointer-events: none; 
+      transform: rotate(-25deg);
+    }
   </style>
-
-
 
 
 
@@ -92,8 +110,6 @@
     </div>
   </div>
 
-
-
   <div class="">
     <br>
     <br>
@@ -115,8 +131,13 @@
           style="max-height: auto; padding-right: 0px !important; padding-left: 0px !important; margin-right: 0px !important;">
           <form id="productForm" method="post" class="d-flex justify-content-center " action="/add_to_cart"
             onsubmit="updateCartItemCount()">
+
+
             <div class="card pt-2" id="product-items" style="width: 10rem;">
 
+              <% if (product.quantity === 0) { %>
+              <img src="/img/out-off-stock.png" class="soldOutImage position-absolute">
+              <% } %>
               <img src="<%= product.product_img %>" class="card-img-top" alt="..."
                 style="height: 100px !important; object-fit: contain;">
 
@@ -132,13 +153,6 @@
                 </div>
               </div>
 
-              <div class="p-2 ">
-                <button type="submit" class="btn btn-success addToCartButton form-control "
-                  style="font-size: 0.8rem;">เพิ่ม</button>
-              </div>
-
-
-
               <!-- ซ่อนไว้ -->
               <input name="product_id" class="d-none" value="<%= product.product_id %>">
               <input name="productType" class="d-none" value="<%= product.unit %>">
@@ -148,6 +162,16 @@
               <input name="quantity" class="d-none" value="<%= product.quantity %>">
               <input type="text" name="count_product" class="d-none" value="1">
               <!--  -->
+              <% if(product.quantity === 0){ %>
+                <div class="p-2">
+                  <button type="button" class="btn btn-secondary form-control" style="font-size: 0.8rem;" disabled>สินค้าหมด</button>
+                </div>
+              <% } else { %>
+                <div class="p-2">
+                  <button type="submit" class="btn btn-success addToCartButton form-control" style="font-size: 0.8rem;">เพิ่ม</button>
+                </div>
+              <% } %>
+
 
             </div>
           </form>
@@ -220,8 +244,6 @@
 
 
   </script>
-
-
 
 
   <!-- boostrap js -->

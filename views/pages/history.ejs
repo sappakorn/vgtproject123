@@ -29,6 +29,9 @@
 </div>
     <H1 class=" mt-2 text-center">ประวัติการขาย</H1>
 
+   
+    
+
 <div class="container ps-4 d-grid" >
   <div class="row">
     <% result.forEach(items => { %>
@@ -36,9 +39,11 @@
       <form method="post" action="/history_info" >
       <div class="card " style="box-shadow: 0px 5px 10px rgba(0, 0, 0, 0.120);background-color: #ffffff; width: 18rem;" >
         <div class="card-body ">
-          <h5 class="card-title"> คุณ: ไดโน </h5>
+          <h5 class="card-title">ร้าน: <%= items.name_shop %> </h5>
           <p class="card-text" style="font-size: 15px;"> 
-          เบอร์ติดต่อ : 055555555 <br>
+          ชื่อลูกค้า : ยายดี<br>
+          เบอร์ติดต่อลูกค้า : 087775500 <br>
+        
           วันที่ : <%= items.date_time  %> 
           </p>
           <div>

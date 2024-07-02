@@ -16,39 +16,12 @@
 
     <style>
       *{
-        font-family: "Kanit", sans-serif;
-        font-weight: 500;
-        font-style: normal;
-        }
-        .custom-btn {
-          border-radius:35px;
-          background : #FF9110;
-          border:2px solid transparent;
-          color:#fff;
-          height:48px;
-          font-size: 20px;
-        }
-        .modal-header, .modal-footer {
-              border: none; /* Remove the borders */
-              display: flex;
-              justify-content: center;
-              align-items: center;
-            }
-
-            .modal-title img {
-              display: block;
-            }
-
-            .modal-body {
-              text-align: center;
-            }
-        input{
-            border: 1px solid #ffd3a1 !important ;
-            
-        }
-        span{
-          border: 1px solid #ffd3a1 !important ;
-        }
+      font-family: "Kanit", sans-serif;
+      font-weight: 500;
+      font-style: normal;
+      }
+    
+    
     </style>
 
 </head>
@@ -95,24 +68,25 @@
     </div>
     <script>
       setTimeout(() => {
-          window.location.href = '../../index1';
+          window.location.href = '../../';
       }, 1500); 
     </script>
   <% } %>
-  
 
-        <div class="container-fluid d-flex justify-content-center"  style="background-color: #ffffff;color:#000000;">
+
+        <div class="container-fluid d-flex justify-content-center "  style="background-color: #ffffff;color:#000000;">
             <div class="row justify-content-center" style="width: 500px;">
               <div class="col-xl-12">
                 <div class="text-center ">
                   <a href="/">
                      <img  src="/img/logobig.png" style="max-width: 40%; height:auto;" alt="">
                   </a>
+                 
                 </div>
-                   
+                  
                   <div class="mt-4 mx-2 " >
                     <h4 class="card-title text-center mb-4" style="color:#FF9110; font-size: 33px;">สมัครสมาชิก</h4>
-                    <p class="card-title text-center mb-4" style="color:#e65315; font-size: 20px;">ระบบสมาชิกสำหรับแม่ค้าเพื่อใช้ในการจัดการระบบร้าน</p>
+                    <p class="card-title text-center mb-4" style="color:#e65315; font-size: 20px;">ระบบสำหรับลูก</p>
                     <form action="/api/auth/register" method="post">
 
                       <div class="form-group d-flex ">        
@@ -169,15 +143,45 @@
                       </div> 
                       
                     </form>
-                    <div class=" text-center mt-3"><a href="/index1" style="text-decoration:none ;color:#3E3E3E ">ล็อกอิน</a></div >
-                   <br><br><br><br>
+                    <div class=" text-center mt-3"><a href="/customer_login" style="text-decoration:none ;color:#3E3E3E ">ล็อกอิน</a></div >
+                    <div class="vh-100">
+                    </div>
                   </div>
               </div>
             </div>
           </div>
 
 <style>
+.custom-btn {
+  border-radius:35px;
+  background : #FF9110;
+  border:2px solid transparent;
+  color:#fff;
+  height:48px;
+  font-size: 20px;
+}
+.modal-header, .modal-footer {
+      border: none; /* Remove the borders */
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
 
+    .modal-title img {
+      display: block;
+    }
+
+    .modal-body {
+      text-align: center;
+      
+    }
+input{
+    border: 1px solid #ffd3a1 !important ;
+    
+}
+span{
+  border: 1px solid #ffd3a1 !important ;
+}
 </style>
 
 <!-- boostrap js -->

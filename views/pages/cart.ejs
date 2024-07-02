@@ -97,7 +97,6 @@
                   <%= cartitem.productPrice %> / <%= cartitem.productType %>
                 </td>
 
-
                 <td colspan="6" style="padding-right: 0px !important;">
                   <form action="/decrease_product" method="post">
                     <input type="text" class="d-none" name="decrease_id" value="<%=cartitem.product_id %>">
@@ -115,8 +114,7 @@
                     <button class="btn btn-secondary rounded border-black ">+</button>
                   </form>
                 </td>
-               
-                
+
                 <td>
                   <form action="/remove-item-cart" method="POST" class="ms-auto">
                     <input type="hidden" name="itemIndex" value="<%= count-1 %>">

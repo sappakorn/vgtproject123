@@ -1,11 +1,11 @@
 const mysql = require('mysql');
 
-/*  var con = mysql.createConnection(
+/* var con = mysql.createConnection(
     {
         host: "localhost",
         user: "root",
         password: "",
-        database: "project_nenu"
+        database: "databasevgtproject"
       }
 );  */  
  
@@ -16,6 +16,6 @@ var con = mysql.createConnection({
     user: "root",
     password: "OZIxac77163",
     database: "project_nenu"
-});   
+});    
 
 module.exports = con;

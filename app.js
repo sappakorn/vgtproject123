@@ -87,10 +87,31 @@ app.use('/ajax', express.static(__dirname + '/node_modules/ajax/lib'))
 //
 app.use('/receipt_js', express.static(__dirname + '/script/receipt.js'))
 
-app.get('/', function(req,res){
-  res.render('pages/index',{ session: req.session })
+app.get('/index1', function(req,res){
+  res.render('pages/index1',{ session: req.session })
 })
 
+app.get('/', function(req,res){
+
+  try {
+    store_list = "select phone,user_id,name_shop,location_shop from usersprofile"
+    con.query(store_list,function(error,result){
+    if(error){
+        return console.log("select error")
+      }
+      console.log(result)
+      res.render('pages/index',{
+        list_store : result
+      })
+      
+    });
+  } catch (error) {
+    return console.log("select error")
+  }
+  
+  
+  
+})
 
 //route menu
 app.get('/menu', function (req, res) {
@@ -102,12 +123,14 @@ app.get('/homepage',function(req,res){
   res.render('pages/homepage',{})
 })
 
-/* //หน้าแรก
-const router = require('./api/apiroute/route');
-app.use('/', router) */
 
+app.get('/customer_register',function(req,res){
+  res.render('pages/customer_register',{})
+})
 
-
+app.get('/customer_login',function(req,res){
+  res.render('pages/customer_login',{})
+})
 
 
 const authLogoutRouter = require('./api/auth/logout')
@@ -139,11 +162,6 @@ app.get('/register', function (req, res) {
 app.get('/qrcode', function (req, res) {
   res.render('pages/qrcode', {});
 });
-
-
-
-
-
 
 
 //ใบเสร็จ
