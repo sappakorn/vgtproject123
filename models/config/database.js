@@ -15,7 +15,7 @@ const mysql = require('mysql');
     host: "node60666-vgtproject.th1.proen.cloud",
     user: "root",
     password: "OZIxac77163",
-    database: "project_nenu"
+    database: "databasevgtproject"
 });    
 
 module.exports = con;
