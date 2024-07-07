@@ -57,6 +57,14 @@
       pointer-events: none; 
       transform: rotate(-25deg);
     }
+    .user-img{
+      background:rgba(41, 255, 62, 0.724);
+      box-shadow: rgba(21, 255, 44, 0.802) 0px 8px 24px, rgba(88, 251, 104, 0.49) 0px 16px 56px, rgb(136, 255, 148) 0px 24px 80px !important;
+      width: 30px;
+      height: 30px;
+      border-radius: 100%;
+      border: solid 0.1px rgba(41, 255, 62, 0.724);
+    }
   </style>
 
 
@@ -64,123 +72,105 @@
 </head>
 
 <body>
-  <div class="container-fluid mt-0 fixed-top"
-    style="box-shadow: 0px 5px 10px rgba(0, 0, 0, 0.120); background-color: #ffffff;">
-    <nav class="navbar navbar-expand-lg d-flex justify-content-between align-items-center">
-      <a class="navbar-brand d-flex"  href="/menu">
+  <nav class="navbar navbar-dark bg-dark ">
+    <div class="container-fluid m-1">
+      <a class="navbar-brand d-flex"  href="/">
         <img style="width:54; height:40px;" src="/img/logo-sm.png" alt="">
         <p style="color:#ff7300;font-size: 15px;padding-top: 15px;">VGTPROJECT</p>
       </a>
       
-      <div style="display: flex; align-items: center;">
-        <a href="cart"><img src="/img/shopping-cart.png" style="height: 30px; width: 30px; margin-right: 10px;"
-            alt=""></a>
-        <p style="position: relative; 
-            top: -8.8px;
-            font: bold;
-            left: -17px;
-            color: #ffffff; 
-            height: 26px; width: 26px; 
-            border-radius: 50%; 
-            background-color: rgb(255, 200, 0); font-size: 16px; line-height: 26px;
-            " class="text-center m-0" id="numberOfItems"><strong>0</strong></p>
-      </div>
-    </nav>
-    <div class="d-flex justify-content-between pb-2" id="findbrabra">
-    
-      <!-- Dropdown -->
-      <div class="btn-group">
-        <button type="button" class="btn btn-primary  dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">
-          ชนิดผัก
-        </button>
-        <ul class="dropdown-menu">
-          <% type_list.forEach(producttype=> { %>
-            <li>
-              <%= producttype.product_type %>
+      <button class="btn" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasDarkNavbar" aria-controls="offcanvasDarkNavbar" aria-label="Toggle navigation">
+       <img src="img/profile-user-removebg-preview.png" alt="" class="user-img" ></span>
+      </button>
+      <div class="offcanvas offcanvas-end text-bg-dark" tabindex="-1" id="offcanvasDarkNavbar" aria-labelledby="offcanvasDarkNavbarLabel">
+        <div class="offcanvas-header">
+          <h5 class="offcanvas-title" id="offcanvasDarkNavbarLabel">สวัสดี <%= fname %></h5>
+          <button type="button" class="btn-close btn-close-white" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+        </div>
+        <div class="offcanvas-body">
+          <ul class="navbar-nav justify-content-end flex-grow-1 pe-3">
+            <li class="nav-item">
+              สวัสดี <%= fname %>
             </li>
-            <% }); %>
-        </ul>
+            <li class="nav-item">
+              <a class="nav-link" href="/customer_login">ดูประวัติการ</a>
+            </li>
+           
+            <li class="nav-item">
+              <a class="nav-link text-success" >สถานะ : เข้าสู่ระบบ...</a>
+            </li>
+            
+            <br>
+
+            <li class="nav-item">
+              <form method="post" action="./api/auth/logout">
+                <button class="btn btn-danger">ออกจากระบบ</button>
+              </form>
+              
+            </li>
+            
+          </ul>
+          
+        </div>
       </div>
-      <!--  -->
-   
-      <!-- ค้นหาแบบพิม -->
-      <input class="form-control ms-3" oninput="searchProduct(this)" type="text" id="searchBox"
-        placeholder="ค้นหาสินค้า...">
-      <!--  -->
-
     </div>
+  </nav>
+  
+  
+  
+  <div class="text-center mt-2">
+    <h1>vegetable project</h1>
   </div>
-
-  <div class="">
-    <br>
-    <br>
-    <br>
-    <br>
-    <br>
-    <br>
-  </div>
-
+  
   <div class="container">
     <div>
-      <!-- เพิ่ม ID เพื่อให้ง่ายต่อการเข้าถึง -->
       <div class="mt-5 display-1 text-center no-results-message" style="display: none;">ไม่มีสินค้าที่ค้นหา</div>
     </div>
     <div class="row">
-       
-      <% product_list.forEach(product=> { %>
-        <div class="col col-xl-2 mt-2 product-item"
+         
+      <% list_store.forEach(store=> { %>
+        <div class="col col-xl-4 mt-2 product-item"
           style="max-height: auto; padding-right: 0px !important; padding-left: 0px !important; margin-right: 0px !important;">
-          <form id="productForm" method="post" class="d-flex justify-content-center " action="/add_to_cart"
+          <form id="productForm" method="post" class="d-flex justify-content-center " action="./show_form_login"
             onsubmit="updateCartItemCount()">
-
-
-            <div class="card pt-2" id="product-items" style="width: 10rem;">
-
-              <% if (product.quantity === 0) { %>
-              <img src="/img/out-off-stock.png" class="soldOutImage position-absolute">
-              <% } %>
-              <img src="<%= product.product_img %>" class="card-img-top" alt="..."
+          <button class="btn"  >
+            <div class="card pt-2" id="product-items" style="width: 19rem;box-shadow: rgba(0, 0, 0, 0.2) 0px 20px 30px;">
+  
+            
+              <img src="/img/store.png" class="card-img-top" alt="..."
                 style="height: 100px !important; object-fit: contain;">
-
+  
+                <br>
               <h5 class="card-title text-center  ">
-                <%= product.productname %>
+                <%= store.name_shop %>
               </h5>
-
+  
               <div class="card-body ">
                 <div>
                   <p class="card-text text-center ">
-                    <%= product.price %> บาท / <%= product.unit %>
+                    เบอร์ติดต่อร้าน : <%= store.phone %> 
                   </p>
                 </div>
               </div>
-
+  
               <!-- ซ่อนไว้ -->
-              <input name="product_id" class="d-none" value="<%= product.product_id %>">
-              <input name="productType" class="d-none" value="<%= product.unit %>">
-              <input name="productName" class="d-none" value="<%= product.productname %>">
-              <input name="productPrice" class="d-none" value="<%= product.price %>">
-              <input name="numberOfitem" class="d-none" >
-              <input name="quantity" class="d-none" value="<%= product.quantity %>">
-              <input type="text" name="count_product" class="d-none" value="1">
+              <input type="text" class="d-none" name="store_id" value="<%= store.user_id %>">
+              <input type="text" class="d-none" name="fname" value="<%= fname %>">
               <!--  -->
-              <% if(product.quantity === 0){ %>
-                <div class="p-2">
-                  <button type="button" class="btn btn-secondary form-control" style="font-size: 0.8rem;" disabled>สินค้าหมด</button>
-                </div>
-              <% } else { %>
-                <div class="p-2">
-                  <button type="submit" class="btn btn-success addToCartButton form-control" style="font-size: 0.8rem;">เพิ่ม</button>
-                </div>
-              <% } %>
-
-
+  
             </div>
+          </button>
+              
+            
           </form>
         </div>
         <% }); %>
         
     </div>
+  
   </div>
+  
+  
 
 
   <script>

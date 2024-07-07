@@ -11,7 +11,7 @@ router.post('/', async (req, res) => {
 
   if (!phone || !password) {
     
-    return res.render('pages/', { messageerror: "โปรดกรอกข้อมูลให้ครบถ้วน" });
+    return res.render('pages/index1', { messageerror: "โปรดกรอกข้อมูลให้ครบถ้วน" });
 
   }
   
@@ -42,7 +42,7 @@ router.post('/', async (req, res) => {
          
         } else {
 
-          return res.render('pages/', { messageerror: "กรอกรหัสผ่านไม่ถูกต้อง" });
+          return res.render('pages/index1', { messageerror: "กรอกรหัสผ่านไม่ถูกต้อง" });
 
         }
       } catch (error) {

@@ -20,8 +20,40 @@
       font-weight: 500;
       font-style: normal;
       }
-    
-    
+      body{
+      background-color:  rgb(137, 175, 138);
+      }
+      
+      .custom-btn {
+        border-radius:35px;
+        background : #FF9110;
+        border:2px solid transparent;
+        color:#fff;
+        height:48px;
+        font-size: 20px;
+      }
+      .modal-header, .modal-footer {
+            border: none; /* Remove the borders */
+            display: flex;
+            justify-content: center;
+            align-items: center;
+          }
+      
+          .modal-title img {
+            display: block;
+          }
+      
+          .modal-body {
+            text-align: center;
+            
+          }
+      input{
+          border: 1px solid #ffd3a1 !important ;
+          
+      }
+      span{
+        border: 1px solid #ffd3a1 !important ;
+      }
     </style>
 
 </head>
@@ -41,7 +73,7 @@
             <%= messageerror %>
           </div>
           <div class="modal-footer">
-            <a href="../../register" type="button" class="btn btn-primary" >ปิด</a>
+            <a href="../../customer_register" type="button" class="btn btn-primary" >ปิด</a>
           </div>
         </div>   
       </div>
@@ -61,33 +93,33 @@
             <%= messageerrorss %>
           </div>
           <div class="modal-footer">
-            <a href="../../register" type="button" class="btn btn-primary" >ปิด</a>
+            <a href="../../customer_register" type="button" class="btn btn-primary" >ปิด</a>
           </div>
         </div>   
       </div>
     </div>
     <script>
       setTimeout(() => {
-          window.location.href = '../../';
+          window.location.href = '../../customer_register';
       }, 1500); 
     </script>
   <% } %>
+  <div class="text-center mt-5">
+    <a href="/">
+        <img  src="/img/new-logo.png" style="max-width: 15rem; height:auto;">
+    </a>
+    
+  </div>
 
-
-        <div class="container-fluid d-flex justify-content-center "  style="background-color: #ffffff;color:#000000;">
+        <div class="container-fluid d-flex justify-content-center " >
             <div class="row justify-content-center" style="width: 500px;">
               <div class="col-xl-12">
-                <div class="text-center ">
-                  <a href="/">
-                     <img  src="/img/logobig.png" style="max-width: 40%; height:auto;" alt="">
-                  </a>
-                 
-                </div>
+                
                   
                   <div class="mt-4 mx-2 " >
-                    <h4 class="card-title text-center mb-4" style="color:#FF9110; font-size: 33px;">สมัครสมาชิก</h4>
-                    <p class="card-title text-center mb-4" style="color:#e65315; font-size: 20px;">ระบบสำหรับลูก</p>
-                    <form action="/api/auth/register" method="post">
+                    <h4 class="card-title text-center mb-4" style="color:#ffffff; font-size: 33px;">สมัครสมาชิก</h4>
+                    <p class="card-title text-center mb-4" style="color:#1e1e1e; font-size: 20px;">ระบบสำหรับลูกค้า</p>
+                    <form action="/api/auth/ctm_register" method="post">
 
                       <div class="form-group d-flex ">        
                               <div class="input-group mb-3 ">
@@ -95,14 +127,7 @@
                               <input type="text" class="form-control" name="phone_number" placeholder="เบอร์โทรศัพท์" >
                               </div>
                       </div>
-
-                      <div class="form-group d-flex ">        
-                        <div class="input-group mb-3 ">
-                        <span class="input-group-text" id="basic-addon1"> <img src="/img/cell-phone.png" style="max-width: 25px; height:auto;" alt=""></span>
-                        <input type="text" class="form-control" name="name_shop" placeholder="ชื่อร้าน" >
-                        </div>
-                      </div>
-                      
+ 
                       <div class="form-group d-flex ">        
                               <div class="input-group mb-3 ">
                               <span class="input-group-text" id="basic-addon1"> <img src="/img/lock.png" style="max-width: 22px; height:auto;" alt=""></span>
@@ -133,8 +158,8 @@
 
                       <div class="form-group d-flex ">        
                         <div class="input-group mb-3 ">
-                        <span class="input-group-text" id="basic-addon1"> <img src="/img/user.png" style="max-width: 22px;height:auto;" alt=""></span>
-                        <input type="text" class="form-control" placeholder="ที่อยู่ของร้าน" name="location_shop" >
+                        <span class="input-group-text" id="basic-addon1"> <img src="/img/home.png" style="max-width: 22px;height:auto;" alt=""></span>
+                        <input type="text" class="form-control" placeholder="ที่อยู่" name="address" >
                         </div>
                       </div>
 
@@ -143,46 +168,15 @@
                       </div> 
                       
                     </form>
-                    <div class=" text-center mt-3"><a href="/customer_login" style="text-decoration:none ;color:#3E3E3E ">ล็อกอิน</a></div >
-                    <div class="vh-100">
-                    </div>
+                    <div class=" text-center mt-3"><a href="customer_login" style="text-decoration:none ;color:#090909 ">ล็อกอิน</a></div >
+                    <br>
+                   
                   </div>
               </div>
             </div>
           </div>
+          <br><br><br><br><br><br><br><br><br><br>
 
-<style>
-.custom-btn {
-  border-radius:35px;
-  background : #FF9110;
-  border:2px solid transparent;
-  color:#fff;
-  height:48px;
-  font-size: 20px;
-}
-.modal-header, .modal-footer {
-      border: none; /* Remove the borders */
-      display: flex;
-      justify-content: center;
-      align-items: center;
-    }
-
-    .modal-title img {
-      display: block;
-    }
-
-    .modal-body {
-      text-align: center;
-      
-    }
-input{
-    border: 1px solid #ffd3a1 !important ;
-    
-}
-span{
-  border: 1px solid #ffd3a1 !important ;
-}
-</style>
 
 <!-- boostrap js -->
 <script src="/bootstrap/js/bootstrap.bundle.min.js"></script>

@@ -50,12 +50,19 @@ const authLoginRouter = require('./api/auth/login');
 app.use('/api/auth/login', authLoginRouter);
 
 
+//login 
+const authlogincustomer = require('./api/auth/customer_login');
+app.use('/api/auth/ctm_login',authlogincustomer)
+
+
+
+/* 
 function redirectIfLoggedIn(req, res, next) {
   if (req.session && req.session.user) {
     return res.redirect('/menu');
   }
   next();
-}
+} */
 
 
 
@@ -64,8 +71,7 @@ function redirectIfLoggedIn(req, res, next) {
 const checkKey = (req, res, next) => {
   // ตรวจสอบว่ามี session key หรือไม่
   if (!req.session.user.key) {
-    return res.status(401).send("Unauthorized. Please log in first.");
-    
+    return res.status(401).send("Unauthorized. Please log in first."); 
   }
   next();
   
@@ -73,7 +79,7 @@ const checkKey = (req, res, next) => {
 
 
 // กำหนดให้ middleware ตรวจสอบคีย์ก่อนที่จะทำการเข้าถึงหน้าต่าง ๆ
-app.use(['/menu', '/home', '/add_product','/stock', '/qrcode', '/history', '/receipt', '/cart','/upload','history_info','history'], checkKey);
+app.use(['/menu', '/home', '/add_product','/stock', '/qrcode', '/history', '/receipt', '/cart','/upload','history_info','history','customer_home'], checkKey);
 
 
 // Serve Bootstrap CSS โดยใช้ express.static()
@@ -91,27 +97,60 @@ app.get('/index1', function(req,res){
   res.render('pages/index1',{ session: req.session })
 })
 
-app.get('/', function(req,res){
 
+app.get('/', function(req,res){
+  
   try {
     store_list = "select phone,user_id,name_shop,location_shop from usersprofile"
     con.query(store_list,function(error,result){
     if(error){
         return console.log("select error")
       }
-      console.log(result)
-      res.render('pages/index',{
-        list_store : result
-      })
-      
+ 
+    res.render('pages/index',{
+      list_store : result,
+    })
+    
     });
   } catch (error) {
     return console.log("select error")
   }
-  
-  
-  
 })
+
+
+app.post('/show_form_login',function(req,res){
+
+  const store_id = req.body.store_id;
+  const fname = req.body.fname;
+
+  show_product_nologin = "select * from products where  user_id  = ?"
+  con.query(show_product_nologin,[store_id],function(err,result){
+    if(err){
+      console.log(err+"error show_no_login")
+    }
+    res.render('pages/show_product_login',{result:result});
+    
+  })
+
+
+})
+
+//แสดงร้านค้าแบบไม่
+app.post('/show_no_login',function(req,res){
+  console.log("helloworld")
+  const store_id = req.body.store_id;
+  
+  show_product_nologin = "select * from products where  user_id  = ?"
+  con.query(show_product_nologin,[store_id],function(err,result){
+    if(err){
+      console.log(err+"error show_no_login")
+    }
+    res.render('pages/show_product_nologin',{result:result});
+    
+  })
+
+})
+
 
 //route menu
 app.get('/menu', function (req, res) {
@@ -137,6 +176,10 @@ const authLogoutRouter = require('./api/auth/logout')
 app.use('/api/auth/logout', authLogoutRouter)
 
 //สมัคร
+const authcustomer_regis = require('./api/auth/customer_register');
+app.use('/api/auth/ctm_register', authcustomer_regis);
+
+//api สมัครลูกค้า
 const authRegisterRouter = require('./api/auth/register');
 app.use('/api/auth/register', authRegisterRouter);
 
@@ -147,7 +190,6 @@ app.use('/history_card',history);
 // แสดงรายละเอียดประวัติ
 const history_info = require('./models/history_info')
 app.use('/history_info',history_info)
-
 
 
 
@@ -211,8 +253,29 @@ app.get('/home', function (req, res) {
   });
 });
 
-//
+//แสดงหน้าร้านค้า สำหรับลูกค้าที่ login
+app.get('/customer_home',function(req,res){
+  const fname = req.session.user.fname;
+  console.log('เข้าสู่ระบบด้วย'+req.session.user.id)
 
+  try {
+    store_list = "select phone,user_id,name_shop,location_shop from usersprofile"
+    con.query(store_list,function(error,result){
+    if(error){
+        return console.log("select error")
+      }
+ 
+    res.render('pages/customer_home',{
+      list_store : result, 
+      fname : fname
+    })
+    
+    });
+  } catch (error) {
+    return console.log("select error")
+  }
+ 
+});
 
 
 

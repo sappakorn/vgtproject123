@@ -11,7 +11,7 @@ const mysql = require('mysql');
  
 
 
-var con = mysql.createConnection({
+ var con = mysql.createConnection({
     host: "node60666-vgtproject.th1.proen.cloud",
     user: "root",
     password: "OZIxac77163",

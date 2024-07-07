@@ -5,18 +5,14 @@ const bcrypt = require('bcryptjs');
 const { generateSessionKey } = require('../../app');
 
 router.post('/', async (req, res) => {
-
   const phone = req.body.phoneNumber;
   const password = req.body.password;
 
   if (!phone || !password) {
-    
-    return res.render('pages/', { messageerror: "โปรดกรอกข้อมูลให้ครบถ้วน" });
-
+    return res.render('pages/customer_login', { messageerror: "โปรดกรอกข้อมูลให้ครบถ้วน" });
   }
-  
 
-  const sql = "SELECT * FROM usersprofile WHERE phone = ?";
+  const sql = "SELECT * FROM customers WHERE phone = ?";
   con.query(sql, [phone], async (err, result) => {
     if (err) {
       return res.status(500).send(err.message); 
@@ -25,25 +21,20 @@ router.post('/', async (req, res) => {
     if (result.length > 0) {
       const user = result[0];
       try {
-        /* ใช้ bcrypt เพื่อเปรียบเทียบรหัสผ่านจากฐานข้อมูลที่แปลง */
         const match = await bcrypt.compare(password, user.password);
         if (match) {
-
-          /* สร้างคีย์เพื่อขอดูข้อมูลในหน้าต่างๆ */
           const sessionKey = generateSessionKey();
-
-          req.session.user = { id: user.user_id, key: sessionKey };
-
+          req.session.user = { 
+            id : user.customer_id, 
+            key : sessionKey,
+            fname : user.first_name 
+          };
           res.setHeader('x-session-key', sessionKey);
-          console.log("login success");
-          console.log(req.session.user.id);
-          return res.render('pages/menu', { messageerror : "เข้าสู่ระบบสำเร็จ" });
-         
-         
+
+          return res.redirect('/customer_home');
+
         } else {
-
-          return res.render('pages/', { messageerror: "กรอกรหัสผ่านไม่ถูกต้อง" });
-
+          return res.render('pages/customer_login', { messageerror: "กรอกรหัสผ่านไม่ถูกต้อง" });
         }
       } catch (error) {
         console.error(error);

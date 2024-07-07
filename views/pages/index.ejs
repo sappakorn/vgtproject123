@@ -40,12 +40,18 @@
 
 <body>
   
+ 
+
+
+  
   
 <nav class="navbar navbar-dark bg-dark ">
   <div class="container-fluid m-1">
-    <a class="navbar-brand" style="height: 50px;width: 200px;" href="/">
-      <img style="width:100%; height:40px;" src="/img/logo-sm.png" alt="">
+    <a class="navbar-brand d-flex"  href="/">
+      <img style="width:54; height:40px;" src="/img/logo-sm.png" alt="">
+      <p style="color:#ff7300;font-size: 15px;padding-top: 15px;">VGTPROJECT</p>
     </a>
+    
     <button class="navbar-toggler " type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasDarkNavbar" aria-controls="offcanvasDarkNavbar" aria-label="Toggle navigation">
       เข้าสู่ระบบ </span>
     </button>
@@ -57,16 +63,16 @@
       <div class="offcanvas-body">
         <ul class="navbar-nav justify-content-end flex-grow-1 pe-3">
           <li class="nav-item">
-            <a class="nav-link" href="/index1">ระบบแม่ค้า</a>
+            <a class="nav-link active" href="/index1">เข้าสู่ระบบร้านค้า</a>
           </li>
           <li class="nav-item">
-            <a class="nav-link" href="/customer_login">ระบบลูกค้า</a>
+            <a class="nav-link active" href="/customer_login">เข้าสู่ระบบลูกค้า</a>
           </li>
           <li class="nav-item">
-            <a class="nav-link" href="/customer_register">ยังไม่ได้เป็นสมาชิก</a>
+            <a class="nav-link active" href="/customer_register">ยังไม่ได้เป็นสมาชิก</a>
           </li>
           <li class="nav-item">
-            <a class="nav-link text-danger" >คุณยังไม่ได้เข้าสู่ระบบ...</a>
+            <a class="nav-link text-danger" >สถานะ : ไม่ได้เข้าสู่ระบบ...</a>
           </li>
         </ul>
         
@@ -90,7 +96,7 @@
     <% list_store.forEach(store=> { %>
       <div class="col col-xl-4 mt-2 product-item"
         style="max-height: auto; padding-right: 0px !important; padding-left: 0px !important; margin-right: 0px !important;">
-        <form id="productForm" method="post" class="d-flex justify-content-center " action="#"
+        <form id="productForm" method="post" class="d-flex justify-content-center " action="./show_no_login"
           onsubmit="updateCartItemCount()">
         <button class="btn"  >
           <div class="card pt-2" id="product-items" style="width: 19rem;box-shadow: rgba(0, 0, 0, 0.2) 0px 20px 30px;">
@@ -115,8 +121,6 @@
             <!-- ซ่อนไว้ -->
             <input type="text" class="d-none" name="store_id" value="<%= store.user_id %>">
             <!--  -->
-          
-
 
           </div>
         </button>
@@ -137,45 +141,18 @@
 
 <!-- boostrap js -->
 <script src="/bootstrap/js/bootstrap.bundle.min.js"></script>
-<!--  -->
-<script>
-
- /*  function searchProduct(input) {
-    var searchText = input.value.toLowerCase();
-    var products = document.getElementsByClassName('product-item');
-    var hasMatch = false;
-    Array.from(products).forEach(function (product) {
-      var productName = product.getElementsByClassName('card-title')[0].innerText.toLowerCase();
-      if (productName.includes(searchText)) {
-        product.style.display = 'block';
-        hasMatch = true;
-      } else {
-        product.style.display = 'none';
-      }
-    });
-    // เรียกใช้ฟังก์ชัน showNoResultsMessage เมื่อไม่มีสินค้าที่ตรงความต้องการ
-    if (!hasMatch) {
-      showNoResultsMessage();
-    } else {
-      hideNoResultsMessage();
-    }
-  }
-
-  function showNoResultsMessage() {
-    // ใช้ document.querySelector เพื่อเลือก element ที่มี class="no-results-message"
-    var noResultsMessage = document.querySelector('.no-results-message');
-    noResultsMessage.style.display = 'block';
-  }
-
-  function hideNoResultsMessage() {
-    // ใช้ document.querySelector เพื่อเลือก element ที่มี class="no-results-message"
-    var noResultsMessage = document.querySelector('.no-results-message');
-    noResultsMessage.style.display = 'none';
-  }
- */
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/js/bootstrap.bundle.min.js" integrity="sha384-HwwvtgBNo3bZJJLYd8oVXjrBZt8cqVSpeBNS5n7C8IVInixGAoxmnlMuBnhbgrkm" crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
 
-</script>
+  <% if (typeof messageerror !== 'undefined') { %>
+    <script>
+      // Check if there is a message error and show the modal
+      var myModal = new bootstrap.Modal(document.getElementById('exampleModal'));
+      myModal.show();
+    </script>
+  <% } %>
 
 
 </body>

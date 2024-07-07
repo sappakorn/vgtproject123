@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>ชื่อร้าน</title>
+
+  <!-- jquery -->
+  <script src="jquery/jquery.js"></script>
+  <!--  -->
+
+  <!--  -->
+  <script src="ajax/ajax.js"></script>
+  <!--  -->
+
+  <!-- boostrap css -->
+
+  <link rel="stylesheet" href="/bootstrap/css/bootstrap.min.css">
+
+  <!--  -->
+  <link href="https://fonts.googleapis.com/css2?family=Kanit:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap" rel="stylesheet">
+
+  
+
+  <style>
+    * {
+      padding: 0px;
+      margin: 0px;
+      font-family: "Kanit", sans-serif;
+    font-weight: 500;
+    font-style: normal;
+    }
+
+    #fixed-bottoms {
+      padding-top: 10px;
+      border-top: 1px solid #2d2c2c;
+      background-color: #242424;
+    }
+    .position-relative {
+      position: relative;
+    }
+
+    .product-img {
+      width: 100%;
+      height: auto;
+    }
+
+    .soldOutImage {
+      top: 30px;
+      left: 7px;
+      width: 93%;
+      height: 30%;
+      object-fit: cover;
+      opacity: 0.9;
+      z-index: 10;
+      pointer-events: none; 
+      transform: rotate(-25deg);
+    }
+  </style>
+
+
+
+</head>
+
+<body>
+    
+<nav class="navbar navbar-dark bg-dark ">
+    <div class="container-fluid m-1">
+        <a class="navbar-brand d-flex"  href="/">
+            <img style="width:54; height:40px;" src="/img/logo-sm.png" alt="">
+            <p style="color:#ff7300;font-size: 15px;padding-top: 15px;">VGTPROJECT</p>
+          </a>
+          
+    </div>
+  </nav>
+<br>
+    
+
+  <% if (result.length === 0) { %>
+    <div class="container">
+      <div>
+        <div class="mt-5 display-1 text-center no-results-message">ไม่มีสินค้า</div>
+      </div>
+    </div>
+  <% } else { %>
+    <div class="container">
+      <div class="row">
+        <% result.forEach(product => { %>
+          <div class="col col-xl-2 mt-2 product-item"
+            style="max-height: auto; padding-right: 0px !important; padding-left: 0px !important; margin-right: 0px !important;">
+            <form id="productForm" method="post" class="d-flex justify-content-center " action="">
+              <div class="card pt-2" id="product-items" style="width: 10rem;">
+                <% if (product.quantity === 0) { %>
+                <img src="/img/out-off-stock.png" class="soldOutImage position-absolute">
+                <% } %>
+                <img src="<%= product.product_img %>" class="card-img-top" alt="..."
+                  style="height: 100px !important; object-fit: contain;">
+                <h5 class="card-title text-center  ">
+                  <%= product.productname %>
+                </h5>
+                <div class="card-body ">
+                  <div>
+                    <p class="card-text text-center ">
+                      <%= product.price %> บาท / <%= product.unit %>
+                    </p>
+                  </div>
+                </div>
+                <% if (product.quantity === 0) { %>
+                  <div class="p-2">
+                    <button type="button" class="btn btn-secondary form-control" style="font-size: 0.8rem;" disabled>สินค้าหมด</button>
+                  </div>
+                <% } else { %>
+                  <div class="p-2">
+                    <button type="button" class="btn btn-primary form-control " data-bs-toggle="modal" data-bs-target="#staticBackdrop">
+                        เพิ่ม
+                      </button>
+                  </div>
+                <% } %>
+              </div>
+            </form>
+          </div>
+        <% }); %>
+      </div>
+    </div>
+  <% } %>
+
+ 
+  <!-- Modal -->
+  <div class="modal fade" id="staticBackdrop" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered ">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h1 class="modal-title fs-5" id="staticBackdropLabel">คุณยังไม่ได้เป็นสมาชิก</h1>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+          กรุณาเข้าสู่ระบบเพื่อเลือกสินค้า
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+          <a  class="btn btn-primary" href="/customer_register" >สมัครสมาชิก</a>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- boostrap js -->
+  <script src="/bootstrap/js/bootstrap.bundle.min.js"></script>
+  <!--  -->
+
+
+
+</body>
+
+</html>
