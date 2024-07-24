@@ -64,7 +64,10 @@ function redirectIfLoggedIn(req, res, next) {
   next();
 } */
 
-
+const date = new Date();
+const isoDate = date.toISOString();
+console.log('..')
+console.log(isoDate);
 
 
 /* เช็คว่ามี session.key หรือไม่  */
@@ -199,12 +202,21 @@ app.get('/register', function (req, res) {
 });
 //
 
+app.get('/paylater', function (req, res) {
+  res.render('pages/paylater', {});
+});
+
+
+
 
 //qrcode
 app.get('/qrcode', function (req, res) {
   res.render('pages/qrcode', {});
 });
 
+app.get('/edit_stock', function (req, res) {
+  res.render('pages/edit_stock', {});
+});
 
 //ใบเสร็จ
 app.get('/receipt', function (req, res) {

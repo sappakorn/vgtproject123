@@ -162,17 +162,19 @@
   <div class="modal-dialog modal-dialog-centered ">
     <div class="modal-content">
       <div class="modal-header">
-        <h1 class="modal-title fs-5" id="exampleModalLabel">ยืนการขาย</h1>
+        <h1 class="modal-title fs-5" id="exampleModalLabel">วิธีการชำระเงิน</h1>
         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
       </div>
       <div class="modal-body">
-        กรุณาตรวจสอบรายการให้แน่ใจก่อนกดยืนยันการขาย
+        กรุณาตรวจสอบรายการให้แน่ใจก่อนกดชำระเงิน
       </div>
       <div class="modal-footer">
-
+        
         <form action="./api/auth/summary" method="post">
-          <button class="btn btn-success">ยืนยันและบันทึก</button>
+          <button class="btn btn-success">ชำระเงินสด</button>
         </form>
+        <button class="btn btn-info"> แสกน QR code จ่าย </button>
+        <button class="btn btn-warning"> จ่ายทีหลัง </button>
         <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Close</button>
         
       </div>
