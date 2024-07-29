@@ -1,15 +1,14 @@
 const express = require('express');
+const mysql = require('mysql');
 const app = express();
-const path = require('path');
-const ejs = require('ejs');
-const PORT = process.env.PORT || 3000; //11512 + 26135
+const port = 5000;
 const bodyParser = require('body-parser');
 const multer = require('multer');
-const con = require("./models/config/database");
 const cookieSession = require('cookie-session');
 const crypto = require('crypto');
-const puppeteer = require('puppeteer')
-
+const ejs = require('ejs');
+const path = require('path');
+const con = require('./models/config/database')
 
 
 //สร้างcookie_session 
@@ -64,10 +63,7 @@ function redirectIfLoggedIn(req, res, next) {
   next();
 } */
 
-const date = new Date();
-const isoDate = date.toISOString();
-console.log('..')
-console.log(isoDate);
+
 
 
 /* เช็คว่ามี session.key หรือไม่  */
@@ -533,12 +529,8 @@ const upload = multer({ storage: storage });
     
   });
 }); 
- 
- 
-
-//รันที่PORT
-app.listen(PORT, () => console.log(`Server is running on port ${PORT}`));
-
-
+app.listen(port, () => {
+  console.log(`Server is running on port ${port} najaaaaaaaaa`);
+});
 
 
