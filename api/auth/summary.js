@@ -1,11 +1,11 @@
 const express = require('express');
 const router = express.Router();
 const con = require("../../models/config/database");
-const moment = require('moment');
+const moment = require('moment-timezone');
 require('moment/locale/th');
 
 function getCurrentTime() {
-    return moment().locale('th').format('D MMMM YYYY HH:mm:ss');
+    return moment().tz('Asia/Bangkok').locale('th').format('D MMMM YYYY HH:mm:ss');
 }
 
 router.post('/', (req, res) => {
@@ -81,6 +81,7 @@ router.post('/', (req, res) => {
                                 }
 
                                 const currentTime = getCurrentTime();
+                                console.log(currentTime);
                                 req.session.datetime = currentTime;
 
                                 const user_idd = parseInt(req.session.user.id);

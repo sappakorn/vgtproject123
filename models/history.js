@@ -18,7 +18,7 @@ history.post('/', async (req, res) => {
     INNER JOIN 
         usersprofile ON usersprofile.user_id = history_product.user_id
     ORDER BY 
-        history_product.date_time DESC;
+        id DESC;
     
     `
     con.query(show_history,[id], function(err, result) {
