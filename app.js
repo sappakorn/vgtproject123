@@ -122,8 +122,6 @@ app.get('/menu', function (req, res) {
 
 
 
-
-
 app.get('/customer_register', function (req, res) {
   res.render('pages/customer_register', {})
 })
@@ -177,27 +175,10 @@ app.get('/edit_stock', function (req, res) {
 });
 
 //ใบเสร็จ
-app.get('/receipt', function (req, res) {
+const receiptRoute = require('./controller/receipt')
+app.use('/receipt',receiptRoute)
 
-  const show_history = "SELECT * FROM history_product ORDER BY id DESC LIMIT 1";
-  con.query(show_history, function (err, result) {
-    if (err) {
-      console.error("Error querying database:", err);
-      res.render('pages/error', { error: err });
-    } else {
-      const historyData = result[0]; // ดึงข้อมูลแถวแรกที่ได้จากการ query
-      const Date_time = result[0].date_time;
-      const sum = result[0].summary;
-      const orderData = JSON.parse(result[0].order_data);
-      res.render('pages/receipt', {
-        orderData: orderData,
-        Date_time: Date_time,
-        sum: sum
-      });
-    }
-  });
 
-});
 
 app.get('/end_of_sale', function (req, res) {
   req.session.cartItems = null;
@@ -365,59 +346,8 @@ app.get('/customer_cart', (req, res) => {
 
 
 // เมื่อมีการคลิกปุ่ม "เพิ่ม"
-app.post('/add_to_cart', function (req, res) {
-
-  const product_id = req.body.product_id;
-  const productName = req.body.productName;
-  const productPrice = req.body.productPrice;
-  const productType = req.body.productType;
-  const quantity = parseInt(req.body.quantity);
-  const trueqtt = quantity - 1;
-
-  let count_product = 1;
-
-  // สร้าง session Oject สินค้า
-  if (!req.session.cartItems) {
-    req.session.cartItems = [];
-  }
-
-  if (req.session.cartItems && Array.isArray(req.session.cartItems)) {
-    const findProduct = req.session.cartItems.findIndex(item => item.product_id === product_id)
-    if (findProduct !== -1) {
-
-
-      const availableQuantity = req.session.cartItems[findProduct].quantity;
-
-      // ตรวจสอบว่าเกิน availableQuantity หรือไม่
-      if (availableQuantity === 0) {
-        // alert แจ้งเตือน 
-        console.log("สินค้าไม่เพียงพอ");
-        res.redirect('/home');
-        return;
-      }
-      req.session.cartItems[findProduct].count_product += 1;
-      req.session.cartItems[findProduct].quantity -= 1;
-
-
-    } else {
-      req.session.cartItems.push({
-        product_id: product_id,
-        productName: productName,
-        productPrice: productPrice,
-        productType: productType,
-        count_product: count_product,
-        quantity: trueqtt
-      });
-    }
-  }
-
-
-  console.log(req.session);
-  res.redirect('/home');
-
-
-
-});
+const add_to_cardRoute = require('./api/auth/add_to_card')
+app.use('/add_to_cart',add_to_cardRoute)
 
 // delete items
 app.get('/delete_all', function (req, res) {
