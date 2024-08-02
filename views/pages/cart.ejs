@@ -107,7 +107,9 @@
                 </td>
 
                 <td>
-                  <p><%=cartitem.count_product %></p>
+                  <p>
+                    <%=cartitem.count_product %> 
+                  </p>
                 </td>
 
                 <td style="padding-left: 0px !important;">
@@ -131,7 +133,11 @@
                   </form>
                 </td>
               </tr>
-
+              <% if( cartitem.quantity === 0 ){ %>
+                <div class="alert alert-danger mx-3 my-1" role="alert">
+                  <%=cartitem.productName %> ซื้อได้เพียง <%=cartitem.count_product %> <%=cartitem.productType %>
+                </div>
+              <% } %>
               <% count++; %>
             <% }); %>
           <% } %>

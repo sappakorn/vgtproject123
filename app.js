@@ -249,41 +249,9 @@ app.get('/delete_all', function (req, res) {
 const decrease_productRoute = require('./api/auth/decrease_product')
 app.use('/decrease_product',decrease_productRoute)
 
-
 //ปุ่มเพิ่มสินค้า ฝั่งร้านค้า
 const increase_productRoute = require('./api/auth/increase_product')
 app.use('/increase_product',increase_productRoute)
-
-
-app.post('/increase_product', function (req, res) {
-  const productId = req.body.increase_id;
-
-  if (req.session.cartItems && Array.isArray(req.session.cartItems)) {
-    // ค้นหาดัชนีของสินค้าที่ตรงกับ productId
-    const itemIndex = req.session.cartItems.findIndex(item => item.product_id === productId);
-
-    if (itemIndex !== -1) {
-      // เช็คจำนวนสินค้าที่เหลือ
-      const availableQuantity = req.session.cartItems[itemIndex].quantity;
-
-
-      // ตรวจสอบว่าเกิน availableQuantity หรือไม่
-      if (availableQuantity === 0) {
-        // alert แจ้งเตือน 
-        console.log("สินค้าไม่เพียงพอ");
-        res.redirect('/cart');
-        return;
-      }
-
-      // เพิ่มจำนวน count_product และลด availableQuantity ถ้ามีสินค้าเหลืออยู่
-      req.session.cartItems[itemIndex].count_product += 1;
-      req.session.cartItems[itemIndex].quantity -= 1;
-    }
-  }
-
-  console.log(req.session.cartItems);
-  res.redirect('/cart');
-});
 
 
 //นับจำนวนสินค้า
