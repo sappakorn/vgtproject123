@@ -79,19 +79,18 @@
         <p style="color:#ff7300;font-size: 15px;padding-top: 15px;">VGTPROJECT</p>
       </a>
       
-      <button class="btn" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasDarkNavbar" aria-controls="offcanvasDarkNavbar" aria-label="Toggle navigation">
+      <button class="btn" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasDarkNavbar" aria-controls="offcanvasDarkNavbar" aria-label="Toggle navigation" style="color: aliceblue;">
        <img src="img/profile-user-removebg-preview.png" alt="" class="user-img" ></span>
+       สวัสดี คุณ <%= customer_name %>
       </button>
       <div class="offcanvas offcanvas-end text-bg-dark" tabindex="-1" id="offcanvasDarkNavbar" aria-labelledby="offcanvasDarkNavbarLabel">
         <div class="offcanvas-header">
-          <h5 class="offcanvas-title" id="offcanvasDarkNavbarLabel">สวัสดี <%= fname %></h5>
+          <h5 class="offcanvas-title" id="offcanvasDarkNavbarLabel">สวัสดี คุณ <%= customer_name %></h5>
           <button type="button" class="btn-close btn-close-white" data-bs-dismiss="offcanvas" aria-label="Close"></button>
         </div>
         <div class="offcanvas-body">
           <ul class="navbar-nav justify-content-end flex-grow-1 pe-3">
-            <li class="nav-item">
-              สวัสดี <%= fname %>
-            </li>
+           
             <li class="nav-item">
               <a class="nav-link" href="/customer_login">ดูประวัติการ</a>
             </li>
@@ -131,12 +130,9 @@
       <% list_store.forEach(store=> { %>
         <div class="col col-xl-4 mt-2 product-item"
           style="max-height: auto; padding-right: 0px !important; padding-left: 0px !important; margin-right: 0px !important;">
-          <form id="productForm" method="post" class="d-flex justify-content-center " action="./show_form_login"
-            onsubmit="updateCartItemCount()">
+          <form  method="post" class="d-flex justify-content-center " action="/customer_product_list">
           <button class="btn"  >
             <div class="card pt-2" id="product-items" style="width: 19rem;box-shadow: rgba(0, 0, 0, 0.2) 0px 20px 30px;">
-  
-            
               <img src="/img/store.png" class="card-img-top" alt="..."
                 style="height: 100px !important; object-fit: contain;">
   
@@ -152,10 +148,8 @@
                   </p>
                 </div>
               </div>
-  
               <!-- ซ่อนไว้ -->
               <input type="text" class="d-none" name="store_id" value="<%= store.user_id %>">
-              <input type="text" class="d-none" name="fname" value="<%= fname %>">
               <!--  -->
   
             </div>
@@ -170,72 +164,6 @@
   
   </div>
   
-  
-
-
-  <script>
-    $(document).ready(function () {
-      updateCartItemCount(); //ฟังก์ชันแสดงจำนวนสินค้าที่มีในตะกร้า
-    });
-
-    // ฟังก์ชันสำหรับอัปเดตจำนวนสินค้าที่แสดงใน <P>
-    function updateCartItemCount() {
-      // เรียกใช้ API เพื่อดึงข้อมูลจำนวนสินค้าใน session
-      $.get('/cart_items_count', function (data) {
-        // อัปเดตจำนวนสินค้าใน <P> tag
-        if (data.count === 0) {
-          $('#numberOfItems').text("0");
-        } else {
-          $('#numberOfItems').text(data.count);
-        }
-
-      })
-        .fail(function (error) {
-
-          console.log("ตะกร้าว่าง")
-        });
-    }
-  </script>
-
-  <script>
-
-    function searchProduct(input) {
-      var searchText = input.value.toLowerCase();
-      var products = document.getElementsByClassName('product-item');
-      var hasMatch = false;
-      Array.from(products).forEach(function (product) {
-        var productName = product.getElementsByClassName('card-title')[0].innerText.toLowerCase();
-        if (productName.includes(searchText)) {
-          product.style.display = 'block';
-          hasMatch = true;
-        } else {
-          product.style.display = 'none';
-        }
-      });
-      // เรียกใช้ฟังก์ชัน showNoResultsMessage เมื่อไม่มีสินค้าที่ตรงความต้องการ
-      if (!hasMatch) {
-        showNoResultsMessage();
-      } else {
-        hideNoResultsMessage();
-      }
-    }
-
-    function showNoResultsMessage() {
-      // ใช้ document.querySelector เพื่อเลือก element ที่มี class="no-results-message"
-      var noResultsMessage = document.querySelector('.no-results-message');
-      noResultsMessage.style.display = 'block';
-    }
-
-    function hideNoResultsMessage() {
-      // ใช้ document.querySelector เพื่อเลือก element ที่มี class="no-results-message"
-      var noResultsMessage = document.querySelector('.no-results-message');
-      noResultsMessage.style.display = 'none';
-    }
-
-
-
-  </script>
-
 
   <!-- boostrap js -->
   <script src="/bootstrap/js/bootstrap.bundle.min.js"></script>

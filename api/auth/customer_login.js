@@ -24,10 +24,10 @@ router.post('/', async (req, res) => {
         const match = await bcrypt.compare(password, user.password);
         if (match) {
           const sessionKey = generateSessionKey();
-          req.session.user = { 
-            id : user.customer_id, 
+          req.session.customer = { 
+            customer_id : user.customer_id, 
             key : sessionKey,
-            fname : user.first_name 
+            customer_name : user.first_name 
           };
           res.setHeader('x-session-key', sessionKey);
 

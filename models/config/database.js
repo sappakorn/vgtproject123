@@ -2,10 +2,11 @@ const mysql = require('mysql');
 
 // การตั้งค่าการเชื่อมต่อกับฐานข้อมูล MySQL
 const con = mysql.createConnection({
-  host: 'db',
+  host: 'localhost',
   user: 'root',
-  password:'root',
-  database: 'my-db'
+  password:'',
+  database: 'my-db',
+  port:3377
 });
 
 con.connect((err) => {
@@ -17,11 +18,5 @@ con.connect((err) => {
 });
 
  
-/* var con = mysql.createConnection({
-    host: "node60666-vgtproject.th1.proen.cloud",
-    user: "root",
-    password: "OZIxac77163",
-    database: "databasevgtproject"
-}); */   
 
 module.exports = con;

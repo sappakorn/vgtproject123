@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>ชื่อร้าน</title>
+
+  <!-- jquery -->
+  <script src="jquery/jquery.js"></script>
+  <!--  -->
+
+  
+  <!-- boostrap css -->
+  <link rel="stylesheet" href="/bootstrap/css/bootstrap.min.css">
+  <link href="https://fonts.googleapis.com/css2?family=Kanit:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap" rel="stylesheet">
+
+  
+  <!--  -->
+  <style>
+    *{
+    font-family: "Kanit", sans-serif;
+    font-weight: 500;
+    font-style: normal;
+    }
+    a{
+      font-size: 15px !important;
+    }
+    button{
+      font-size: 15px !important;
+    }
+    .modal-header, .modal-footer {
+      border: none !important; /* Remove the borders */
+      display: flex !important;
+      justify-content: center !important;
+      align-items: center !important;
+    }
+
+    .modal-title img {
+      display: block !important;
+    }
+
+    .modal-body {
+      text-align: center !important;
+    }
+  </style>
+
+
+</head>
+
+<body>
+  <div class="navbar navbar-dark bg-dark "
+    style="box-shadow: 0px 5px 10px rgba(0, 0, 0, 0.120); background-color: #ffffff;">
+    <nav class="navbar  bg-dark navbar-expand-lg   d-flex justify-content-between align-items-center">
+      <a class="navbar-brand d-flex"  href="/customer_home">
+        <img style="width:54; height:40px;" src="/img/logo-sm.png" alt="">
+        <p style="color:#ff7300;font-size: 15px;padding-top: 15px;">VGTPROJECT</p>
+      </a>
+      
+    </nav>
+</div>
+
+
+<div class="container-fluid   bg-primary pt-3 pb-2 ">
+  <div class="total-price">
+    <div class="  mx-5  ">
+      <h2 class="text-center bg-primary text-light py-2 rounded-2 ">
+        ยอดรวม 1000 บาท
+      </h2>
+    </div>
+  </div>
+</div>
+
+  <table class="table table-striped" >
+    <thead class="text-center ">
+      <tr>
+        <th scope="col">ชื่อสินค้า</th>
+        <th scope="col">ราคา/หน่วย</th>
+        <th colspan="6"></th>
+        <th scope="col">จำนวน</th>
+        <th scope="col"></th>
+        <th scope="col">ลบ</th>
+      </tr>
+    </thead>
+    <tbody>
+  <% let count = 0 %>
+  <% productlist.forEach(product => { %>
+    <tr class="text-center ">
+                
+      <td>
+        <%= product.productName %>
+      </td>
+      <td>
+        <%= product.productPrice %> / หน่วย
+      </td>
+
+      <td colspan="6" style="padding-right: 0px !important;">
+        <form action="/decrease_product" method="post">
+          <input type="text" class="d-none" name="decrease_id" value="">
+          <button class="btn btn-secondary rounded border-black ">-</button>
+        </form>
+      </td>
+
+      <td>
+        <p><%= product.quantity %></p>
+      </td>
+
+      <td style="padding-left: 0px !important;">
+        <form action="/increase_product" method="post">
+          <input type="text" class="d-none" name="increase_id" value="">
+          <button class="btn btn-secondary rounded border-black ">+</button>
+        </form>
+      </td>
+
+      <td>
+        <form action="/remove-item-cart" method="POST" class="ms-auto">
+          <input type="hidden" name="itemIndex" value="<%= count-1 %>">
+          <button type="submit"
+            style="border:none; background:none; text-decoration:none; color:rgb(255, 33, 33);">
+            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor"
+              class="bi bi-trash3-fill" viewBox="0 0 16 16">
+              <path
+                d="M11 1.5v1h3.5a.5.5 0 0 1 0 1h-.538l-.853 10.66A2 2 0 0 1 11.115 16h-6.23a2 2 0 0 1-1.994-1.84L2.038 3.5H1.5a.5.5 0 0 1 0-1H5v-1A1.5 1.5 0 0 1 6.5 0h3A1.5 1.5 0 0 1 11 1.5m-5 0v1h4v-1a.5.5 0 0 0-.5-.5h-3a.5.5 0 0 0-.5.5M4.5 5.029l.5 8.5a.5.5 0 1 0 .998-.06l-.5-8.5a.5.5 0 1 0-.998.06m6.53-.528a.5.5 0 0 0-.528.47l-.5 8.5a.5.5 0 0 0 .998.058l.5-8.5a.5.5 0 0 0-.47-.528M8 4.5a.5.5 0 0 0-.5.5v8.5a.5.5 0 0 0 1 0V5a.5.5 0 0 0-.5-.5" />
+            </svg>
+          </button>
+        </form>
+      </td>
+    </tr>
+    <tbody>
+    <% count++; %>
+    
+  <% }); %>
+</table>
+
+
+<div class="d-flex justify-content-between mx-3 mb-5 ">
+ 
+
+  <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal">
+    ยืนยันและบันทึก
+  </button>
+  
+
+  <a href="/home" class="btn bg-body-secondary ms-2 ">ย้อนกลับ</a>
+  <a class="btn btn-danger  ms-auto" href="/delete_all">ลบทั้งหมด</a>
+</div>
+  
+</body>
+
+</html>

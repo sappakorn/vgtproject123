@@ -1,7 +1,7 @@
 const express = require('express');
 const mysql = require('mysql');
 const app = express();
-const port = 5000;
+const port = 3300;
 const bodyParser = require('body-parser');
 const multer = require('multer');
 const cookieSession = require('cookie-session');
@@ -9,7 +9,7 @@ const crypto = require('crypto');
 const ejs = require('ejs');
 const path = require('path');
 const con = require('./models/config/database')
-
+app.use(express.json());
 
 //สร้างcookie_session 
 app.use(cookieSession({
@@ -51,7 +51,7 @@ app.use('/api/auth/login', authLoginRouter);
 
 //login 
 const authlogincustomer = require('./api/auth/customer_login');
-app.use('/api/auth/ctm_login',authlogincustomer)
+app.use('/api/auth/ctm_login', authlogincustomer)
 
 
 
@@ -70,15 +70,15 @@ function redirectIfLoggedIn(req, res, next) {
 const checkKey = (req, res, next) => {
   // ตรวจสอบว่ามี session key หรือไม่
   if (!req.session.user.key) {
-    return res.status(401).send("Unauthorized. Please log in first."); 
+    return res.status(401).send("Unauthorized. Please log in first.");
   }
   next();
-  
+
 };
 
 
 // กำหนดให้ middleware ตรวจสอบคีย์ก่อนที่จะทำการเข้าถึงหน้าต่าง ๆ
-app.use(['/menu', '/home', '/add_product','/stock', '/qrcode', '/history', '/receipt', '/cart','/upload','history_info','history','customer_home'], checkKey);
+app.use(['/menu', '/home', '/add_product', '/stock', '/qrcode', '/history', '/receipt', '/cart', '/upload', 'history_info', 'history', 'customer_home'], checkKey);
 
 
 // Serve Bootstrap CSS โดยใช้ express.static()
@@ -92,24 +92,24 @@ app.use('/ajax', express.static(__dirname + '/node_modules/ajax/lib'))
 //
 app.use('/receipt_js', express.static(__dirname + '/script/receipt.js'))
 
-app.get('/index1', function(req,res){
-  res.render('pages/index1',{ session: req.session })
+app.get('/index1', function (req, res) {
+  res.render('pages/index1', { session: req.session })
 })
 
 
-app.get('/', function(req,res){
-  
+app.get('/', function (req, res) {
+
   try {
     store_list = "select phone,user_id,name_shop,location_shop from usersprofile"
-    con.query(store_list,function(error,result){
-    if(error){
+    con.query(store_list, function (error, result) {
+      if (error) {
         return console.log("select error")
       }
- 
-    res.render('pages/index',{
-      list_store : result,
-    })
-    
+
+      res.render('pages/index', {
+        list_store: result,
+      })
+
     });
   } catch (error) {
     return console.log("select error")
@@ -117,35 +117,20 @@ app.get('/', function(req,res){
 })
 
 
-app.post('/show_form_login',function(req,res){
 
-  const store_id = req.body.store_id;
-  const fname = req.body.fname;
-
-  show_product_nologin = "select * from products where  user_id  = ?"
-  con.query(show_product_nologin,[store_id],function(err,result){
-    if(err){
-      console.log(err+"error show_no_login")
-    }
-    res.render('pages/show_product_login',{result:result});
-    
-  })
-
-
-})
 
 //แสดงร้านค้าแบบไม่
-app.post('/show_no_login',function(req,res){
+app.post('/show_no_login', function (req, res) {
   console.log("helloworld")
   const store_id = req.body.store_id;
-  
+
   show_product_nologin = "select * from products where  user_id  = ?"
-  con.query(show_product_nologin,[store_id],function(err,result){
-    if(err){
-      console.log(err+"error show_no_login")
+  con.query(show_product_nologin, [store_id], function (err, result) {
+    if (err) {
+      console.log(err + "error show_no_login")
     }
-    res.render('pages/show_product_nologin',{result:result});
-    
+    res.render('pages/show_product_nologin', { result: result });
+
   })
 
 })
@@ -157,17 +142,17 @@ app.get('/menu', function (req, res) {
 });
 
 
-app.get('/homepage',function(req,res){
-  res.render('pages/homepage',{})
+app.get('/homepage', function (req, res) {
+  res.render('pages/homepage', {})
 })
 
 
-app.get('/customer_register',function(req,res){
-  res.render('pages/customer_register',{})
+app.get('/customer_register', function (req, res) {
+  res.render('pages/customer_register', {})
 })
 
-app.get('/customer_login',function(req,res){
-  res.render('pages/customer_login',{})
+app.get('/customer_login', function (req, res) {
+  res.render('pages/customer_login', {})
 })
 
 
@@ -184,11 +169,11 @@ app.use('/api/auth/register', authRegisterRouter);
 
 // แสดงประวัติทุกอย่างเป็น card
 const history = require('./models/history');
-app.use('/history_card',history);
+app.use('/history_card', history);
 
 // แสดงรายละเอียดประวัติ
 const history_info = require('./models/history_info')
-app.use('/history_info',history_info)
+app.use('/history_info', history_info)
 
 
 
@@ -216,32 +201,32 @@ app.get('/edit_stock', function (req, res) {
 
 //ใบเสร็จ
 app.get('/receipt', function (req, res) {
-  
+
   const show_history = "SELECT * FROM history_product ORDER BY id DESC LIMIT 1";
-  con.query(show_history, function(err, result) {
-      if (err) {
-          console.error("Error querying database:", err);
-          res.render('pages/error', { error: err });
-      } else {
-          const historyData = result[0]; // ดึงข้อมูลแถวแรกที่ได้จากการ query
-          const Date_time = result[0].date_time;
-          const sum = result[0].summary;
-          const orderData = JSON.parse(result[0].order_data);
-          res.render('pages/receipt', {
-            orderData: orderData,
-            Date_time : Date_time,
-            sum : sum
-           });
-      }
+  con.query(show_history, function (err, result) {
+    if (err) {
+      console.error("Error querying database:", err);
+      res.render('pages/error', { error: err });
+    } else {
+      const historyData = result[0]; // ดึงข้อมูลแถวแรกที่ได้จากการ query
+      const Date_time = result[0].date_time;
+      const sum = result[0].summary;
+      const orderData = JSON.parse(result[0].order_data);
+      res.render('pages/receipt', {
+        orderData: orderData,
+        Date_time: Date_time,
+        sum: sum
+      });
+    }
   });
 
 });
 
-app.get('/end_of_sale',function (req,res){
+app.get('/end_of_sale', function (req, res) {
   req.session.cartItems = null;
   console.log(req.session.cartItems)
 
-  return res.render('pages/receipt', { messageerror : "ทำรายการสำเร็จ" });
+  return res.render('pages/receipt', { messageerror: "ทำรายการสำเร็จ" });
 })
 
 
@@ -253,7 +238,7 @@ app.get('/home', function (req, res) {
 
   con.query(selectProduct, [id], function (err, productResult) {
     if (err) throw err;
-    const selectProductType = "SELECT DISTINCT product_type  FROM products WHERE user_id = ? " ;
+    const selectProductType = "SELECT DISTINCT product_type  FROM products WHERE user_id = ? ";
     con.query(selectProductType, [id], function (err, typeResult) {
       if (err) throw err;
       res.render('pages/home', { product_list: productResult, type_list: typeResult });
@@ -261,29 +246,98 @@ app.get('/home', function (req, res) {
   });
 });
 
+app.post('/customer_product_list', function (req, res) {
+
+  const store_id = req.body.store_id;
+  req.session.customer.customer_store_id = store_id;
+  const customer_store_id = req.session.customer.customer_store_id;
+
+  console.log("you Select store_ID :" + customer_store_id + "") //ใช้ store_id เพื่อที่จะได้รู้ว่าลูกค้าเลือกร้านไหน จะได้รู้ ว่าเราเลือกร้านไหน  
+
+  const selectProduct = `SELECT * FROM products WHERE user_id = ?  ORDER BY productname ASC `;
+
+  con.query(selectProduct, [customer_store_id], function (err, productResult) {
+    if (err) throw err;
+    const selectProductType = "SELECT DISTINCT product_type  FROM products WHERE user_id = ? ";
+    con.query(selectProductType, [customer_store_id], function (err, typeResult) {
+      if (err) throw err;
+      res.render('pages/customer_product_list', { product_list: productResult, type_list: typeResult, store_id: store_id });
+    });
+  });
+});
+
+app.post('/customer_add_to_cart', (req, res) => {
+
+
+  const product_id = req.body.product_id;
+  const productType = req.body.productType;
+  const productName = req.body.productName;
+  const productPrice = req.body.productPrice;
+  const quantity = parseInt(req.body.quantity)
+  const trueqtt = quantity - 1;
+  const store_id = req.query.store_id;
+
+  let count_product = 1;
+  if (!req.session.cartItems) {
+    req.session.cartItems = [];
+  }
+
+
+  if (req.session.cartItems && Array.isArray(req.session.cartItems)) {
+    const findProduct = req.session.cartItems.findIndex(item => item.product_id === product_id)
+    if (findProduct !== -1) {
+
+
+      const availableQuantity = req.session.cartItems[findProduct].quantity;
+
+      // ตรวจสอบว่าเกิน availableQuantity หรือไม่
+      if (availableQuantity === 0) {
+        // alert แจ้งเตือน 
+        console.log("สินค้าไม่เพียงพอ");
+        res.redirect('/home');
+        return;
+      }
+      req.session.cartItems[findProduct].count_product += 1;
+      req.session.cartItems[findProduct].quantity -= 1;
+
+
+    } else {
+      req.session.cartItems.push({
+        product_id: product_id,
+        productName: productName,
+        productPrice: productPrice,
+        productType: productType,
+        count_product: count_product,
+        quantity: trueqtt
+      });
+    }
+  }
+  res.send(`store_id=${store_id}`)
+  /* res.redirect(`/customer_product_list?store_id=${store_id}`); */ // ส่งคืนไปยังหน้าร้านค้าพร้อม shop_id
+});
+
 //แสดงหน้าร้านค้า สำหรับลูกค้าที่ login
-app.get('/customer_home',function(req,res){
-  const fname = req.session.user.fname;
-  console.log('เข้าสู่ระบบด้วย'+req.session.user.id)
+app.get('/customer_home', function (req, res) {
+  const customer_name = req.session.customer.customer_name;
+  console.log('Customer:' + req.session.customer.customer_id + " online")
+  console.log('Customer_name :' + req.session.customer.customer_name)
 
   try {
-    store_list = "select phone,user_id,name_shop,location_shop from usersprofile"
-    con.query(store_list,function(error,result){
-    if(error){
+    store_list = "select phone,user_id,name_shop,location_shop from usersprofile "
+    con.query(store_list, function (error, result) {
+      if (error) {
         return console.log("select error")
       }
- 
-    res.render('pages/customer_home',{
-      list_store : result, 
-      fname : fname
-    })
-    
+      res.render('pages/customer_home', {
+        list_store: result,
+        customer_name: customer_name
+      })
     });
   } catch (error) {
     return console.log("select error")
   }
- 
 });
+
 
 
 
@@ -291,13 +345,13 @@ app.get('/add_product', function (req, res) {
   res.render('pages/add_product')
 });
 
-app.get('/stock', function(req,res){
+app.get('/stock', function (req, res) {
   const id = req.session.user.id
   const selectProduct = `SELECT * FROM products WHERE user_id = ?  ORDER BY productname ASC `;
 
   con.query(selectProduct, [id], function (err, productResult) {
     if (err) throw err;
-    const selectProductType = "SELECT DISTINCT product_type  FROM products WHERE user_id = ? " ;
+    const selectProductType = "SELECT DISTINCT product_type  FROM products WHERE user_id = ? ";
     con.query(selectProductType, [id], function (err, typeResult) {
       if (err) throw err;
       res.render('pages/stock', { product_list: productResult, type_list: typeResult });
@@ -305,6 +359,32 @@ app.get('/stock', function(req,res){
   });
 })
 
+
+//ตระกร้าสินค้าของลูกค้า
+/* app.get('/customer_cart',  function (req, res) {
+
+  console.log('Cart data:', req.body.cart); // ตรวจสอบข้อมูลตะกร้า
+  res.render('pages/customer_cart', {
+    productlist: req.body.cart
+  });
+
+}); */
+
+app.post('/customer_cart', (req, res) => {
+  req.session.cart123 = req.body.cart;
+  console.log("cartpost"+req.session.cart123)
+  console.log(req.body)
+  res.status(200).send('Data received');
+});
+
+// GET route to render the customer_cart page
+app.get('/customer_cart', (req, res) => {
+  const productlist = req.session.cart123 || [];
+  console.log("cartget"+productlist);
+  res.render('pages/customer_cart', {
+    productlist: productlist
+  });
+});
 
 
 // เมื่อมีการคลิกปุ่ม "เพิ่ม"
@@ -314,8 +394,8 @@ app.post('/add_to_cart', function (req, res) {
   const productName = req.body.productName;
   const productPrice = req.body.productPrice;
   const productType = req.body.productType;
-  const quantity  = parseInt(req.body.quantity);
-  const trueqtt = quantity-1;
+  const quantity = parseInt(req.body.quantity);
+  const trueqtt = quantity - 1;
 
   let count_product = 1;
 
@@ -325,36 +405,40 @@ app.post('/add_to_cart', function (req, res) {
   }
 
   if (req.session.cartItems && Array.isArray(req.session.cartItems)) {
-  const findProduct = req.session.cartItems.findIndex(item => item.product_id === product_id)
-  if(findProduct !== -1){
-   
+    const findProduct = req.session.cartItems.findIndex(item => item.product_id === product_id)
+    if (findProduct !== -1) {
 
-    const availableQuantity = req.session.cartItems[findProduct].quantity;
+
+      const availableQuantity = req.session.cartItems[findProduct].quantity;
 
       // ตรวจสอบว่าเกิน availableQuantity หรือไม่
-    if (availableQuantity === 0) {
+      if (availableQuantity === 0) {
         // alert แจ้งเตือน 
         console.log("สินค้าไม่เพียงพอ");
         res.redirect('/home');
         return;
-    }
-    req.session.cartItems[findProduct].count_product += 1;
-    req.session.cartItems[findProduct].quantity -= 1;
-    
+      }
+      req.session.cartItems[findProduct].count_product += 1;
+      req.session.cartItems[findProduct].quantity -= 1;
 
-  }else{
-    req.session.cartItems.push({
-    product_id:product_id,
-    productName: productName,
-    productPrice: productPrice,
-    productType: productType,
-    count_product : count_product,
-    quantity : trueqtt
-    });
+
+    } else {
+      req.session.cartItems.push({
+        product_id: product_id,
+        productName: productName,
+        productPrice: productPrice,
+        productType: productType,
+        count_product: count_product,
+        quantity: trueqtt
+      });
     }
   }
+
+
   console.log(req.session);
   res.redirect('/home');
+
+
 
 });
 
@@ -366,58 +450,58 @@ app.get('/delete_all', function (req, res) {
 })
 
 // ปุ่ม - 
-app.post('/decrease_product',function (req,res){
-    const productId = req.body.decrease_id;
-    
-    if (req.session.cartItems && Array.isArray(req.session.cartItems)) {
+app.post('/decrease_product', function (req, res) {
+  const productId = req.body.decrease_id;
 
-      // หารายการที่มี product_id ตรงกับที่ส่งมา               ฟังก์ชัน callback       
-      const itemIndex = req.session.cartItems.findIndex(item => item.product_id === productId);
-  
-      if (itemIndex !== -1) {
-      
-        //ลบหนึงทุกครั้งที่ count_product มากกว่า 0
-        if(req.session.cartItems[itemIndex].count_product > 0){
-          req.session.cartItems[itemIndex].count_product -= 1;
-          req.session.cartItems[itemIndex].quantity += 1;
-          // count_product เหลือ 0 เอารายการออก
-          if (req.session.cartItems[itemIndex].count_product === 0){
-            req.session.cartItems.splice(itemIndex, 1);
-          }
+  if (req.session.cartItems && Array.isArray(req.session.cartItems)) {
 
+    // หารายการที่มี product_id ตรงกับที่ส่งมา               ฟังก์ชัน callback       
+    const itemIndex = req.session.cartItems.findIndex(item => item.product_id === productId);
+
+    if (itemIndex !== -1) {
+
+      //ลบหนึงทุกครั้งที่ count_product มากกว่า 0
+      if (req.session.cartItems[itemIndex].count_product > 0) {
+        req.session.cartItems[itemIndex].count_product -= 1;
+        req.session.cartItems[itemIndex].quantity += 1;
+        // count_product เหลือ 0 เอารายการออก
+        if (req.session.cartItems[itemIndex].count_product === 0) {
+          req.session.cartItems.splice(itemIndex, 1);
         }
+
       }
     }
-    console.log(req.session.cartItems);
-    res.redirect('/cart'); 
+  }
+  console.log(req.session.cartItems);
+  res.redirect('/cart');
 
 })
 
 //ปุ่ม+
-app.post('/increase_product', function(req, res) {
+app.post('/increase_product', function (req, res) {
   const productId = req.body.increase_id;
 
   if (req.session.cartItems && Array.isArray(req.session.cartItems)) {
-      // ค้นหาดัชนีของสินค้าที่ตรงกับ productId
-      const itemIndex = req.session.cartItems.findIndex(item => item.product_id === productId);
+    // ค้นหาดัชนีของสินค้าที่ตรงกับ productId
+    const itemIndex = req.session.cartItems.findIndex(item => item.product_id === productId);
 
-      if (itemIndex !== -1) {
-          // เช็คจำนวนสินค้าที่เหลือ
-          const availableQuantity = req.session.cartItems[itemIndex].quantity;
-          
+    if (itemIndex !== -1) {
+      // เช็คจำนวนสินค้าที่เหลือ
+      const availableQuantity = req.session.cartItems[itemIndex].quantity;
 
-          // ตรวจสอบว่าเกิน availableQuantity หรือไม่
-          if (availableQuantity === 0) {
-              // alert แจ้งเตือน 
-              console.log("สินค้าไม่เพียงพอ");
-              res.redirect('/cart');
-              return;
-          }
 
-          // เพิ่มจำนวน count_product และลด availableQuantity ถ้ามีสินค้าเหลืออยู่
-          req.session.cartItems[itemIndex].count_product += 1;
-          req.session.cartItems[itemIndex].quantity -= 1;
+      // ตรวจสอบว่าเกิน availableQuantity หรือไม่
+      if (availableQuantity === 0) {
+        // alert แจ้งเตือน 
+        console.log("สินค้าไม่เพียงพอ");
+        res.redirect('/cart');
+        return;
       }
+
+      // เพิ่มจำนวน count_product และลด availableQuantity ถ้ามีสินค้าเหลืออยู่
+      req.session.cartItems[itemIndex].count_product += 1;
+      req.session.cartItems[itemIndex].quantity -= 1;
+    }
   }
 
   console.log(req.session.cartItems);
@@ -436,6 +520,7 @@ app.get('/cart_items_count', function (req, res) {
   }
 
 });
+
 
 
 //API cart
@@ -477,6 +562,8 @@ app.post('/remove-item-cart', (req, res) => {
 //รวมราคาสินค้า แหละ ตัดสต็อก
 const authSummaryRouter = require('./api/auth/summary');
 const { count } = require('console');
+const { futimes } = require('fs');
+const { isSet } = require('util/types');
 app.use('/api/auth/summary', authSummaryRouter)
 
 
@@ -493,7 +580,7 @@ const storage = multer.diskStorage({
 
 const upload = multer({ storage: storage });
 
- app.post('/upload', upload.single('file'), (req, res) => {
+app.post('/upload', upload.single('file'), (req, res) => {
 
   if (!req.file) {
 
@@ -502,16 +589,16 @@ const upload = multer({ storage: storage });
 
   const user_id = req.session.user.id;
 
- 
+
   if (!user_id) {
     return res.status(401).send('Unauthorized. Please login first.');
   }
 
-  
+
 
   const productname = req.body.productname;
-  const unit  = req.body.unit;
-  const price= req.body.price;
+  const unit = req.body.unit;
+  const price = req.body.price;
   const quantity = parseInt(req.body.quantity);
   const product_type = req.body.productType;
   const product_img = req.file.filename;
@@ -519,16 +606,18 @@ const upload = multer({ storage: storage });
   const fullpath = path_uploads + product_img;
   const add_stock = "INSERT INTO products (productname, unit , price, quantity, product_img,product_type, user_id) VALUES (?, ?, ?, ?, ?, ?,?)";
 
-  con.query(add_stock, [productname, unit, price, quantity, fullpath,product_type, user_id], function (err, result) {
+  con.query(add_stock, [productname, unit, price, quantity, fullpath, product_type, user_id], function (err, result) {
     if (err) {
       console.log(err)
       return res.status(500).send('กรุณากรอกข้อมูลให้ถูกต้อง');
     }
 
     res.redirect("/home");
-    
+
   });
-}); 
+});
+
+
 app.listen(port, () => {
   console.log(`Server is running on port ${port} najaaaaaaaaa`);
 });
