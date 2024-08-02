@@ -57,12 +57,10 @@ app.use('/api/auth/ctm_login', authlogincustomer)
 
 /* เช็คว่ามี session.key หรือไม่  */
 const checkKey = (req, res, next) => {
-  // ตรวจสอบว่ามี session key หรือไม่
-  if (!req.session.user.key) {
+  if (!(req.session.user && req.session.user.key) && !(req.session.customer && req.session.customer.key)) {
     return res.status(401).send("Unauthorized. Please log in first.");
   }
   next();
-
 };
 
 
@@ -189,7 +187,10 @@ app.get('/end_of_sale', function (req, res) {
 
 
 //หน้า home หลังจากที่ login มีการแสดงสินค้า
-app.get('/home', function (req, res) {
+const homeRoute = require('./controller/home')
+app.use('/home',homeRoute);
+
+/* app.get('/home', function (req, res) {
 
   const id = req.session.user.id
   const selectProduct = `SELECT * FROM products WHERE user_id = ?  ORDER BY productname ASC `;
@@ -202,77 +203,15 @@ app.get('/home', function (req, res) {
       res.render('pages/home', { product_list: productResult, type_list: typeResult });
     });
   });
+
 });
+ */
 
-app.post('/customer_product_list', function (req, res) {
-
-  const store_id = req.body.store_id;
-  req.session.customer.customer_store_id = store_id;
-  const customer_store_id = req.session.customer.customer_store_id;
-
-  console.log("you Select store_ID :" + customer_store_id + "") //ใช้ store_id เพื่อที่จะได้รู้ว่าลูกค้าเลือกร้านไหน จะได้รู้ ว่าเราเลือกร้านไหน  
-
-  const selectProduct = `SELECT * FROM products WHERE user_id = ?  ORDER BY productname ASC `;
-
-  con.query(selectProduct, [customer_store_id], function (err, productResult) {
-    if (err) throw err;
-    const selectProductType = "SELECT DISTINCT product_type  FROM products WHERE user_id = ? ";
-    con.query(selectProductType, [customer_store_id], function (err, typeResult) {
-      if (err) throw err;
-      res.render('pages/customer_product_list', { product_list: productResult, type_list: typeResult, store_id: store_id });
-    });
-  });
-});
-
-app.post('/customer_add_to_cart', (req, res) => {
+//โชว์สินค้าของร้านที่ลูกค้าเลือก
+const customer_product_listRoute = require('./controller/customer_product_list')
+app.use('/customer_product_list',customer_product_listRoute)
 
 
-  const product_id = req.body.product_id;
-  const productType = req.body.productType;
-  const productName = req.body.productName;
-  const productPrice = req.body.productPrice;
-  const quantity = parseInt(req.body.quantity)
-  const trueqtt = quantity - 1;
-  const store_id = req.query.store_id;
-
-  let count_product = 1;
-  if (!req.session.cartItems) {
-    req.session.cartItems = [];
-  }
-
-
-  if (req.session.cartItems && Array.isArray(req.session.cartItems)) {
-    const findProduct = req.session.cartItems.findIndex(item => item.product_id === product_id)
-    if (findProduct !== -1) {
-
-
-      const availableQuantity = req.session.cartItems[findProduct].quantity;
-
-      // ตรวจสอบว่าเกิน availableQuantity หรือไม่
-      if (availableQuantity === 0) {
-        // alert แจ้งเตือน 
-        console.log("สินค้าไม่เพียงพอ");
-        res.redirect('/home');
-        return;
-      }
-      req.session.cartItems[findProduct].count_product += 1;
-      req.session.cartItems[findProduct].quantity -= 1;
-
-
-    } else {
-      req.session.cartItems.push({
-        product_id: product_id,
-        productName: productName,
-        productPrice: productPrice,
-        productType: productType,
-        count_product: count_product,
-        quantity: trueqtt
-      });
-    }
-  }
-  res.send(`store_id=${store_id}`)
-  /* res.redirect(`/customer_product_list?store_id=${store_id}`); */ // ส่งคืนไปยังหน้าร้านค้าพร้อม shop_id
-});
 
 //แสดงหน้าร้านค้า สำหรับลูกค้าที่ login
 app.get('/customer_home', function (req, res) {
@@ -317,17 +256,6 @@ app.get('/stock', function (req, res) {
   });
 })
 
-
-//ตระกร้าสินค้าของลูกค้า
-/* app.get('/customer_cart',  function (req, res) {
-
-  console.log('Cart data:', req.body.cart); // ตรวจสอบข้อมูลตะกร้า
-  res.render('pages/customer_cart', {
-    productlist: req.body.cart
-  });
-
-}); */
-
 app.post('/customer_cart', (req, res) => {
   req.session.cart123 = req.body.cart;
   console.log("cartpost"+req.session.cart123)
@@ -345,7 +273,7 @@ app.get('/customer_cart', (req, res) => {
 });
 
 
-// เมื่อมีการคลิกปุ่ม "เพิ่ม"
+// เมื่อมีการคลิกปุ่ม "เพิ่ม" ของร้านค้า 
 const add_to_cardRoute = require('./api/auth/add_to_card')
 app.use('/add_to_cart',add_to_cardRoute)
 
@@ -468,9 +396,6 @@ app.post('/remove-item-cart', (req, res) => {
 
 //รวมราคาสินค้า แหละ ตัดสต็อก
 const authSummaryRouter = require('./api/auth/summary');
-const { count } = require('console');
-const { futimes } = require('fs');
-const { isSet } = require('util/types');
 app.use('/api/auth/summary', authSummaryRouter)
 
 
