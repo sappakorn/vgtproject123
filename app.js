@@ -203,41 +203,35 @@ app.use('/customer_product_list',customer_product_listRoute)
 const customer_homeRoute = require('./controller/customer_home')
 app.use('/customer_home',customer_homeRoute);
 
-
-
-app.get('/add_product', function (req, res) {
-  res.render('pages/add_product')
-});
-
-app.get('/stock', function (req, res) {
-  const id = req.session.user.id
-  const selectProduct = `SELECT * FROM products WHERE user_id = ?  ORDER BY productname ASC `;
-
-  con.query(selectProduct, [id], function (err, productResult) {
-    if (err) throw err;
-    const selectProductType = "SELECT DISTINCT product_type  FROM products WHERE user_id = ? ";
-    con.query(selectProductType, [id], function (err, typeResult) {
-      if (err) throw err;
-      res.render('pages/stock', { product_list: productResult, type_list: typeResult });
-    });
-  });
-})
-
+//นำสินค้าที่ถูกส่งโดย Ajax มาที่เก็บไว้ใน session ฝั่ง nodejs 
 app.post('/customer_cart', (req, res) => {
   req.session.cart123 = req.body.cart;
-  console.log("cartpost"+req.session.cart123)
-  console.log(req.body)
+  /* console.log(req.body.cart) */
+  console.log(req.session.cart123)
   res.status(200).send('Data received');
 });
 
-// GET route to render the customer_cart page
+// แสดงสินค้าที่มาจากตะกร้าสินค้า ใช้ produclist ในการ เช็กเงื่อนไขต่อ 
 app.get('/customer_cart', (req, res) => {
   const productlist = req.session.cart123 || [];
-  console.log("cartget"+productlist);
   res.render('pages/customer_cart', {
     productlist: productlist
   });
 });
+
+
+
+// ไปที่หน้า เพิ่มสินค้า 
+app.get('/add_product', function (req, res) {
+  res.render('pages/add_product')
+});
+
+//show stock
+const stockRoute = require('./controller/stock')
+app.use('/stock',stockRoute)
+
+
+
 
 
 // เมื่อมีการคลิกปุ่ม "เพิ่ม" ของร้านค้า 
