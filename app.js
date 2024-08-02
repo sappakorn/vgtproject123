@@ -37,9 +37,9 @@ app.use((req, res, next) => {
 
 
 app.use(bodyParser.urlencoded({ extended: true }));
+app.use(bodyParser.json());
 app.use(express.static('public'));
 app.use('/uploads', express.static('uploads'));
-
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'ejs');
 
@@ -49,20 +49,9 @@ const authLoginRouter = require('./api/auth/login');
 app.use('/api/auth/login', authLoginRouter);
 
 
-//login 
+//login customer_login
 const authlogincustomer = require('./api/auth/customer_login');
 app.use('/api/auth/ctm_login', authlogincustomer)
-
-
-
-/* 
-function redirectIfLoggedIn(req, res, next) {
-  if (req.session && req.session.user) {
-    return res.redirect('/menu');
-  }
-  next();
-} */
-
 
 
 
@@ -97,6 +86,8 @@ app.get('/index1', function (req, res) {
 })
 
 
+
+
 app.get('/', function (req, res) {
 
   try {
@@ -118,22 +109,10 @@ app.get('/', function (req, res) {
 
 
 
+// โชว์หน้าสินค้าแบบยังไม่ login
+const show_no_loginRouter = require('./controller/show_no_login');
+app.use('/show_no_login', show_no_loginRouter);
 
-//แสดงร้านค้าแบบไม่
-app.post('/show_no_login', function (req, res) {
-  console.log("helloworld")
-  const store_id = req.body.store_id;
-
-  show_product_nologin = "select * from products where  user_id  = ?"
-  con.query(show_product_nologin, [store_id], function (err, result) {
-    if (err) {
-      console.log(err + "error show_no_login")
-    }
-    res.render('pages/show_product_nologin', { result: result });
-
-  })
-
-})
 
 
 //route menu
@@ -142,9 +121,7 @@ app.get('/menu', function (req, res) {
 });
 
 
-app.get('/homepage', function (req, res) {
-  res.render('pages/homepage', {})
-})
+
 
 
 app.get('/customer_register', function (req, res) {
