@@ -245,35 +245,16 @@ app.get('/delete_all', function (req, res) {
   res.redirect('/cart');
 })
 
-// ปุ่ม - 
-app.post('/decrease_product', function (req, res) {
-  const productId = req.body.decrease_id;
+// ปุ่มลดสินค้า ฝั่งร้านค้า
+const decrease_productRoute = require('./api/auth/decrease_product')
+app.use('/decrease_product',decrease_productRoute)
 
-  if (req.session.cartItems && Array.isArray(req.session.cartItems)) {
 
-    // หารายการที่มี product_id ตรงกับที่ส่งมา               ฟังก์ชัน callback       
-    const itemIndex = req.session.cartItems.findIndex(item => item.product_id === productId);
+//ปุ่มเพิ่มสินค้า ฝั่งร้านค้า
+const increase_productRoute = require('./api/auth/increase_product')
+app.use('/increase_product',increase_productRoute)
 
-    if (itemIndex !== -1) {
 
-      //ลบหนึงทุกครั้งที่ count_product มากกว่า 0
-      if (req.session.cartItems[itemIndex].count_product > 0) {
-        req.session.cartItems[itemIndex].count_product -= 1;
-        req.session.cartItems[itemIndex].quantity += 1;
-        // count_product เหลือ 0 เอารายการออก
-        if (req.session.cartItems[itemIndex].count_product === 0) {
-          req.session.cartItems.splice(itemIndex, 1);
-        }
-
-      }
-    }
-  }
-  console.log(req.session.cartItems);
-  res.redirect('/cart');
-
-})
-
-//ปุ่ม+
 app.post('/increase_product', function (req, res) {
   const productId = req.body.increase_id;
 
@@ -386,9 +367,6 @@ app.post('/upload', upload.single('file'), (req, res) => {
   if (!user_id) {
     return res.status(401).send('Unauthorized. Please login first.');
   }
-
-
-
   const productname = req.body.productname;
   const unit = req.body.unit;
   const price = req.body.price;
