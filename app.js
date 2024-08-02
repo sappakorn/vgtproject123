@@ -168,16 +168,18 @@ app.get('/qrcode', function (req, res) {
   res.render('pages/qrcode', {});
 });
 
+//แก้ไขสต็อกสินค้า
 app.get('/edit_stock', function (req, res) {
   res.render('pages/edit_stock', {});
 });
 
-//ใบเสร็จ
+
+//ใบเสร็จร้านค้า
 const receiptRoute = require('./controller/receipt')
 app.use('/receipt',receiptRoute)
 
 
-
+//หลังจากจบการขายของ แม่ค้า
 app.get('/end_of_sale', function (req, res) {
   req.session.cartItems = null;
   console.log(req.session.cartItems)
@@ -186,26 +188,10 @@ app.get('/end_of_sale', function (req, res) {
 })
 
 
-//หน้า home หลังจากที่ login มีการแสดงสินค้า
+//หน้า home  มีการแสดงสินค้า
 const homeRoute = require('./controller/home')
 app.use('/home',homeRoute);
 
-/* app.get('/home', function (req, res) {
-
-  const id = req.session.user.id
-  const selectProduct = `SELECT * FROM products WHERE user_id = ?  ORDER BY productname ASC `;
-
-  con.query(selectProduct, [id], function (err, productResult) {
-    if (err) throw err;
-    const selectProductType = "SELECT DISTINCT product_type  FROM products WHERE user_id = ? ";
-    con.query(selectProductType, [id], function (err, typeResult) {
-      if (err) throw err;
-      res.render('pages/home', { product_list: productResult, type_list: typeResult });
-    });
-  });
-
-});
- */
 
 //โชว์สินค้าของร้านที่ลูกค้าเลือก
 const customer_product_listRoute = require('./controller/customer_product_list')
@@ -214,27 +200,8 @@ app.use('/customer_product_list',customer_product_listRoute)
 
 
 //แสดงหน้าร้านค้า สำหรับลูกค้าที่ login
-app.get('/customer_home', function (req, res) {
-  const customer_name = req.session.customer.customer_name;
-  console.log('Customer:' + req.session.customer.customer_id + " online")
-  console.log('Customer_name :' + req.session.customer.customer_name)
-
-  try {
-    store_list = "select phone,user_id,name_shop,location_shop from usersprofile "
-    con.query(store_list, function (error, result) {
-      if (error) {
-        return console.log("select error")
-      }
-      res.render('pages/customer_home', {
-        list_store: result,
-        customer_name: customer_name
-      })
-    });
-  } catch (error) {
-    return console.log("select error")
-  }
-});
-
+const customer_homeRoute = require('./controller/customer_home')
+app.use('/customer_home',customer_homeRoute);
 
 
 
