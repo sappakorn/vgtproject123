@@ -19,7 +19,6 @@ app.use(cookieSession({
   secure: false, // ใช้งานใน Product จริงให้ใช้ true
   httpOnly: true // ช่วยป้องกันการโจมตีแบบ XSS
 }));
-
 // สร้างคีย์ 
 function generateSessionKey() {
   return crypto.randomBytes(16).toString('hex');
@@ -33,7 +32,6 @@ app.use((req, res, next) => {
   req.session.user = req.session.user || {};
   next();
 });
-
 
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
@@ -50,10 +48,8 @@ app.use('/api/auth/login', authLoginRouter);
 const authlogincustomer = require('./api/auth/customer_login');
 app.use('/api/auth/ctm_login', authlogincustomer)
 
-
 const show_no_loginRouter = require('./controller/show_no_login'); // โชว์หน้าสินค้าแบบยังไม่ login
 app.use('/show_no_login', show_no_loginRouter);
-
 
 app.get('/customer_login', function (req, res) { //แสดงหน้า login ของลูกค้า
   res.render('pages/customer_login', {}) 
@@ -67,12 +63,10 @@ const checkKey = (req, res, next) => {
   next();
 };
 
-
 // กำหนดให้ middleware ตรวจสอบคีย์ก่อนที่จะทำการเข้าถึงหน้าต่าง ๆ
 app.use(['/menu', '/home', '/add_product', '/stock', '/qrcode', '/history', '/receipt', '/cart', '/upload', 'history_info', 'history', 'customer_home'], checkKey);
 app.use('/bootstrap', express.static(__dirname + '/node_modules/bootstrap/dist')); // Serve Bootstrap CSS โดยใช้ express.static()
 app.use('/jquery', express.static(__dirname + '/node_modules/jquery/dist')) /* ใช้เรียก jquery */
-
 
 app.get('/', function (req, res) { //หน้าแรกของเว็บ
 
@@ -95,8 +89,6 @@ app.get('/index1', function (req, res) {
   res.render('pages/index1', { session: req.session })
 })
 
-
-
 app.get('/menu', function (req, res) { //แสดงเมนูของร้าน
   res.render('pages/menu', {});
 });
@@ -104,7 +96,6 @@ app.get('/menu', function (req, res) { //แสดงเมนูของร้
 app.get('/customer_register', function (req, res) { //แสดงหน้า Register ของลูกค้า
   res.render('pages/customer_register', {})
 })
-
 
 const authLogoutRouter = require('./api/auth/logout')
 app.use('/api/auth/logout', authLogoutRouter)
@@ -185,8 +176,6 @@ app.get('/customer_cart', (req, res) => {
   });
 });
 
-
-
 // ไปที่หน้า เพิ่มสินค้า 
 app.get('/add_product', function (req, res) {
   res.render('pages/add_product')
@@ -196,12 +185,9 @@ app.get('/add_product', function (req, res) {
 const stockRoute = require('./controller/stock')
 app.use('/stock',stockRoute)
 
-
-
 // เมื่อมีการคลิกปุ่ม "เพิ่ม" ของร้านค้า 
 const add_to_cardRoute = require('./api/auth/add_to_card')
 app.use('/add_to_cart',add_to_cardRoute)
-
 
 // delete items
 app.get('/delete_all', function (req, res) {
@@ -210,7 +196,6 @@ app.get('/delete_all', function (req, res) {
   res.redirect('/cart');
 })
 
-
 // ปุ่มลดสินค้า ฝั่งร้านค้า
 const decrease_productRoute = require('./api/auth/decrease_product')
 app.use('/decrease_product',decrease_productRoute)
@@ -218,7 +203,6 @@ app.use('/decrease_product',decrease_productRoute)
 //ปุ่มเพิ่มสินค้า ฝั่งร้านค้า
 const increase_productRoute = require('./api/auth/increase_product')
 app.use('/increase_product',increase_productRoute)
-
 
 //นับจำนวนสินค้า
 app.get('/cart_items_count', function (req, res) {
@@ -232,22 +216,17 @@ app.get('/cart_items_count', function (req, res) {
 
 });
 
-
 //แสดง cart 
 const cartRoute = require('./controller/cart')
 app.use('/cart',cartRoute)
-
 
 // ลบรายกา ตามตำแหน่ง Arrays 
 const remove_item_cartRoute = require('./api/auth/remove-item-cart')
 app.use('/remove-item-cart',remove_item_cartRoute)
 
-
 //รวมราคาสินค้า แหละ ตัดสต็อก
 const authSummaryRouter = require('./api/auth/summary');
 app.use('/api/auth/summary', authSummaryRouter)
-
-
 
 /*เงื่อนไขอัพโหลดไฟล์เข้าserver และ อัพโหลดข้อมูลต่างๆ */
 const storage = multer.diskStorage({
@@ -270,7 +249,6 @@ app.post('/upload', upload.single('file'), (req, res) => {
 
   const user_id = req.session.user.id;
 
-
   if (!user_id) {
     return res.status(401).send('Unauthorized. Please login first.');
   }
@@ -289,13 +267,9 @@ app.post('/upload', upload.single('file'), (req, res) => {
       console.log(err)
       return res.status(500).send('กรุณากรอกข้อมูลให้ถูกต้อง');
     }
-
     res.redirect("/home");
-
   });
 });
-
-
 
 app.listen(port, () => {
   console.log(`Server is running on port ${port} `);

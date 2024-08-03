@@ -17,6 +17,8 @@
     href="https://fonts.googleapis.com/css2?family=Kanit:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap"
     rel="stylesheet">
 
+  
+    
   <style>
     * {
       padding: 0px;
@@ -56,6 +58,7 @@
 </head>
 
 <body>
+ 
   <nav class="navbar navbar-expand-lg d-flex justify-content-between align-items-center navbar-dark bg-dark sticky-top">
     <a class="navbar-brand d-flex" href="/customer_home">
       <img class="ms-2" style="width:54; height:40px;" src="/img/logo-sm.png" alt="">
@@ -80,7 +83,7 @@
   </nav>
 
   <!-- ofcanvas-->
-  <div class="offcanvas offcanvas-end" tabindex="-1" id="offcanvasRight" aria-labelledby="offcanvasRightLabel">
+  <div class="offcanvas offcanvas-end " tabindex="-1" id="offcanvasRight" aria-labelledby="offcanvasRightLabel">
     <div class="offcanvas-header">
       <h5 class="offcanvas-title" id="offcanvasRightLabel">ตะกร้าสินค้า</h5>
       <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></button>
@@ -91,19 +94,16 @@
 
     <form id="checkoutForm  " method="post">
       <div class="text-center mt-2">
-        <button id="checkout-button" class="btn btn-success form-control py-2">เช็คเอาท์</button>
+        <button id="checkout-button" class="btn btn-success form-control py-2 rounded-0 ">เช็คเอาท์</button>
       </div>
     </form>
   </div>
   <!--  -->
-  <div class="align-content-center border border-primary-subtle-1  bg-danger-subtle  text-center py-3">
-    ราคารวม
-    <label for="totalPrice" id="totalPrice"></label> <!-- แสดงราคารวม -->
-  </div>
+  
 
 
   <br>
-
+  
   <div class="d-flex justify-content-between pb-2 mx-2" id="findbrabra">
     <div class="btn-group">
       <button type="button" class="btn btn-primary dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">
@@ -119,7 +119,12 @@
 
   <div class="container">
     <div class="row">
+      
       <% product_list.forEach(product=> { %>
+        <% let count=0 %>
+        <% const count_old = product.quantity  %>
+        <input type="hidden" class="count_old" value="<%=count_old %>">
+
         <div class="col col-xl-2 mt-2 product-item d-flex justify-content-center"
           style="max-height: auto; padding-right: 0px !important; padding-left: 0px !important; margin-right: 0px !important;">
           <div class="card pt-2" id="product-items" style="width: 10rem;">
@@ -136,13 +141,14 @@
                     <%= product.price %> บาท / <%= product.unit %>
                   </p>
                 </div>
-
+                
                 <input name="product_id" class="d-none" value="<%= product.product_id %>">
                 <input name="productType" class="d-none" value="<%= product.unit %>">
                 <input name="productName" class="d-none" value="<%= product.productname %>">
                 <input name="productPrice" class="d-none" value="<%= product.price %>">
                 <input name="quantity" class="d-none" value="<%= product.quantity %>">
 
+                
                 <% if (product.quantity===0) { %>
                   <div class="p-2">
                     <button type="button" class="btn btn-secondary form-control" style="font-size: 0.8rem;"
@@ -160,7 +166,10 @@
                         style="font-size: 0.8rem;">+</button>
 
                     </div>
-                    <% } %>
+                    <div id="card-out" style="width: 100%;" >
+                    </div>
+                    
+                <% } %>
           </div>
         </div>
         <% }); %>
@@ -168,6 +177,7 @@
   </div>
 
   <script>
+    
     function addToCart(product) {
       let cart = JSON.parse(sessionStorage.getItem('cart')) || []; //ดึงข้อมูลจาก รถเข็น เก็บไว้ในตัวแปล cart
 
@@ -211,8 +221,6 @@
       }
     }
 
-
-    
     function updateCartItemCount() {
       //ดึงข้อมูลจาก รถเข็น เก็บไว้ในตัวแปล cart
       let cart = JSON.parse(sessionStorage.getItem('cart')) || [];
@@ -244,60 +252,77 @@
     // ค้นหาช่องที่มี count ที่เกี่ยวข้องกับ productId
     let productCard = $(`.card:has(input[name="product_id"][value="${productId}"])`);
     let countLabel = productCard.find('#count');
+    
+   
+    const count_old = $('.count_old').val()
+    const pcount_old = parseInt(count_old)
+
+    console.log(pcount_old)
+    console.log(product.quantity)
+
+    if(product.quantity >= pcount_old){
+      console.log("สินค้าหมด")
+      
+      let card_outHtml = ``;
+      card_outHtml += `
+          <div class=" bg-danger-subtle text-center rounded-bottom-2 ">
+              สินค้าหมด
+          </div>
+      `;
+  
+      $('#card-out').html(card_outHtml);
+    }
 
     if (product) {
-      countLabel.text(product.quantity);
+      countLabel.text(product.quantity); 
     } else {
       countLabel.text(0); // ถ้าสินค้าไม่มีในรถเข็น แสดงเป็น 0
     }
   }
 
 
+  $(document).ready(function () {
+    updateCartItemCount(); // อัปเดตจำนวนสินค้าทั้งหมดเมื่อโหลดหน้า
+    updateCartItems(); // อัปเดตรายการสินค้าเมื่อโหลดหน้า
 
+    // เพิ่มจำนวน
+    $('.addToCartButton').click(function () {
+      let productCard = $(this).closest('.card');
+      let product = {
+        product_id: productCard.find('input[name="product_id"]').val(), // ดึง product_id จาก input
+        productName: productCard.find('input[name="productName"]').val(), // ดึง productName จาก input
+        productPrice: parseFloat(productCard.find('input[name="productPrice"]').val()), // ดึง productPrice จาก input
+        quantity: 1 // กำหนดจำนวนสินค้าเริ่มต้นเป็น 1
+      };
+      addToCart(product); // เรียกฟังก์ชันเพื่อเพิ่มสินค้าลงในรถเข็น
+    });
 
+    // ลดจำนวน
+    $('.deleteToCartButton').click(function () {
+      let productCard = $(this).closest('.card');
+      let productId = productCard.find('input[name="product_id"]').val(); // ดึง product_id จาก input
+      deleteitem(productId); // เรียกฟังก์ชันเพื่อลดจำนวนสินค้าหรือถอดออกจากรถเข็น
+    });
 
-    $(document).ready(function () {
-      updateCartItemCount(); // อัปเดตจำนวนสินค้าทั้งหมดเมื่อโหลดหน้า
-      updateCartItems(); // อัปเดตรายการสินค้าเมื่อโหลดหน้า
-
-      // เพิ่มจำนวน
-      $('.addToCartButton').click(function () {
-        let productCard = $(this).closest('.card');
-        let product = {
-          product_id: productCard.find('input[name="product_id"]').val(), // ดึง product_id จาก input
-          productName: productCard.find('input[name="productName"]').val(), // ดึง productName จาก input
-          productPrice: parseFloat(productCard.find('input[name="productPrice"]').val()), // ดึง productPrice จาก input
-          quantity: 1 // กำหนดจำนวนสินค้าเริ่มต้นเป็น 1
-        };
-        addToCart(product); // เรียกฟังก์ชันเพื่อเพิ่มสินค้าลงในรถเข็น
-      });
-
-      // ลดจำนวน
-      $('.deleteToCartButton').click(function () {
-        let productCard = $(this).closest('.card');
-        let productId = productCard.find('input[name="product_id"]').val(); // ดึง product_id จาก input
-        deleteitem(productId); // เรียกฟังก์ชันเพื่อลดจำนวนสินค้าหรือถอดออกจากรถเข็น
-      });
-
-      $('#checkout-button').click(function (event) {
-        event.preventDefault(); // ป้องกันการรีเฟรชหน้าเพจเมื่อกดปุ่ม checkout
-        let cart = JSON.parse(sessionStorage.getItem('cart')) || [];
-        $.ajax({
-          url: '/customer_cart',
-          type: 'POST',
-          contentType: 'application/json',
-          data: JSON.stringify({ cart: cart }), // ส่งข้อมูลรถเข็นไปยังเซิร์ฟเวอร์
-          success: function (response) {
-            console.log('ส่งข้อมูลสำเร็จ:', response);
-            sessionStorage.removeItem('cart'); // ลบข้อมูลรถเข็นออกจาก sessionStorage
-            window.location.href = '/customer_cart'; // เปลี่ยนเส้นทางไปยังหน้ารถเข็น
-          },
-          error: function (error) {
-            console.error('การส่งข้อมูลผิดพลาด:', error);
-          }
-        });
+    $('#checkout-button').click(function (event) {
+      event.preventDefault(); // ป้องกันการรีเฟรชหน้าเพจเมื่อกดปุ่ม checkout
+      let cart = JSON.parse(sessionStorage.getItem('cart')) || [];
+      $.ajax({
+        url: '/customer_cart',
+        type: 'POST',
+        contentType: 'application/json',
+        data: JSON.stringify({ cart: cart }), // ส่งข้อมูลรถเข็นไปยังเซิร์ฟเวอร์
+        success: function (response) {
+          console.log('ส่งข้อมูลสำเร็จ:', response);
+          sessionStorage.removeItem('cart'); // ลบข้อมูลรถเข็นออกจาก sessionStorage
+          window.location.href = '/customer_cart'; // เปลี่ยนเส้นทางไปยังหน้ารถเข็น
+        },
+        error: function (error) {
+          console.error('การส่งข้อมูลผิดพลาด:', error);
+        }
       });
     });
+  });
 
    
   </script>
