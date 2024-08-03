@@ -118,6 +118,8 @@
   <div class="mt-5 display-1 text-center no-results-message" style="display: none;">ไม่มีสินค้าที่ค้นหา</div>
 
   <div class="container">
+    <div id="card-out">
+    </div>
     <div class="row">
       
       <% product_list.forEach(product=> { %>
@@ -131,6 +133,7 @@
             <% if (product.quantity===0) { %>
               <img src="/img/out-off-stock.png" class="soldOutImage position-absolute">
               <% } %>
+                
                 <img src="<%= product.product_img %>" class="card-img-top" alt="..."
                   style="height: 100px !important; object-fit: contain;">
                 <h5 class="card-title text-center">
@@ -161,20 +164,20 @@
                         style="font-size: 0.8rem;">-</button>
 
                       <label for="" id="count"> 0 </label>
+                      
+                      <button type="button" class="btn btn-outline-success addToCartButton "  id="outStock" style="font-size: 0.8rem;" >+</button>
 
-                      <button type="button" class="btn btn-outline-success addToCartButton "
-                        style="font-size: 0.8rem;">+</button>
-
-                    </div>
-                    <div id="card-out" style="width: 100%;" >
                     </div>
                     
+                   
                 <% } %>
           </div>
         </div>
         <% }); %>
     </div>
   </div>
+  
+  <br><br><br><br><br><br><br><br>
   <div class="align-content-center border border-primary-subtle-1  bg-primary-subtle  text-center py-3 sticky-bottom">
     ราคารวม
     <label for="totalPrice" id="totalPrice"></label> <!-- แสดงราคารวม -->
@@ -211,10 +214,11 @@
         cart[productIndex].quantity -= 1;
 
         // ถ้าจำนวนสินค้าเป็น 0 หรือน้อยกว่า 0 ให้ลบรายการสินค้าออกจากรถเข็น
-        if (cart[productIndex].quantity <= 0) {
+        if (cart[productIndex].quantity < 0) {
           cart.splice(productIndex, 1); // ลบสินค้าออกจากรถเข็น
         }
-
+        $('#card-out').hide();
+        $("#outStock").prop("disabled", false);
         // อัปเดตข้อมูลรถเข็นใน sessionStorage
         sessionStorage.setItem('cart', JSON.stringify(cart));
 
@@ -265,16 +269,28 @@
     console.log(product.quantity)
 
     if(product.quantity >= pcount_old){
+
+      $("#outStock").prop("disabled", true);
       console.log("สินค้าหมด")
-      
       let card_outHtml = ``;
       card_outHtml += `
-          <div class=" bg-danger-subtle text-center rounded-bottom-2 ">
-              สินค้าหมด
+        <div class="modal fade modal-dialog modal-dialog-centered" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+          <div class="modal-dialog">
+              <div class="modal-content">
+                  <div class="modal-header">
+                      <h1 class="modal-title fs-5" id="exampleModalLabel">Modal title</h1>
+                      <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                  </div>
+                  <div class="modal-body">
+                      <h1>สินค้าหมด</h1>
+                  </div>
+              </div>
           </div>
+        </div>
       `;
-  
       $('#card-out').html(card_outHtml);
+      $('#exampleModal').modal('show');
+
     }
 
     if (product) {
@@ -286,6 +302,7 @@
 
 
   $(document).ready(function () {
+    sessionStorage.clear();
     updateCartItemCount(); // อัปเดตจำนวนสินค้าทั้งหมดเมื่อโหลดหน้า
     updateCartItems(); // อัปเดตรายการสินค้าเมื่อโหลดหน้า
 
