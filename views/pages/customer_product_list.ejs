@@ -183,7 +183,12 @@
     <label for="totalPrice" id="totalPrice"></label> <!-- แสดงราคารวม -->
   </div>
 
-  <script>
+<!-- boostrap js -->
+<script src="/bootstrap/js/bootstrap.bundle.min.js"></script>
+<!--  -->
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
+<script>
     
     function addToCart(product) {
       let cart = JSON.parse(sessionStorage.getItem('cart')) || []; //ดึงข้อมูลจาก รถเข็น เก็บไว้ในตัวแปล cart
@@ -273,24 +278,12 @@
       $("#outStock").prop("disabled", true);
       console.log("สินค้าหมด")
       let card_outHtml = ``;
-      card_outHtml += `
-        <div class="modal fade modal-dialog modal-dialog-centered" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-          <div class="modal-dialog">
-              <div class="modal-content">
-                  <div class="modal-header">
-                      <h1 class="modal-title fs-5" id="exampleModalLabel">Modal title</h1>
-                      <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                  </div>
-                  <div class="modal-body">
-                      <h1>สินค้าหมด</h1>
-                  </div>
-              </div>
-          </div>
-        </div>
-      `;
-      $('#card-out').html(card_outHtml);
-      $('#exampleModal').modal('show');
-
+      Swal.fire({
+        title: 'สินค้าไม่เพียงพอ',
+        icon: 'error',
+        confirmButtonText: 'X'
+      })
+      
     }
 
     if (product) {
@@ -380,10 +373,5 @@
     }
   </script>
 
-  <!-- boostrap js -->
-  <script src="/bootstrap/js/bootstrap.bundle.min.js"></script>
-  <!--  -->
-
 </body>
-
 </html>
