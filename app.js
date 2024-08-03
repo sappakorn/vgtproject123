@@ -268,31 +268,16 @@ app.get('/cart_items_count', function (req, res) {
 
 
 
-//API cart
-app.get('/cart', function (req, res) {
-  let sum = 0;
-  if (!req.session.cartItems || req.session.cartItems.length === 0) {
-    res.render('pages/cart', {
-      totalPrice: sum,
-      cart_item: [] // ส่งอาร์เรย์ว่างไปยังหน้า cart เพื่อให้แสดงคำว่า "ว่าง"
-    });
-  } else {
-    req.session.cartItems.forEach(item => {
-      count_p = item.count_product;
-      totalprice = count_p * item.productPrice;
-      sum += totalprice;
-    });
-    res.render('pages/cart', {
-      cart_item: req.session.cartItems,
-      totalPrice: sum
-    });
-  }
-});
+//แสดง cart 
+const cartRoute = require('./controller/cart')
+app.use('/cart',cartRoute)
+
+
 
 // ลบรายกา ตามตำแหน่ง Arrays 
 app.post('/remove-item-cart', (req, res) => {
-  const itemIndex = parseInt(req.body.itemIndex);
 
+  const itemIndex = parseInt(req.body.itemIndex);
   if (req.session.cartItems && Array.isArray(req.session.cartItems)) {
     // ตรวจสอบให้แน่ใจว่า index อยู่ในช่วงของอาเรย์
     if (itemIndex >= 0 && itemIndex < req.session.cartItems.length) {
@@ -355,6 +340,7 @@ app.post('/upload', upload.single('file'), (req, res) => {
 
   });
 });
+
 
 
 app.listen(port, () => {
