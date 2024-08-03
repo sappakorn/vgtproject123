@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="th">
+
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -12,7 +13,9 @@
   <!-- boostrap css -->
   <link rel="stylesheet" href="/bootstrap/css/bootstrap.min.css">
   <!--  -->
-  <link href="https://fonts.googleapis.com/css2?family=Kanit:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap" rel="stylesheet">
+  <link
+    href="https://fonts.googleapis.com/css2?family=Kanit:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap"
+    rel="stylesheet">
 
   <style>
     * {
@@ -28,6 +31,7 @@
       border-top: 1px solid #2d2c2c;
       background-color: #242424;
     }
+
     .position-relative {
       position: relative;
     }
@@ -45,24 +49,25 @@
       object-fit: cover;
       opacity: 0.9;
       z-index: 10;
-      pointer-events: none; 
+      pointer-events: none;
       transform: rotate(-25deg);
     }
   </style>
 </head>
 
 <body>
-    <nav class="navbar navbar-expand-lg d-flex justify-content-between align-items-center navbar-dark bg-dark">
-        <a class="navbar-brand d-flex" href="/customer_home">
-          <img class="ms-2" style="width:54; height:40px;" src="/img/logo-sm.png" alt="">
-          <p style="color:#ff7300;font-size: 15px;padding-top: 15px;">VGTPROJECT</p>
-        </a>
+  <nav class="navbar navbar-expand-lg d-flex justify-content-between align-items-center navbar-dark bg-dark sticky-top">
+    <a class="navbar-brand d-flex" href="/customer_home">
+      <img class="ms-2" style="width:54; height:40px;" src="/img/logo-sm.png" alt="">
+      <p style="color:#ff7300;font-size: 15px;padding-top: 15px;">VGTPROJECT</p>
+    </a>
 
-        <div style="display: flex; align-items: center;">
-            <a class="btn" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasRight" aria-controls="offcanvasRight">
-                <img src="/img/shopping-cart.png" style="height: 30px; width: 30px; margin-right: 10px;" alt="">
-            </a>
-          <p style="position: relative; 
+    <div style="display: flex; align-items: center;">
+      <a class="btn" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasRight"
+        aria-controls="offcanvasRight">
+        <img src="/img/shopping-cart.png" style="height: 30px; width: 30px; margin-right: 10px;" alt="">
+      </a>
+      <p style="position: relative; 
               top: -8.8px;
               font: bold;
               left: -30px;
@@ -71,8 +76,8 @@
               border-radius: 50%; 
               background-color: rgb(255, 200, 0); font-size: 16px; line-height: 26px;
               " class="text-center m-0" id="numberOfItems"><strong>0</strong></p>
-        </div>
-    </nav>
+    </div>
+  </nav>
 
   <!-- ofcanvas-->
   <div class="offcanvas offcanvas-end" tabindex="-1" id="offcanvasRight" aria-labelledby="offcanvasRightLabel">
@@ -83,17 +88,22 @@
     <div class="offcanvas-body" id="cartItems">
       <!-- รายการสินค้าในตะกร้าจะถูกเพิ่มเข้ามาที่นี่ -->
     </div>
+
+    <form id="checkoutForm  " method="post">
+      <div class="text-center mt-2">
+        <button id="checkout-button" class="btn btn-success form-control py-2">เช็คเอาท์</button>
+      </div>
+    </form>
   </div>
   <!--  -->
+  <div class="align-content-center border border-primary-subtle-1  bg-danger-subtle  text-center py-3">
+    ราคารวม
+    <label for="totalPrice" id="totalPrice"></label> <!-- แสดงราคารวม -->
+  </div>
 
-  <form id="checkoutForm sticky-bottom" method="post">
-    <div class="text-center">
-        <button id="checkout-button" class="btn btn-primary form-control py-3 rounded-0">กดเพื่อซื้อสินค้าที่เลือก</button>
-    </div>
-  </form>
 
   <br>
-    
+
   <div class="d-flex justify-content-between pb-2 mx-2" id="findbrabra">
     <div class="btn-group">
       <button type="button" class="btn btn-primary dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">
@@ -101,153 +111,233 @@
       </button>
       <ul class="dropdown-menu"></ul>
     </div>
-    <input class="form-control ms-2" oninput="searchProduct(this)" type="text" id="searchBox" placeholder="ค้นหาสินค้า...">
+    <input class="form-control ms-2" oninput="searchProduct(this)" type="text" id="searchBox"
+      placeholder="ค้นหาสินค้า...">
   </div>
-    
+
   <div class="mt-5 display-1 text-center no-results-message" style="display: none;">ไม่มีสินค้าที่ค้นหา</div>
 
   <div class="container">
     <div class="row">
-      <% product_list.forEach(product => { %>
-      <div class="col col-xl-2 mt-2 product-item d-flex justify-content-center" style="max-height: auto; padding-right: 0px !important; padding-left: 0px !important; margin-right: 0px !important;">
-        <div class="card pt-2" id="product-items" style="width: 10rem;">
-            <% if (product.quantity === 0) { %>
-            <img src="/img/out-off-stock.png" class="soldOutImage position-absolute">
-            <% } %>
-            <img src="<%= product.product_img %>" class="card-img-top" alt="..." style="height: 100px !important; object-fit: contain;">
-            <h5 class="card-title text-center"><%= product.productname %></h5>
-            <div class="card-body">
-              <p class="card-text text-center"><%= product.price %> บาท / <%= product.unit %></p>
-            </div>
+      <% product_list.forEach(product=> { %>
+        <div class="col col-xl-2 mt-2 product-item d-flex justify-content-center"
+          style="max-height: auto; padding-right: 0px !important; padding-left: 0px !important; margin-right: 0px !important;">
+          <div class="card pt-2" id="product-items" style="width: 10rem;">
+            <% if (product.quantity===0) { %>
+              <img src="/img/out-off-stock.png" class="soldOutImage position-absolute">
+              <% } %>
+                <img src="<%= product.product_img %>" class="card-img-top" alt="..."
+                  style="height: 100px !important; object-fit: contain;">
+                <h5 class="card-title text-center">
+                  <%= product.productname %>
+                </h5>
+                <div class="card-body">
+                  <p class="card-text text-center">
+                    <%= product.price %> บาท / <%= product.unit %>
+                  </p>
+                </div>
 
-            <input name="product_id" class="d-none" value="<%= product.product_id %>">
-            <input name="productType" class="d-none" value="<%= product.unit %>">
-            <input name="productName" class="d-none" value="<%= product.productname %>">
-            <input name="productPrice" class="d-none" value="<%= product.price %>">
-            <input name="quantity" class="d-none" value="<%= product.quantity %>">
-            
-            <% if (product.quantity === 0) { %>
-            <div class="p-2">
-              <button type="button" class="btn btn-secondary form-control" style="font-size: 0.8rem;" disabled>สินค้าหมด</button>
-            </div>
-            <% } else { %>
-            <div class="p-2">
-              <button type="button" class="btn btn-success addToCartButton form-control" style="font-size: 0.8rem;">เพิ่ม</button>
-            </div>
-            <% } %>
+                <input name="product_id" class="d-none" value="<%= product.product_id %>">
+                <input name="productType" class="d-none" value="<%= product.unit %>">
+                <input name="productName" class="d-none" value="<%= product.productname %>">
+                <input name="productPrice" class="d-none" value="<%= product.price %>">
+                <input name="quantity" class="d-none" value="<%= product.quantity %>">
+
+                <% if (product.quantity===0) { %>
+                  <div class="p-2">
+                    <button type="button" class="btn btn-secondary form-control" style="font-size: 0.8rem;"
+                      disabled>สินค้าหมด</button>
+                  </div>
+                  <% } else { %>
+                    <div class="p-2 d-flex justify-content-between">
+
+                      <button type="button" class="btn btn-outline-danger  deleteToCartButton" 
+                        style="font-size: 0.8rem;">-</button>
+
+                      <label for="" id="count"> 0 </label>
+
+                      <button type="button" class="btn btn-outline-success addToCartButton "
+                        style="font-size: 0.8rem;">+</button>
+
+                    </div>
+                    <% } %>
+          </div>
         </div>
-      </div>
-      <% }); %>
+        <% }); %>
     </div>
   </div>
 
-<script>
-  function addToCart(product) {
-      let cart = JSON.parse(sessionStorage.getItem('cart')) || [];
+  <script>
+    function addToCart(product) {
+      let cart = JSON.parse(sessionStorage.getItem('cart')) || []; //ดึงข้อมูลจาก รถเข็น เก็บไว้ในตัวแปล cart
+
+      /* คนหาสินค้าว่า id นี้อยู่ใน cartไหม  */
       let productIndex = cart.findIndex(item => item.product_id === product.product_id);
-      
-      if (productIndex !== -1) {
-          cart[productIndex].quantity += product.quantity;
+      if (productIndex !== -1) { //ถ้าสินค้าไม่เท่ากับ -1 แสดงว่ามีสินค้าอยู่แล้ว ให้เพิ่มจำนวน 
+        cart[productIndex].quantity += product.quantity;
       } else {
-          cart.push(product);
+        cart.push(product);
       }
-      
+      /* ถ้าไม่มี id ให้เพิ่มรายการใหม่ใน cart */
+
+      //อัพเดทรายการที่เพิ่มเข้าไป
       sessionStorage.setItem('cart', JSON.stringify(cart));
+      console.log(cart)
       updateCartItemCount();
       updateCartItems();
-  }
-  
-  function updateCartItemCount() {
-      let cart = JSON.parse(sessionStorage.getItem('cart')) || [];
-      let totalItems = cart.reduce((sum, item) => sum + item.quantity, 0);
-      $('#numberOfItems').text(totalItems);
-  }
-    
-  function updateCartItems() {
-      let cart = JSON.parse(sessionStorage.getItem('cart')) || [];
-      let cartItemsHtml = '';
-      
-      cart.forEach(item => {
-          cartItemsHtml += `
-              <div class="cart-item">
-                  <h6>${item.productName}</h6>
-                  <p>${item.productPrice} บาท / จำนวน: ${item.quantity}</p>
-              </div>
-          `;
-      });
-      
-      $('#cartItems').html(cartItemsHtml);
-  }
-  
-  $(document).ready(function() {
-      updateCartItemCount();
-      updateCartItems();
-  
-      $('.addToCartButton').click(function() {
-          let productCard = $(this).closest('.card');
-          let product = {
-              product_id: productCard.find('input[name="product_id"]').val(),
-              productName: productCard.find('input[name="productName"]').val(),
-              productPrice: productCard.find('input[name="productPrice"]').val(),
-              quantity: 1
-          };
-          addToCart(product);
-      });
+      updateProductCount(product.product_id)
+    }
 
-      $('#checkout-button').click(function(event) {
-          event.preventDefault();
-          let cart = JSON.parse(sessionStorage.getItem('cart')) || [];
-          $.ajax({
-              url: '/customer_cart',
-              type: 'POST',
-              contentType: 'application/json',
-              data: JSON.stringify({ cart: cart }),
-              success: function(response) {
-                  console.log('ส่งข้อมูลสำเร็จ:', response);
-                  sessionStorage.removeItem('cart');
-                  window.location.href = '/customer_cart';
-              },
-              error: function(error) {
-                  console.error('การส่งข้อมูลผิดพลาด:', error);
-              }
-          }); 
-      }); 
-  });
+    function deleteitem(productId){
+      let cart = JSON.parse(sessionStorage.getItem('cart')) || [];
+      let productIndex = cart.findIndex(item => item.product_id === productId); // ค้นหาดัชนีของสินค้าที่มี productId ตรงกัน
 
-  function searchProduct(input) {
-    var searchText = input.value.toLowerCase();
-    var products = document.getElementsByClassName('product-item');
-    var hasMatch = false;
-    Array.from(products).forEach(function (product) {
-      var productName = product.getElementsByClassName('card-title')[0].innerText.toLowerCase();
-      if (productName.includes(searchText)) {
-        product.style.display = 'block';
-        hasMatch = true;
-      } else {
-        product.style.display = 'none';
+      if (productIndex !== -1) { // ตรวจสอบว่าสินค้าอยู่ในรถเข็นหรือไม่
+        // ลดจำนวนสินค้า
+        cart[productIndex].quantity -= 1;
+
+        // ถ้าจำนวนสินค้าเป็น 0 หรือน้อยกว่า 0 ให้ลบรายการสินค้าออกจากรถเข็น
+        if (cart[productIndex].quantity <= 0) {
+          cart.splice(productIndex, 1); // ลบสินค้าออกจากรถเข็น
+        }
+
+        // อัปเดตข้อมูลรถเข็นใน sessionStorage
+        sessionStorage.setItem('cart', JSON.stringify(cart));
+
+        // อัปเดต UI
+        updateCartItemCount(); // อัปเดตจำนวนสินค้าทั้งหมดในตะกร้า
+        updateCartItems();
+        updateProductCount(productId) // อัปเดตการแสดงผลรายการสินค้าในตะกร้า
       }
-    });
-    if (!hasMatch) {
-      showNoResultsMessage();
+    }
+
+
+    
+    function updateCartItemCount() {
+      //ดึงข้อมูลจาก รถเข็น เก็บไว้ในตัวแปล cart
+      let cart = JSON.parse(sessionStorage.getItem('cart')) || [];
+      let totalItems = cart.reduce((sum, item) => sum + item.quantity, 0); //0 คือการเริ่มต้นคำนวณจาก index 0 sum คือตัสแปรสะสมค่า item คือ index
+      let totalprice = cart.reduce((sum, item) => sum + (item.productPrice * item.quantity), 0);
+      $('#numberOfItems').text(totalItems);
+      $('#totalPrice').text(totalprice);
+    }
+
+    function updateCartItems() {
+        let cart = JSON.parse(sessionStorage.getItem('cart')) || [];
+        let cartItemsHtml = '';
+
+        cart.forEach(item => {
+          cartItemsHtml += `
+                <div class="cart-item">
+                    <h6>${item.productName}</h6>
+                    <p>${item.productPrice} บาท / จำนวน: ${item.quantity}</p>
+                </div>
+            `;
+        });
+        $('#cartItems').html(cartItemsHtml);
+    }
+
+  function updateProductCount(productId) {
+    let cart = JSON.parse(sessionStorage.getItem('cart')) || [];
+    let product = cart.find(item => item.product_id === productId);
+
+    // ค้นหาช่องที่มี count ที่เกี่ยวข้องกับ productId
+    let productCard = $(`.card:has(input[name="product_id"][value="${productId}"])`);
+    let countLabel = productCard.find('#count');
+
+    if (product) {
+      countLabel.text(product.quantity);
     } else {
-      hideNoResultsMessage();
+      countLabel.text(0); // ถ้าสินค้าไม่มีในรถเข็น แสดงเป็น 0
     }
   }
 
-  function showNoResultsMessage() {
-    var noResultsMessage = document.querySelector('.no-results-message');
-    noResultsMessage.style.display = 'block';
-  }
 
-  function hideNoResultsMessage() {
-    var noResultsMessage = document.querySelector('.no-results-message');
-    noResultsMessage.style.display = 'none';
-  }
-</script>
 
-<!-- boostrap js -->
-<script src="/bootstrap/js/bootstrap.bundle.min.js"></script>
-<!--  -->
+
+
+    $(document).ready(function () {
+      updateCartItemCount(); // อัปเดตจำนวนสินค้าทั้งหมดเมื่อโหลดหน้า
+      updateCartItems(); // อัปเดตรายการสินค้าเมื่อโหลดหน้า
+
+      // เพิ่มจำนวน
+      $('.addToCartButton').click(function () {
+        let productCard = $(this).closest('.card');
+        let product = {
+          product_id: productCard.find('input[name="product_id"]').val(), // ดึง product_id จาก input
+          productName: productCard.find('input[name="productName"]').val(), // ดึง productName จาก input
+          productPrice: parseFloat(productCard.find('input[name="productPrice"]').val()), // ดึง productPrice จาก input
+          quantity: 1 // กำหนดจำนวนสินค้าเริ่มต้นเป็น 1
+        };
+        addToCart(product); // เรียกฟังก์ชันเพื่อเพิ่มสินค้าลงในรถเข็น
+      });
+
+      // ลดจำนวน
+      $('.deleteToCartButton').click(function () {
+        let productCard = $(this).closest('.card');
+        let productId = productCard.find('input[name="product_id"]').val(); // ดึง product_id จาก input
+        deleteitem(productId); // เรียกฟังก์ชันเพื่อลดจำนวนสินค้าหรือถอดออกจากรถเข็น
+      });
+
+      $('#checkout-button').click(function (event) {
+        event.preventDefault(); // ป้องกันการรีเฟรชหน้าเพจเมื่อกดปุ่ม checkout
+        let cart = JSON.parse(sessionStorage.getItem('cart')) || [];
+        $.ajax({
+          url: '/customer_cart',
+          type: 'POST',
+          contentType: 'application/json',
+          data: JSON.stringify({ cart: cart }), // ส่งข้อมูลรถเข็นไปยังเซิร์ฟเวอร์
+          success: function (response) {
+            console.log('ส่งข้อมูลสำเร็จ:', response);
+            sessionStorage.removeItem('cart'); // ลบข้อมูลรถเข็นออกจาก sessionStorage
+            window.location.href = '/customer_cart'; // เปลี่ยนเส้นทางไปยังหน้ารถเข็น
+          },
+          error: function (error) {
+            console.error('การส่งข้อมูลผิดพลาด:', error);
+          }
+        });
+      });
+    });
+
+   
+  </script>
+
+  <script>
+     function searchProduct(input) {
+      var searchText = input.value.toLowerCase();
+      var products = document.getElementsByClassName('product-item');
+      var hasMatch = false;
+      Array.from(products).forEach(function (product) {
+        var productName = product.getElementsByClassName('card-title')[0].innerText.toLowerCase();
+        if (productName.includes(searchText)) {
+          product.style.display = 'block';
+          hasMatch = true;
+        } else {
+          product.style.display = 'none';
+        }
+      });
+      if (!hasMatch) {
+        showNoResultsMessage();
+      } else {
+        hideNoResultsMessage();
+      }
+    }
+
+    function showNoResultsMessage() {
+      var noResultsMessage = document.querySelector('.no-results-message');
+      noResultsMessage.style.display = 'block';
+    }
+
+    function hideNoResultsMessage() {
+      var noResultsMessage = document.querySelector('.no-results-message');
+      noResultsMessage.style.display = 'none';
+    }
+  </script>
+
+  <!-- boostrap js -->
+  <script src="/bootstrap/js/bootstrap.bundle.min.js"></script>
+  <!--  -->
 
 </body>
+
 </html>
