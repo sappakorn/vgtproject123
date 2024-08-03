@@ -31,7 +31,6 @@ module.exports = {
 
 app.use((req, res, next) => {
   req.session.user = req.session.user || {};
-
   next();
 });
 
@@ -43,17 +42,22 @@ app.use('/uploads', express.static('uploads'));
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'ejs');
 
-
 //login
 const authLoginRouter = require('./api/auth/login');
 app.use('/api/auth/login', authLoginRouter);
-
 
 //login customer_login
 const authlogincustomer = require('./api/auth/customer_login');
 app.use('/api/auth/ctm_login', authlogincustomer)
 
 
+const show_no_loginRouter = require('./controller/show_no_login'); // โชว์หน้าสินค้าแบบยังไม่ login
+app.use('/show_no_login', show_no_loginRouter);
+
+
+app.get('/customer_login', function (req, res) { //แสดงหน้า login ของลูกค้า
+  res.render('pages/customer_login', {}) 
+})
 
 /* เช็คว่ามี session.key หรือไม่  */
 const checkKey = (req, res, next) => {
@@ -66,27 +70,11 @@ const checkKey = (req, res, next) => {
 
 // กำหนดให้ middleware ตรวจสอบคีย์ก่อนที่จะทำการเข้าถึงหน้าต่าง ๆ
 app.use(['/menu', '/home', '/add_product', '/stock', '/qrcode', '/history', '/receipt', '/cart', '/upload', 'history_info', 'history', 'customer_home'], checkKey);
+app.use('/bootstrap', express.static(__dirname + '/node_modules/bootstrap/dist')); // Serve Bootstrap CSS โดยใช้ express.static()
+app.use('/jquery', express.static(__dirname + '/node_modules/jquery/dist')) /* ใช้เรียก jquery */
 
 
-// Serve Bootstrap CSS โดยใช้ express.static()
-app.use('/bootstrap', express.static(__dirname + '/node_modules/bootstrap/dist'));
-
-/* ใช้เรียก jquery */
-app.use('/jquery', express.static(__dirname + '/node_modules/jquery/dist'))
-
-/* ajax */
-app.use('/ajax', express.static(__dirname + '/node_modules/ajax/lib'))
-//
-app.use('/receipt_js', express.static(__dirname + '/script/receipt.js'))
-
-app.get('/index1', function (req, res) {
-  res.render('pages/index1', { session: req.session })
-})
-
-
-
-
-app.get('/', function (req, res) {
+app.get('/', function (req, res) { //หน้าแรกของเว็บ
 
   try {
     store_list = "select phone,user_id,name_shop,location_shop from usersprofile"
@@ -94,38 +82,27 @@ app.get('/', function (req, res) {
       if (error) {
         return console.log("select error")
       }
-
       res.render('pages/index', {
         list_store: result,
       })
-
     });
   } catch (error) {
     return console.log("select error")
   }
 })
 
-
-
-// โชว์หน้าสินค้าแบบยังไม่ login
-const show_no_loginRouter = require('./controller/show_no_login');
-app.use('/show_no_login', show_no_loginRouter);
+app.get('/index1', function (req, res) {
+  res.render('pages/index1', { session: req.session })
+})
 
 
 
-//route menu
-app.get('/menu', function (req, res) {
+app.get('/menu', function (req, res) { //แสดงเมนูของร้าน
   res.render('pages/menu', {});
 });
 
-
-
-app.get('/customer_register', function (req, res) {
+app.get('/customer_register', function (req, res) { //แสดงหน้า Register ของลูกค้า
   res.render('pages/customer_register', {})
-})
-
-app.get('/customer_login', function (req, res) {
-  res.render('pages/customer_login', {})
 })
 
 
@@ -148,8 +125,6 @@ app.use('/history_card', history);
 const history_info = require('./models/history_info')
 app.use('/history_info', history_info)
 
-
-
 //route register
 app.get('/register', function (req, res) {
   res.render('pages/register', {});
@@ -159,9 +134,6 @@ app.get('/register', function (req, res) {
 app.get('/paylater', function (req, res) {
   res.render('pages/paylater', {});
 });
-
-
-
 
 //qrcode
 app.get('/qrcode', function (req, res) {
@@ -173,11 +145,9 @@ app.get('/edit_stock', function (req, res) {
   res.render('pages/edit_stock', {});
 });
 
-
 //ใบเสร็จร้านค้า
 const receiptRoute = require('./controller/receipt')
 app.use('/receipt',receiptRoute)
-
 
 //หลังจากจบการขายของ แม่ค้า
 app.get('/end_of_sale', function (req, res) {
@@ -187,17 +157,13 @@ app.get('/end_of_sale', function (req, res) {
   return res.render('pages/receipt', { messageerror: "ทำรายการสำเร็จ" });
 })
 
-
 //หน้า home  มีการแสดงสินค้า
 const homeRoute = require('./controller/home')
 app.use('/home',homeRoute);
 
-
 //โชว์สินค้าของร้านที่ลูกค้าเลือก
 const customer_product_listRoute = require('./controller/customer_product_list')
 app.use('/customer_product_list',customer_product_listRoute)
-
-
 
 //แสดงหน้าร้านค้า สำหรับลูกค้าที่ login
 const customer_homeRoute = require('./controller/customer_home')
@@ -232,11 +198,10 @@ app.use('/stock',stockRoute)
 
 
 
-
-
 // เมื่อมีการคลิกปุ่ม "เพิ่ม" ของร้านค้า 
 const add_to_cardRoute = require('./api/auth/add_to_card')
 app.use('/add_to_cart',add_to_cardRoute)
+
 
 // delete items
 app.get('/delete_all', function (req, res) {
@@ -244,6 +209,7 @@ app.get('/delete_all', function (req, res) {
   console.log(req.session.cartItems)
   res.redirect('/cart');
 })
+
 
 // ปุ่มลดสินค้า ฝั่งร้านค้า
 const decrease_productRoute = require('./api/auth/decrease_product')
@@ -267,26 +233,14 @@ app.get('/cart_items_count', function (req, res) {
 });
 
 
-
 //แสดง cart 
 const cartRoute = require('./controller/cart')
 app.use('/cart',cartRoute)
 
 
-
 // ลบรายกา ตามตำแหน่ง Arrays 
-app.post('/remove-item-cart', (req, res) => {
-
-  const itemIndex = parseInt(req.body.itemIndex);
-  if (req.session.cartItems && Array.isArray(req.session.cartItems)) {
-    // ตรวจสอบให้แน่ใจว่า index อยู่ในช่วงของอาเรย์
-    if (itemIndex >= 0 && itemIndex < req.session.cartItems.length) {
-      req.session.cartItems.splice(itemIndex, 1); // ลบรายการที่ตำแหน่งที่ระบุ
-    }
-  }
-  console.log(req.session.cartItems)
-  res.redirect('/cart'); // กลับไปยังหน้าก่อนหน้า
-});
+const remove_item_cartRoute = require('./api/auth/remove-item-cart')
+app.use('/remove-item-cart',remove_item_cartRoute)
 
 
 //รวมราคาสินค้า แหละ ตัดสต็อก
