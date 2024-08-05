@@ -34,7 +34,7 @@
   <div class="container-fluid mt-0 "
     style="box-shadow: 0px 5px 10px rgba(0, 0, 0, 0.120); background-color: #ffffff;">
     <nav class="navbar navbar-expand-lg d-flex justify-content-between align-items-center">
-      <a class="navbar-brand d-flex"  href="/menu">
+      <a class="navbar-brand d-flex"  href="#">
         <img style="width:54; height:40px;" src="/img/logo-sm.png" alt="">
         <p style="color:#ff7300;font-size: 15px;padding-top: 15px;">VGTPROJECT</p>
       </a>
@@ -49,14 +49,14 @@
   
     <div class="container-sm d-flex justify-content-center">
         <div class="row justify-content-center" style="width: 20rem;" >
-            <h1>สินค้า:แครอท</h1>
+            <h1>สินค้า:<%= name %></h1>
             <div>
                 <label for="">จำนวนคงเหลือ</label>
-                <input type="text" class="form-control" value="2">
+                <input type="text" class="form-control" value="<%= quantity %>">
             </div>
             <div>
                 <label for="">ราคา/กิโลกรัม</label>
-                <input type="text" class="form-control" value="20">
+                <input type="text" class="form-control" value="<%= productPrice %>">
             </div>
             
             

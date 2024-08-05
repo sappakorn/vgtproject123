@@ -132,9 +132,10 @@ app.get('/qrcode', function (req, res) {
 });
 
 //แก้ไขสต็อกสินค้า
-app.get('/edit_stock', function (req, res) {
-  res.render('pages/edit_stock', {});
-});
+const edit_stockRoute = require('./controller/edit_stock')
+app.use('/edit_stock',edit_stockRoute);
+
+
 
 //ใบเสร็จร้านค้า
 const receiptRoute = require('./controller/receipt')

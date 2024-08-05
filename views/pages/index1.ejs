@@ -63,13 +63,13 @@
 
 
   <% if (typeof messageerror !== 'undefined') { %>
-     <!-- Modal -->
+    <!-- Modal -->
     <div class="modal fade " id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-      <div class="modal-dialog modal-dialog-centered">
+      <div class="modal-dialog modal-dialog-centered ">
         <div class="modal-content " style="border-radius: 30px;">
-          <div class="modal-header ">
-            <h5 class="modal-title " id="exampleModalLabel">
-              <img src="/img/check.png" style="height: 50px; width: 50px;">
+          <div class="modal-header">
+            <h5 class="modal-title" id="exampleModalLabel">
+              <img src="/img/error.png" style="height: 50px; width: 50px;">
             </h5>
           </div>
           <div class="modal-body" style="font-size: 30px;">
@@ -78,11 +78,10 @@
           <div class="modal-footer">
             <a href="../../index1" type="button" class="btn btn-primary" >ปิด</a>
           </div>
-        </div>
+        </div>   
       </div>
     </div>
-
-    <% } %> 
+  <% } %> 
     
   <div class="text-center mt-5 mb-5"><a href="/">
            <img src="/img/new-logo.png" class="" style="max-width: 20rem; height:auto;">
@@ -128,6 +127,13 @@
   
   
   <% if (typeof messageerror !== 'undefined') { %>
+    <script>
+      // Check if there is a message error and show the modal
+      var myModal = new bootstrap.Modal(document.getElementById('exampleModal'));
+      myModal.show();
+    </script>
+  <% } %>
+  <% if (typeof message_success !== 'undefined') { %>
     <script>
       // Check if there is a message error and show the modal
       var myModal = new bootstrap.Modal(document.getElementById('exampleModal'));
