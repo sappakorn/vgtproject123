@@ -6,7 +6,8 @@ const con = mysql.createConnection({
   user: 'root',
   password:'',
   database: 'my-db',
-  port:3377 // ปิดพอร์ด
+  port:3377 
+  
 });
 
 con.connect((err) => {
@@ -14,7 +15,7 @@ con.connect((err) => {
     console.error('Database connection failed:', err.stack);
     return;
   }
-  console.log('Connected to database.');
+  console.log('Connected to database ถถถ.');
 });
 
  
