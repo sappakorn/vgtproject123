@@ -19,7 +19,7 @@ router.post('/', async (req, res) => {
   const sql = "SELECT * FROM usersprofile WHERE phone = ?";
   con.query(sql, [phone], async (err, result) => {
     if (err) {
-      return res.render('pages/index1', { message_success : "เข้าสู่ระบบล้มเหลว กรุณาติดต่อแอดมิน" }); 
+      return res.render('pages/index1', { messageerror : "เข้าสู่ระบบล้มเหลว กรุณาติดต่อแอดมิน" }); 
     }
     if (result.length > 0) {
       const user = result[0];

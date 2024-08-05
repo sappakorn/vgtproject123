@@ -52,31 +52,7 @@
 </head>
 
 <body>
-    <% if (typeof messageerror !=='undefined' ) {%>
-    <!-- Modal -->
-    <div class="modal fade " id="successModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-      <div class="modal-dialog modal-dialog-centered ">
-        <div class="modal-content " style="border-radius: 30px;">
-          <div class="modal-header">
-            <h5 class="modal-title" id="successModal">
-              <img src=" /img/check.png" style="height: 50px; width: 50px;">
-            </h5>
-          </div>
-          <div class="modal-body" style="font-size: 30px;">
-            <%= messageerror %>
-          </div>
-          <div class="modal-footer">
-          </div>
-        </div>
-      </div>
-    </div>
-    <script>
-      setTimeout(() => {
-        window.location.href = '../../menu';
-      }, 1000); 
-    </script>
-
-    <% } %>
+    
 
       <div class="container-fluid mt-0 "
         style="box-shadow: 0px 5px 10px rgba(0, 0, 0, 0.120); background-color: #ffffff;">
@@ -147,14 +123,33 @@
       <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
 
-      <% if (typeof messageerror !=='undefined' ) {%>
-
+      <% if (typeof message_success !=='undefined' ) { %>
+        <input type="hidden" id="message_alert" value="<%=message_success %>">
         <script>
-          // Check if there is a message success and show the modal
-          var successModal = new bootstrap.Modal(document.getElementById('successModal'));
-          successModal.show();
+    
+          $(document).ready(function () {
+            var messageerror = $('#message_alert').val()
+            const Toast = Swal.mixin({
+              toast: true,
+              position: "top-end",
+              showConfirmButton: false,
+              timer: 2000,
+              timerProgressBar: true,
+              didOpen: (toast) => {
+                toast.onmouseenter = Swal.stopTimer;
+                toast.onmouseleave = Swal.resumeTimer;
+              }
+            });
+            Toast.fire({
+              icon: "success",
+              title: messageerror
+            }).then(function () {
+              window.location.href = '/menu';
+            });
+          });
+    
         </script>
-      <% } %>
+        <% } %>
 
 </body>
 
