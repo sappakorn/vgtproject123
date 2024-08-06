@@ -30,19 +30,20 @@ router.post('/', async (req, res) => {
             customer_name : user.first_name 
           };
           res.setHeader('x-session-key', sessionKey);
-          return res.redirect('/customer_home');
+          return res.render('pages/customer_home', { message_success : "เข้าสู่ระบบสำเร็จ" });
+          
 
         } else {
-          return res.render('pages/customer_login', { 
-            messageerror: "กรอกรหัสผ่านไม่ถูกต้อง" 
-          });
+          
+          return res.render('pages/customer_login', { messageerror: "กรอกรหัสผ่านไม่ถูกต้อง" });
         }
       } catch (error) {
         console.error(error);
-        res.status(500).send("การเข้าสู่ระบบล้มเหลว");
+        return res.render('pages/customer_login', { messageerror: "การเข้าสู่ระบบล้มเหลว" });
+        
       }
     } else {
-      res.status(401).send("เข้าสู่ระบบไม่สำเร็จโปรดตรวจสอบหมายเลขโทรศัพท์หรือรหัสผ่าน");
+      return res.render('pages/customer_login', { messageerror: "เข้าสู่ระบบไม่สำเร็จโปรดตรวจสอบหมายเลขโทรศัพท์หรือรหัสผ่าน" });
     }
   });
 });

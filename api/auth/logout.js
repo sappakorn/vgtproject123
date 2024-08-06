@@ -3,8 +3,9 @@ const router = express.Router();
 
 router.post('/', (req, res) => {
     req.session = null;
-    res.redirect('/');
+
     console.log('logout success!');
+    return res.render('pages/index1', { messageerrorss : "ออกจากระบบสำเร็จ" });
 });
 
 module.exports = router;

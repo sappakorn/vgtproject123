@@ -129,13 +129,60 @@
   <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
   
   
-  <% if (typeof messageerror !== 'undefined') { %>
+  <% if (typeof messageerror !=='undefined' ) { %>
+    <input type="hidden" id="message_alert" value="<%=messageerror %>">
     <script>
-      // Check if there is a message error and show the modal
-      var myModal = new bootstrap.Modal(document.getElementById('exampleModal'));
-      myModal.show();
+
+      $(document).ready(function () {
+        var messageerror = $('#message_alert').val()
+        const Toast = Swal.mixin({
+          toast: true,
+          position: "top-end",
+          showConfirmButton: false,
+          timer: 2000,
+          timerProgressBar: true,
+          didOpen: (toast) => {
+            toast.onmouseenter = Swal.stopTimer;
+            toast.onmouseleave = Swal.resumeTimer;
+          }
+        });
+        Toast.fire({
+          icon: "error",
+          title: messageerror
+        }).then(function () {
+          window.location.href = '/index1';
+        });
+      });
+
     </script>
-  <% } %>
+    <% } %>
+    <% if (typeof message_success !=='undefined' ) { %>
+      <input type="hidden" id="message_alert" value="<%=message_success %>">
+      <script>
+  
+        $(document).ready(function () {
+          var messageerror = $('#message_alert').val()
+          const Toast = Swal.mixin({
+            toast: true,
+            position: "top-end",
+            showConfirmButton: false,
+            timer: 2000,
+            timerProgressBar: true,
+            didOpen: (toast) => {
+              toast.onmouseenter = Swal.stopTimer;
+              toast.onmouseleave = Swal.resumeTimer;
+            }
+          });
+          Toast.fire({
+            icon: "success",
+            title: messageerror
+          }).then(function () {
+            window.location.href = '/index1';
+          });
+        });
+  
+      </script>
+      <% } %>
 
     
   
