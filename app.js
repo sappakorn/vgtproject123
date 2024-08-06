@@ -170,12 +170,10 @@ app.post('/customer_cart', (req, res) => {
 });
 
 // แสดงสินค้าที่มาจากตะกร้าสินค้า ใช้ produclist ในการ เช็กเงื่อนไขต่อ 
-app.get('/customer_cart', (req, res) => {
-  const productlist = req.session.cart123 || [];
-  res.render('pages/customer_cart', {
-    productlist: productlist
-  });
-});
+const customer_cartRoute =require('./api/auth/customer_checkout')
+app.use('/customer_cart',customer_cartRoute)
+
+
 
 // ไปที่หน้า เพิ่มสินค้า 
 app.get('/add_product', function (req, res) {

@@ -30,11 +30,15 @@ router.post('/', async (req, res) => {
 
           /* สร้างคีย์เพื่อขอดูข้อมูลในหน้าต่างๆ */
           const sessionKey = generateSessionKey();
-          req.session.user = { id: user.user_id, key: sessionKey };
+          req.session.user = { 
+            id: user.user_id,
+            key: sessionKey };
 
           res.setHeader('x-session-key', sessionKey);
-          console.log("login success");
+          console.log("users login success");
+          console.log(req.session);
           console.log(req.session.user.id);
+          
           return res.render('pages/menu', { message_success : "เข้าสู่ระบบสำเร็จ" });
         } else {
           return res.render('pages/index1', { messageerror: "กรอกรหัสผ่านไม่ถูกต้อง" });

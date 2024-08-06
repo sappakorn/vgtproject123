@@ -24,12 +24,13 @@ router.post('/', async (req, res) => {
         const match = await bcrypt.compare(password, user.password);
         if (match) {
           const sessionKey = generateSessionKey();
+
           req.session.customer = { 
             customer_id : user.customer_id, 
             key : sessionKey,
             customer_name : user.first_name 
           }
-          
+          console.log(req.session);
           res.setHeader('x-session-key', sessionKey);
 
           req.session.alert1 = "เข้าสู่ระบบสำเร็จ";

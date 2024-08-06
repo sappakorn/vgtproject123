@@ -92,7 +92,7 @@
       <!-- รายการสินค้าในตะกร้าจะถูกเพิ่มเข้ามาที่นี่ -->
     </div>
 
-    <form id="checkoutForm  " method="post">
+    <form id="checkoutForm" method="post" action="">
       <div class="text-center mt-2">
         <button id="checkout-button" class="btn btn-success form-control py-2 rounded-0 ">เช็คเอาท์</button>
       </div>
@@ -124,7 +124,7 @@
       
       <% product_list.forEach(product=> { %>
         <% let count=0 %>
-        <% const count_old = product.quantity  %>
+        <% const count_old = product.quantity %>
         <input type="hidden" class="count_old" value="<%=count_old %>">
 
         <div class="col col-xl-2 mt-2 product-item d-flex justify-content-center"
@@ -150,6 +150,7 @@
                 <input name="productName" class="d-none" value="<%= product.productname %>">
                 <input name="productPrice" class="d-none" value="<%= product.price %>">
                 <input name="quantity" class="d-none" value="<%= product.quantity %>">
+                <input name="store_id" class="d-none" value="<%= store_id %>">
 
                 
                 <% if (product.quantity===0) { %>
@@ -193,160 +194,219 @@
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
 <script>
+  function addToCart(product) {
+    let cart = JSON.parse(sessionStorage.getItem('cart')) || [];
+    let productIndex = cart.findIndex(item => item.product_id === product.product_id);
     
-    function addToCart(product) {
-      let cart = JSON.parse(sessionStorage.getItem('cart')) || []; //ดึงข้อมูลจาก รถเข็น เก็บไว้ในตัวแปล cart
+    // ดึงจำนวนสินค้าทั้งหมดที่มีอยู่
+    let productCard = $(`.card:has(input[name="product_id"][value="${product.product_id}"])`);
+    let totalQuantity = parseInt(productCard.find('input[name="quantity"]').val());
 
-      /* คนหาสินค้าว่า id นี้อยู่ใน cartไหม  */
-      let productIndex = cart.findIndex(item => item.product_id === product.product_id);
-      if (productIndex !== -1) { //ถ้าสินค้าไม่เท่ากับ -1 แสดงว่ามีสินค้าอยู่แล้ว ให้เพิ่มจำนวน 
+    if (productIndex !== -1) {
+      // ตรวจสอบว่าการเพิ่มสินค้าจะไม่เกินจำนวนที่มีอยู่
+      if (cart[productIndex].quantity + product.quantity <= totalQuantity) {
         cart[productIndex].quantity += product.quantity;
       } else {
-        cart.push(product);
+        Swal.fire({
+          title: 'สินค้าไม่เพียงพอ',
+          text: 'ไม่สามารถเพิ่มสินค้าได้เนื่องจากเกินจำนวนที่มีอยู่',
+          icon: 'error',
+          confirmButtonText: 'เข้าใจแล้ว'
+        });
+        return; // ออกจากฟังก์ชันโดยไม่เพิ่มสินค้า
       }
-      /* ถ้าไม่มี id ให้เพิ่มรายการใหม่ใน cart */
+    } else {
+      if (product.quantity <= totalQuantity) {
+        cart.push(product);
+      } else {
+        Swal.fire({
+          title: 'สินค้าไม่เพียงพอ',
+          text: 'ไม่สามารถเพิ่มสินค้าได้เนื่องจากเกินจำนวนที่มีอยู่',
+          icon: 'error',
+          confirmButtonText: 'เข้าใจแล้ว'
+        });
+        return;
+      }
+    }
 
-      //อัพเดทรายการที่เพิ่มเข้าไป
+    sessionStorage.setItem('cart', JSON.stringify(cart));
+    updateCartItemCount();
+    updateCartItems();
+    updateProductCount(product.product_id);
+  }
+
+  function deleteitem(productId) {
+    let cart = JSON.parse(sessionStorage.getItem('cart')) || [];
+    let productIndex = cart.findIndex(item => item.product_id === productId);
+
+    if (productIndex !== -1) {
+      cart[productIndex].quantity -= 1;
+
+      if (cart[productIndex].quantity <= 0) {
+        cart.splice(productIndex, 1);
+      }
+
       sessionStorage.setItem('cart', JSON.stringify(cart));
-      console.log(cart)
+
       updateCartItemCount();
       updateCartItems();
-      updateProductCount(product.product_id)
+      updateProductCount(productId);
+
+      // เปิดใช้งานปุ่มเพิ่มสินค้าอีกครั้งหลังจากลบสินค้า
+      let productCard = $(`.card:has(input[name="product_id"][value="${productId}"])`);
+      productCard.find('.addToCartButton').prop("disabled", false);
     }
+  }
 
-    function deleteitem(productId){
-      let cart = JSON.parse(sessionStorage.getItem('cart')) || [];
-      let productIndex = cart.findIndex(item => item.product_id === productId); // ค้นหาดัชนีของสินค้าที่มี productId ตรงกัน
+  function updateCartItemCount() {
+    let cart = JSON.parse(sessionStorage.getItem('cart')) || [];
+    let totalItems = cart.reduce((sum, item) => sum + item.quantity, 0);
+    let totalprice = cart.reduce((sum, item) => sum + (item.productPrice * item.quantity), 0);
+    $('#numberOfItems').text(totalItems);
+    $('#totalPrice').text(totalprice);
+  }
 
-      if (productIndex !== -1) { // ตรวจสอบว่าสินค้าอยู่ในรถเข็นหรือไม่
-        // ลดจำนวนสินค้า
-        cart[productIndex].quantity -= 1;
+  function updateCartItems() {
+    let cart = JSON.parse(sessionStorage.getItem('cart')) || [];
+    let cartItemsHtml = '';
 
-        // ถ้าจำนวนสินค้าเป็น 0 หรือน้อยกว่า 0 ให้ลบรายการสินค้าออกจากรถเข็น
-        if (cart[productIndex].quantity < 0) {
-          cart.splice(productIndex, 1); // ลบสินค้าออกจากรถเข็น
-        }
-        $('#card-out').hide();
-        $("#outStock").prop("disabled", false);
-        // อัปเดตข้อมูลรถเข็นใน sessionStorage
-        sessionStorage.setItem('cart', JSON.stringify(cart));
+    cart.forEach(item => {
+      cartItemsHtml += `
+        <div class="cart-item">
+          <h6>${item.productName}</h6>
+          <p>${item.productPrice} บาท / ${item.productType}     จำนวน: ${item.quantity}</p>
+          <button class="btn btn-sm btn-danger remove-item" data-product-id="${item.product_id}">ลบ</button>
+        </div>
+      `;
+    });
+    $('#cartItems').html(cartItemsHtml);
 
-        // อัปเดต UI
-        updateCartItemCount(); // อัปเดตจำนวนสินค้าทั้งหมดในตะกร้า
-        updateCartItems();
-        updateProductCount(productId) // อัปเดตการแสดงผลรายการสินค้าในตะกร้า
-      }
-    }
-
-    function updateCartItemCount() {
-      //ดึงข้อมูลจาก รถเข็น เก็บไว้ในตัวแปล cart
-      let cart = JSON.parse(sessionStorage.getItem('cart')) || [];
-      let totalItems = cart.reduce((sum, item) => sum + item.quantity, 0); //0 คือการเริ่มต้นคำนวณจาก index 0 sum คือตัสแปรสะสมค่า item คือ index
-      let totalprice = cart.reduce((sum, item) => sum + (item.productPrice * item.quantity), 0);
-      $('#numberOfItems').text(totalItems);
-      $('#totalPrice').text(totalprice);
-    }
-
-    function updateCartItems() {
-        let cart = JSON.parse(sessionStorage.getItem('cart')) || [];
-        let cartItemsHtml = '';
-
-        cart.forEach(item => {
-          cartItemsHtml += `
-                <div class="cart-item">
-                    <h6>${item.productName}</h6>
-                    <p>${item.productPrice} บาท / จำนวน: ${item.quantity}</p>
-                </div>
-            `;
-        });
-        $('#cartItems').html(cartItemsHtml);
-    }
+    // เพิ่ม event listener สำหรับปุ่มลบสินค้า
+    $('.remove-item').click(function() {
+      let productId = $(this).data('product-id');
+      deleteitem(productId);
+    });
+  }
 
   function updateProductCount(productId) {
     let cart = JSON.parse(sessionStorage.getItem('cart')) || [];
     let product = cart.find(item => item.product_id === productId);
 
-    // ค้นหาช่องที่มี count ที่เกี่ยวข้องกับ productId
     let productCard = $(`.card:has(input[name="product_id"][value="${productId}"])`);
     let countLabel = productCard.find('#count');
-    
-   
-    const count_old = $('.count_old').val()
-    const pcount_old = parseInt(count_old)
+    let countOldInput = productCard.find('input[name="quantity"]');
+    let addButton = productCard.find('.addToCartButton');
 
-    console.log(pcount_old)
-    console.log(product.quantity)
-
-    if(product.quantity >= pcount_old){
-
-      $("#outStock").prop("disabled", true);
-      console.log("สินค้าหมด")
-      let card_outHtml = ``;
-      Swal.fire({
-        title: 'สินค้าไม่เพียงพอ',
-        icon: 'error',
-        confirmButtonText: 'X'
-      })
-      
-    }
+    const countOld = parseInt(countOldInput.val());
 
     if (product) {
-      countLabel.text(product.quantity); 
+      countLabel.text(product.quantity);
+      
+      if (product.quantity >= countOld) {
+        addButton.prop("disabled", true);
+        Swal.fire({
+          title: 'สินค้าไม่เพียงพอ',
+          text: 'ขออภัย สินค้าชิ้นนี้หมดแล้ว',
+          icon: 'error',
+          confirmButtonText: 'เข้าใจแล้ว'
+        });
+      } else {
+        addButton.prop("disabled", false);
+      }
     } else {
-      countLabel.text(0); // ถ้าสินค้าไม่มีในรถเข็น แสดงเป็น 0
+      countLabel.text(0);
+      addButton.prop("disabled", false);
     }
   }
 
+  function checkProductStatus() {
+    $('.card').each(function() {
+      let productId = $(this).find('input[name="product_id"]').val();
+      let totalQuantity = parseInt($(this).find('input[name="quantity"]').val());
+      let cart = JSON.parse(sessionStorage.getItem('cart')) || [];
+      let cartItem = cart.find(item => item.product_id === productId);
+      
+      if (cartItem && cartItem.quantity >= totalQuantity) {
+        $(this).find('.addToCartButton').prop("disabled", true);
+      }
+    });
+  }
 
   $(document).ready(function () {
     sessionStorage.clear();
-    updateCartItemCount(); // อัปเดตจำนวนสินค้าทั้งหมดเมื่อโหลดหน้า
-    updateCartItems(); // อัปเดตรายการสินค้าเมื่อโหลดหน้า
+    updateCartItemCount();
+    updateCartItems();
+    checkProductStatus();
 
-    // เพิ่มจำนวน
     $('.addToCartButton').click(function () {
       let productCard = $(this).closest('.card');
       let product = {
-        product_id: productCard.find('input[name="product_id"]').val(), // ดึง product_id จาก input
-        productName: productCard.find('input[name="productName"]').val(), // ดึง productName จาก input
-        productPrice: parseFloat(productCard.find('input[name="productPrice"]').val()), // ดึง productPrice จาก input
-        quantity: 1 // กำหนดจำนวนสินค้าเริ่มต้นเป็น 1
+        product_id: productCard.find('input[name="product_id"]').val(),
+        productName: productCard.find('input[name="productName"]').val(),
+        productType: productCard.find('input[name="productType"]').val(),
+        store_id: productCard.find('input[name="store_id"]').val(),  // store_id
+        productPrice: parseFloat(productCard.find('input[name="productPrice"]').val()),
+        quantity: 1
       };
-      addToCart(product); // เรียกฟังก์ชันเพื่อเพิ่มสินค้าลงในรถเข็น
+      
+      let totalQuantity = parseInt(productCard.find('input[name="quantity"]').val());
+      let currentQuantity = parseInt(productCard.find('#count').text());
+
+      if (currentQuantity < totalQuantity) {
+        addToCart(product);
+      } else {
+        Swal.fire({
+          title: 'สินค้าไม่เพียงพอ',
+          text: 'ไม่สามารถเพิ่มสินค้าได้เนื่องจากเกินจำนวนที่มีอยู่',
+          icon: 'error',
+          confirmButtonText: 'เข้าใจแล้ว'
+        });
+      }
     });
 
-    // ลดจำนวน
     $('.deleteToCartButton').click(function () {
       let productCard = $(this).closest('.card');
-      let productId = productCard.find('input[name="product_id"]').val(); // ดึง product_id จาก input
-      deleteitem(productId); // เรียกฟังก์ชันเพื่อลดจำนวนสินค้าหรือถอดออกจากรถเข็น
+      let productId = productCard.find('input[name="product_id"]').val();
+      deleteitem(productId);
     });
 
     $('#checkout-button').click(function (event) {
-      event.preventDefault(); // ป้องกันการรีเฟรชหน้าเพจเมื่อกดปุ่ม checkout
+      event.preventDefault();
       let cart = JSON.parse(sessionStorage.getItem('cart')) || [];
       $.ajax({
         url: '/customer_cart',
         type: 'POST',
         contentType: 'application/json',
-        data: JSON.stringify({ cart: cart }), // ส่งข้อมูลรถเข็นไปยังเซิร์ฟเวอร์
+        data: JSON.stringify({ cart: cart }),
         success: function (response) {
           console.log('ส่งข้อมูลสำเร็จ:', response);
-          sessionStorage.removeItem('cart'); // ลบข้อมูลรถเข็นออกจาก sessionStorage
-          window.location.href = '/customer_cart'; // เปลี่ยนเส้นทางไปยังหน้ารถเข็น
+          sessionStorage.removeItem('cart');
+          window.location.href = '/customer_cart';
         },
         error: function (error) {
           console.error('การส่งข้อมูลผิดพลาด:', error);
         }
       });
     });
+
+    $(window).on('storage', function(e) {
+      if (e.originalEvent.key === 'cart') {
+        updateCartItemCount();
+        updateCartItems();
+        checkProductStatus();
+      }
+    });
+  });
+
+  $(window).on('beforeunload', function() {
+    sessionStorage.clear();
   });
 
    
   </script>
 
   <script>
-     function searchProduct(input) {
+    function searchProduct(input) {
       var searchText = input.value.toLowerCase();
       var products = document.getElementsByClassName('product-item');
       var hasMatch = false;
