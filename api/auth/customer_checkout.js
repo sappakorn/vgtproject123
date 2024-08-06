@@ -98,7 +98,7 @@ router.get('/', (req, res) => {
                                         order_data.product_type.push(item.productType)
                                         order_data.product_price.push(item.productPrice)
                                     })
-                                    console.log("บันทึกลงฐานข้อมูลแล้ว");
+                                    res.send("บันทึกข้อมูลแล้ว ครับ !")
                                 })
                             })
                         }
