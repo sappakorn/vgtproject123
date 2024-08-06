@@ -35,7 +35,7 @@ router.post('/', async function (req, res, next) {
         /*  มีหมายเลขนี้แล้ว */
         return res.render('pages/customer_register', { messageerror: "หมายเลขนี้ถูกใช้แล้ว" }); 
       }
-      return res.render('pages/customer_login',{ messageerror: "ลงทะเบียนสำเร็จ"});
+      return res.render('pages/customer_login',{ message_success: "ลงทะเบียนสำเร็จ"});
     });
 
   } catch (err) {

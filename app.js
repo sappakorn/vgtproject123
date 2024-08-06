@@ -66,7 +66,7 @@ const checkKey = (req, res, next) => {
 // กำหนดให้ middleware ตรวจสอบคีย์ก่อนที่จะทำการเข้าถึงหน้าต่าง ๆ
 app.use(['/menu', '/home', '/add_product', '/stock', '/qrcode', '/history', '/receipt', '/cart', '/upload', 'history_info', 'history', 'customer_home'], checkKey);
 app.use('/bootstrap', express.static(__dirname + '/node_modules/bootstrap/dist')); // Serve Bootstrap CSS โดยใช้ express.static()
-app.use('/jquery', express.static(__dirname + '/node_modules/jquery/dist')) /* ใช้เรียก jquery */
+
 
 app.get('/', function (req, res) { //หน้าแรกของเว็บ
 
