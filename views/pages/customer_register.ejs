@@ -32,21 +32,7 @@
         height:48px;
         font-size: 20px;
       }
-      .modal-header, .modal-footer {
-            border: none; /* Remove the borders */
-            display: flex;
-            justify-content: center;
-            align-items: center;
-          }
       
-          .modal-title img {
-            display: block;
-          }
-      
-          .modal-body {
-            text-align: center;
-            
-          }
       input{
           border: 1px solid #ffd3a1 !important ;
           
@@ -59,51 +45,7 @@
 </head>
 <body>
 
-  <% if (typeof messageerror !== 'undefined') { %>
-    <!-- Modal -->
-    <div class="modal fade " id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-      <div class="modal-dialog modal-dialog-centered ">
-        <div class="modal-content " style="border-radius: 30px;">
-          <div class="modal-header">
-            <h5 class="modal-title" id="exampleModalLabel">
-              <img src="/img/error.png" style="height: 50px; width: 50px;">
-            </h5>
-          </div>
-          <div class="modal-body" style="font-size: 30px;">
-            <%= messageerror %>
-          </div>
-          <div class="modal-footer">
-            <a href="../../customer_register" type="button" class="btn btn-primary" >ปิด</a>
-          </div>
-        </div>   
-      </div>
-    </div>
-  <% } %> 
-  <% if (typeof messageerrorss !== 'undefined') { %>
-    <!-- Modal -->
-    <div class="modal fade " id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-      <div class="modal-dialog modal-dialog-centered ">
-        <div class="modal-content " style="border-radius: 30px;">
-          <div class="modal-header">
-            <h5 class="modal-title" id="exampleModalLabel">
-              <img src="/img/check.png" style="height: 50px; width: 50px;">
-            </h5>
-          </div>
-          <div class="modal-body" style="font-size: 30px;">
-            <%= messageerrorss %>
-          </div>
-          <div class="modal-footer">
-            <a href="../../customer_register" type="button" class="btn btn-primary" >ปิด</a>
-          </div>
-        </div>   
-      </div>
-    </div>
-    <script>
-      setTimeout(() => {
-          window.location.href = '../../customer_register';
-      }, 1500); 
-    </script>
-  <% } %>
+  
   <div class="text-center mt-5">
     <a href="/">
         <img  src="/img/new-logo.png" style="max-width: 15rem; height:auto;">
@@ -179,16 +121,64 @@
 
 
 <!-- boostrap js -->
-<script src="/bootstrap/js/bootstrap.bundle.min.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"></script>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/js/bootstrap.bundle.min.js" integrity="sha384-HwwvtgBNo3bZJJLYd8oVXjrBZt8cqVSpeBNS5n7C8IVInixGAoxmnlMuBnhbgrkm" crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 <!--  -->
 
-<% if (typeof messageerror !== 'undefined') { %>
+<% if (typeof messageerror !=='undefined' ) { %>
+  <input type="hidden" id="message_alert" value="<%=messageerror %>">
   <script>
-    // Check if there is a message error and show the modal
-      var myModal = new bootstrap.Modal(document.getElementById('exampleModal'));
-      myModal.show();
+
+    $(document).ready(function () {
+      var messageerror = $('#message_alert').val()
+      const Toast = Swal.mixin({
+        toast: true,
+        position: "top-end",
+        showConfirmButton: false,
+        timer: 2000,
+        timerProgressBar: true,
+        didOpen: (toast) => {
+          toast.onmouseenter = Swal.stopTimer;
+          toast.onmouseleave = Swal.resumeTimer;
+        }
+      });
+      Toast.fire({
+        icon: "error",
+        title: messageerror
+      }).then(function () {
+        window.location.href = '/customer_register';
+      });
+    });
+
   </script>
-<% } %>
+  <% } %>
+  <% if (typeof message_success !=='undefined' ) { %>
+    <input type="hidden" id="message_alert" value="<%=message_success %>">
+    <script>
+
+      $(document).ready(function () {
+        var messageerror = $('#message_alert').val()
+        const Toast = Swal.mixin({
+          toast: true,
+          position: "top-end",
+          showConfirmButton: false,
+          timer: 2000,
+          timerProgressBar: true,
+          didOpen: (toast) => {
+            toast.onmouseenter = Swal.stopTimer;
+            toast.onmouseleave = Swal.resumeTimer;
+          }
+        });
+        Toast.fire({
+          icon: "success",
+          title: messageerror
+        }).then(function () {
+          window.location.href = '/customer_register';
+        });
+      });
+
+    </script>
+    <% } %>
 </body>
 </html>

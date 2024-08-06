@@ -116,7 +116,24 @@
     <script>
 
       $(document).ready(function () {
-        
+        var messageerror = $('#message_alert').val()
+        const Toast = Swal.mixin({
+          toast: true,
+          position: "top-end",
+          showConfirmButton: false,
+          timer: 2000,
+          timerProgressBar: true,
+          didOpen: (toast) => {
+            toast.onmouseenter = Swal.stopTimer;
+            toast.onmouseleave = Swal.resumeTimer;
+          }
+        });
+        Toast.fire({
+          icon: "error",
+          title: messageerror
+        }).then(function () {
+          window.location.href = '/index1';
+        });
       });
 
     </script>
