@@ -31,10 +31,14 @@ router.post('/', async (req, res) => {
           }
           
           res.setHeader('x-session-key', sessionKey);
-          req.session.alert = "เข้าสู่ระบบสำเร็จ"
-          console.log(req.session.alert)
-          return res.redirect('/customer_home');
-        
+
+          req.session.alert1 = "เข้าสู่ระบบสำเร็จ";
+          req.session.alert2 = "รหัสผ่านผิด";
+           // กรณีที่เป็นการ redirect 
+          console.log(req.session.alert1);
+
+          return res.redirect('/customer_home'); 
+          
         } else {
           
           return res.render('pages/customer_login', { messageerror: "กรอกรหัสผ่านไม่ถูกต้อง" });

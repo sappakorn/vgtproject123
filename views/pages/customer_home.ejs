@@ -165,9 +165,14 @@
   <!-- boostrap js -->
   <script src="/bootstrap/js/bootstrap.bundle.min.js"></script>
   <!--  -->
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+      <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-HwwvtgBNo3bZJJLYd8oVXjrBZt8cqVSpeBNS5n7C8IVInixGAoxmnlMuBnhbgrkm"
+        crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
 
-    <% if (typeof message_success !=='undefined' ) { %>
+    <% if (typeof message_success !== 'undefined' ) { %>
       <input type="hidden" id="message_alert" value="<%=message_success %>">
       <script>
   
@@ -177,7 +182,7 @@
             toast: true,
             position: "top-end",
             showConfirmButton: false,
-            timer: 2000,
+            timer: 1500,
             timerProgressBar: true,
             didOpen: (toast) => {
               toast.onmouseenter = Swal.stopTimer;
@@ -187,9 +192,8 @@
           Toast.fire({
             icon: "success",
             title: messageerror
-          }).then(function () {
-            window.location.href = '/customer_home';
-          });
+          })
+          
         });
   
       </script>
