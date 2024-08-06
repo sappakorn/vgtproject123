@@ -30,7 +30,6 @@ router.post('/', async (req, res) => {
 
           /* สร้างคีย์เพื่อขอดูข้อมูลในหน้าต่างๆ */
           const sessionKey = generateSessionKey();
-
           req.session.user = { id: user.user_id, key: sessionKey };
 
           res.setHeader('x-session-key', sessionKey);
