@@ -28,11 +28,13 @@ router.post('/', async (req, res) => {
             customer_id : user.customer_id, 
             key : sessionKey,
             customer_name : user.first_name 
-          };
-          res.setHeader('x-session-key', sessionKey);
-          return res.render('pages/customer_home', { message_success : "เข้าสู่ระบบสำเร็จ" });
+          }
           
-
+          res.setHeader('x-session-key', sessionKey);
+          req.session.alert = "เข้าสู่ระบบสำเร็จ"
+          console.log(req.session.alert)
+          return res.redirect('/customer_home');
+        
         } else {
           
           return res.render('pages/customer_login', { messageerror: "กรอกรหัสผ่านไม่ถูกต้อง" });

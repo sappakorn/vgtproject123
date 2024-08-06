@@ -12,15 +12,16 @@ route.get('/', function (req, res) {
         store_list = "select phone,user_id,name_shop,location_shop from usersprofile "
         con.query(store_list, function (error, result) {
             if (error) {
-                return console.log("select error")
+                return console.log("select error",error)
             }
             res.render('pages/customer_home', {
                 list_store: result,
-                customer_name: customer_name
+                customer_name: customer_name,
+                message_success : "เข้าสู่ระบบสำเร็จ"
             })
         });
     } catch (error) {
-        return console.log("select error")
+        return console.log("select error",error)
     }
 
 });
