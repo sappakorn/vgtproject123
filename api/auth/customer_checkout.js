@@ -34,7 +34,7 @@ router.get('/', (req, res) => {
             const quantityToReduce = count_product;
             const totalprice = quantityToReduce * item.productPrice
             sum += totalprice;
-            console.log(product_id)
+            
             const checkStock = "select quantity from products where product_id = ? ";
             con.query(checkStock, [product_id], (err, result) => {
                 if (err) {
