@@ -10,9 +10,16 @@ const cors = require('cors');
 router.use(bodyparser.json());
 
 router.post('/', function (req, res) {
+
+    if(bankacount<=10){ // ทำเงื่อนไขว่าเป็นมือถือ หรือ เป็นเลขบัตร
+
+    }else{
+
+    }
+
     const amount = parseFloat(_.get(req.body, "amount"));
-    const mobileNumber = '1400700213567';
-    const payload = generatePayload(mobileNumber, { amount });
+    const idcardnumber = '1400700213567';
+    const payload = generatePayload(idcardnumber, { amount });
     const option = {
         color: {
             dark: '#000',
