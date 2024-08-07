@@ -1,5 +1,4 @@
 const express = require('express');
-const mysql = require('mysql');
 const app = express();
 const port = 3300;
 const bodyParser = require('body-parser');
@@ -9,6 +8,8 @@ const crypto = require('crypto');
 const ejs = require('ejs');
 const path = require('path');
 const con = require('./models/config/database')
+const cors = require('cors')
+app.use(cors());
 app.use(express.json());
 
 //สร้างcookie_session 
@@ -249,10 +250,14 @@ const storage = multer.diskStorage({
 });
 
 
-
+//generateqrcode test 
 const generateQR = require('./controller/generateQR');
+app.use('/generateqrcode',generateQR)
 
-
+app.get('/generateqrcode',function(req,res){
+  res.render('pages/generateqrcode',{})
+                    
+})
 
 const upload = multer({ storage: storage });
 
