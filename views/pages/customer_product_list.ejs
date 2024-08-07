@@ -94,7 +94,7 @@
 
     <form id="checkoutForm" method="post" action="">
       <div class="text-center mt-2">
-        <button id="checkout-button" class="btn btn-success form-control py-2 rounded-0 ">เช็คเอาท์</button>
+        <button id="checkout-button" class="btn btn-success form-control py-2 rounded-0 ">ชำระเงิน</button>
       </div>
     </form>
   </div>
@@ -145,12 +145,13 @@
                   </p>
                 </div>
                 
-                <input name="product_id" class="d-none" value="<%= product.product_id %>">
-                <input name="productType" class="d-none" value="<%= product.unit %>">
-                <input name="productName" class="d-none" value="<%= product.productname %>">
-                <input name="productPrice" class="d-none" value="<%= product.price %>">
-                <input name="quantity" class="d-none" value="<%= product.quantity %>">
-                <input name="store_id" class="d-none" value="<%= store_id %>">
+                <input name="product_id" type="hidden" value="<%= product.product_id %>">
+                <input name="productType" type="hidden" value="<%= product.unit %>">
+                <input name="productName" type="hidden" value="<%= product.productname %>">
+                <input name="productPrice" type="hidden" value="<%= product.price %>">
+                <input name="quantity" type="hidden" value="<%= product.quantity %>">
+                <input name="store_id" type="hidden" value="<%= store_id %>">
+                <input name="product_img" type="hidden" value="<%= product.product_img %>" >
 
                 
                 <% if (product.quantity===0) { %>
@@ -345,8 +346,11 @@
         productName: productCard.find('input[name="productName"]').val(),
         productType: productCard.find('input[name="productType"]').val(),
         store_id: productCard.find('input[name="store_id"]').val(),  // store_id
+        product_img: productCard.find('input[name="product_img"]').val(),
         productPrice: parseFloat(productCard.find('input[name="productPrice"]').val()),
-        quantity: 1
+        quantity: 1,
+        
+        
       };
       
       let totalQuantity = parseInt(productCard.find('input[name="quantity"]').val());
@@ -374,14 +378,14 @@
       event.preventDefault();
       let cart = JSON.parse(sessionStorage.getItem('cart')) || [];
       $.ajax({
-        url: '/customer_cart',
+        url: '/confirm_order',
         type: 'POST',
         contentType: 'application/json',
         data: JSON.stringify({ cart: cart }),
         success: function (response) {
           console.log('ส่งข้อมูลสำเร็จ:', response);
           sessionStorage.removeItem('cart');
-          window.location.href = '/customer_cart';
+          window.location.href = '/confirm_order';
         },
         error: function (error) {
           console.error('การส่งข้อมูลผิดพลาด:', error);

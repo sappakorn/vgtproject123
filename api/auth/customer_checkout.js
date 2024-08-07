@@ -11,7 +11,7 @@ function getCurrentTime() {
 router.get('/', (req, res) => {
     const productlist = req.session.cart123 || [];
     const count_product = productlist.reduce((total, product) => total + product.quantity, 0);
-    
+        
     con.beginTransaction(err => {
         if (err) {
             return res.status(500).send('error database');
@@ -98,7 +98,18 @@ router.get('/', (req, res) => {
                                         order_data.product_type.push(item.productType)
                                         order_data.product_price.push(item.productPrice)
                                     })
-                                    res.send("บันทึกข้อมูลแล้ว ครับ !")
+                                    const insert_history = "INSERT INTO history_product(user_id, date_time, order_data,summary) VALUES (?, ?, ?, ?)";
+                                    con.query(insert_history, [st_id, currentTime, JSON.stringify(order_data),sum], function(err, result2) {
+                                        if (err) {
+                                            return con.rollback(() => {
+                                                res.status(500).send('Error inserting history');
+                                            });
+                                        }
+
+                                        console.log(sum);
+                                        console.log(req.session.cart123);
+                                        res.redirect('customer_reciept');
+                                    });
                                 })
                             })
                         }

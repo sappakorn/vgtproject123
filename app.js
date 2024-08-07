@@ -162,16 +162,24 @@ const customer_homeRoute = require('./controller/customer_home')
 app.use('/customer_home',customer_homeRoute);
 
 //นำสินค้าที่ถูกส่งโดย Ajax มาที่เก็บไว้ใน session ฝั่ง nodejs 
-app.post('/customer_cart', (req, res) => {
+app.post('/confirm_order', (req, res) => {
   req.session.cart123 = req.body.cart;
   /* console.log(req.body.cart) */
   console.log(req.session.cart123)
   res.status(200).send('Data received');
 });
 
+const confirm_orderRoute = require('./controller/confirm_order')
+app.use('/confirm_order',confirm_orderRoute)
+
+
 // แสดงสินค้าที่มาจากตะกร้าสินค้า ใช้ produclist ในการ เช็กเงื่อนไขต่อ 
-const customer_cartRoute =require('./api/auth/customer_checkout')
-app.use('/customer_cart',customer_cartRoute)
+/* const customer_checkoutRoute =require('./api/auth/customer_checkout')
+app.use('/customer_checkout',customer_checkoutRoute) */
+
+
+const customer_receiptRoute = require('./controller/customer_receipt')
+app.use('/customer_receipt',customer_receiptRoute );
 
 
 
@@ -215,6 +223,9 @@ app.get('/cart_items_count', function (req, res) {
 
 });
 
+
+
+
 //แสดง cart 
 const cartRoute = require('./controller/cart')
 app.use('/cart',cartRoute)
@@ -236,6 +247,12 @@ const storage = multer.diskStorage({
     cb(null, file.fieldname + '-' + Date.now() + path.extname(file.originalname)); // generate unique filename
   }
 });
+
+
+
+const generateQR = require('./controller/generateQR');
+
+
 
 const upload = multer({ storage: storage });
 
