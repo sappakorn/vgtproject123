@@ -11,11 +11,11 @@ router.use(bodyparser.json());
 
 router.post('/', function (req, res) {
 
-    if(bankacount<=10){ // ทำเงื่อนไขว่าเป็นมือถือ หรือ เป็นเลขบัตร
+    /* if(bankacount<=10){    // ทำเงื่อนไขว่าเป็นมือถือ หรือ เป็นเลขบัตร
 
     }else{
 
-    }
+    } */
 
     const amount = parseFloat(_.get(req.body, "amount"));
     const idcardnumber = '1400700213567';
