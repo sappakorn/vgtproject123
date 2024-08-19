@@ -33,10 +33,12 @@ router.post('/', async (req, res) => {
           console.log(req.session);
           res.setHeader('x-session-key', sessionKey);
 
+          req.session.status = 1;
           req.session.alert1 = "เข้าสู่ระบบสำเร็จ";
           req.session.alert2 = "รหัสผ่านผิด";
            // กรณีที่เป็นการ redirect 
           console.log(req.session.alert1);
+
 
           return res.redirect('/customer_home'); 
           

@@ -14,11 +14,21 @@ route.get('/', function (req, res) {
             if (error) {
                 return console.log("select error",error)
             }
-            res.render('pages/customer_home', {
-                list_store: result,
-                customer_name: customer_name,
-                message_success : "เข้าสู่ระบบสำเร็จ"
-            })
+            
+            if(req.session.status === 1){
+                res.render('pages/customer_home', {
+                    list_store: result,
+                    customer_name: customer_name,
+                    message_success : req.session.alert1
+                })
+            }else {
+                res.render('pages/customer_home', {
+                    list_store: result,
+                    customer_name: customer_name,
+                })
+            }
+            
+           
         });
     } catch (error) {
         return console.log("select error",error)

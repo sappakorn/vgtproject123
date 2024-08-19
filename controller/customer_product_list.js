@@ -12,7 +12,7 @@ route.post('/', function (req, res) {
   console.log("you Select store_ID :" + customer_store_id + "") //ใช้ store_id เพื่อที่จะได้รู้ว่าลูกค้าเลือกร้านไหน จะได้รู้ ว่าเราเลือกร้านไหน  
 
   const selectProduct = `SELECT * FROM products WHERE user_id = ?  ORDER BY productname ASC `;
-
+  req.session.status = 0;
   con.query(selectProduct, [customer_store_id], function (err, productResult) {
     if (err) throw err;
     const selectProductType = "SELECT DISTINCT product_type  FROM products WHERE user_id = ? ";

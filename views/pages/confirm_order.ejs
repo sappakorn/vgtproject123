@@ -15,6 +15,8 @@
   <!--  -->
   <style>
     *{
+    padding: 0;
+    margin: 0;
     font-family: "Kanit", sans-serif;
     font-weight: 500;
     font-style: normal;
@@ -59,48 +61,93 @@
 <div>
     
 
-    <form method="post"  action="/customer_checkout" class="px-2 mt-3">
-        <div class="d-flex justify-content-center" style="width: 100%;">
-            <div class="card rounded-2 p-1 " style="width: 20rem;">
-            <% productlist.forEach(product => { %>
-                    <div class="card text-center px-1" style="width: 19rem;">
-                        <img src="<%= product.product_img %>" class="card-img-top" alt="..." style="height: 100px !important; object-fit: contain;">
-                        <div class="">
-
-                        <h1><%= product.productName %></h1>
-                        <h5 >ราคา <%= product.productPrice %></h5>
-                        <p class="card-text">จำนวน <%= product.quantity %> / <%= product.productType %></p>
-                        </div>
-                    </div>
-
-                    <input type="hidden" name="productlist" value="<%= productlist %>">
-                    <input type="hidden" name="count_product" value="<%= count_product %>">
-            
-            <% }) %>
-            </div>
-        </div>
-    
-    
-
-  
-
-    <div class="d-flex justify-content-center mt-5">
-        <div style="width: 250px;height: 250px;border: 1px solid #080808;">
-            <img src="https://cdn.britannica.com/17/155017-050-9AC96FC8/Example-QR-code.jpg" alt="" style="width: 100%;height: auto;">
-        </div>
-    </div>
-    
- 
-    
    
-    <div class="d-flex justify-content-center mt-3">
-        <button class="btn btn-primary ">
-            อัพโหลดสลิป
-        </button>
-    </div>
+      <h2 class="text-center">แสกนเพื่อชำระ</h2>
+      
+      <div class="d-flex justify-content-center  ">
+        <div class="text-center" style="box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;width: 15rem;" >
+          <dir class="d-flex justify-content-center">
+            <div class="d-flex align-items-center justify-content-center  "  style="width: 15rem;" >
+                  <img  src="/img/ppth.png" style="width: 100%;height: auto;" >     
+            </div>
+          </dir>
+          <dir class="d-flex justify-content-center">
+            <div class="d-flex align-items-center justify-content-center "  style="width: 15rem;" >
+              <img src="<%= qrcodeUrl  %>" alt="" style="width: 80%;height: auto;">     
+            </div>
+          </dir>
+        </div>
+      </div>
+
+      <div class="d-flex justify-content-center mt-3 ">
+            <button class="btn btn-primary " data-bs-toggle="modal" data-bs-target="#exampleModal">
+              อัพโหลดสลิป
+            </button>
+      </div>
+
+      <!-- แสดง alert ให้อัพโหดล สลิป  -->
+
+      <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered ">
+          <div class="modal-content">
+            <div class="modal-header">
+              <h1 class="modal-title fs-5" id="exampleModalLabel">วิธีการชำระเงิน</h1>
+              <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+              กรุณาอัพโหลดสลิป
+            </div>
+            <div class="mx-2">
+              <label for="file">เลือกรูปภาพ</label>
+              <input class="form-control mt-2 " type="file" name="file" id="file">
+            </div>
+            
+            <div class="modal-footer">
+              
+              <form method="post" action="/customer_checkout">
+                <button class="btn btn-primary ">
+                  อัพโหลดสลิป
+                </button>
+              </form>
+
+              <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Close</button>
+              
+            </div>
+          </div>
+        </div>
+      </div>
+
+
+
+
+
+
+      <div class="d-flex justify-content-center mt-3" style="width: 100%;">
+          <div class="card rounded-2 p-1 " style="width: 20rem;">
+          <% productlist.forEach((product, index) => { %>
+                  <div class="d-flex  text-center px-1" style="width: 19rem;">
+                      <img src="<%= product.product_img %>" class="me-4" alt="..." style="height: 50px !important;width: 50px !important;; object-fit: contain;">
+                      <div class="">
+                      <h5><%= product.productName %> ราคา <%= product.productPrice %></h5>
+                      <h5 ></h5>
+                      <p class="card-text">จำนวน <%= product.quantity %> / <%= product.productType %></p>
+                      </div>
+                  </div>
+
+                  <input type="hidden" name="productlist" value="<%= productlist %>">
+                  <input type="hidden" name="count_product" value="<%= count_product %>">
+                  <% if ( index < productlist.length - 1 ) { %>
+                    <hr>
+                  <% } %>
+                  
+          <% }) %>
+          </div>
+      </div>
+    
+     
   
 
-</form>
+
 
 </div>
 

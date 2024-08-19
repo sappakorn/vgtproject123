@@ -71,14 +71,14 @@
 <body>
   <nav class="navbar navbar-dark bg-dark ">
     <div class="container-fluid m-1">
-      <a class="navbar-brand d-flex"  href="/">
+      <a class="navbar-brand d-flex"  href="/customer_home">
         <img style="width:54; height:40px;" src="/img/logo-sm.png" alt="">
         <p style="color:#ff7300;font-size: 15px;padding-top: 15px;">VGTPROJECT</p>
       </a>
       
       <button class="btn" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasDarkNavbar" aria-controls="offcanvasDarkNavbar" aria-label="Toggle navigation" style="color: aliceblue;">
        <img src="img/profile-user-removebg-preview.png" alt="" class="user-img" ></span>
-       สวัสดี คุณ <%= customer_name %>
+       Online
       </button>
       <div class="offcanvas offcanvas-end text-bg-dark" tabindex="-1" id="offcanvasDarkNavbar" aria-labelledby="offcanvasDarkNavbarLabel">
         <div class="offcanvas-header">
@@ -172,7 +172,7 @@
   <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
 
-    <% if (typeof message_success !== 'undefined' ) { %>
+    <% if (typeof message_success !== 'undefined') { %>
       <input type="hidden" id="message_alert" value="<%=message_success %>">
       <script>
   
@@ -182,7 +182,7 @@
             toast: true,
             position: "top-end",
             showConfirmButton: false,
-            timer: 1500,
+            timer: 1000,
             timerProgressBar: true,
             didOpen: (toast) => {
               toast.onmouseenter = Swal.stopTimer;
@@ -197,7 +197,8 @@
         });
   
       </script>
-      <% } %>
+      
+    <% } %>
 
 </body>
 
