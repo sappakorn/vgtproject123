@@ -1,6 +1,6 @@
 const express = require('express');
 const app = express();
-const port = 3300;
+const port = process.env.PORT || 3301;
 const bodyParser = require('body-parser');
 const multer = require('multer');
 const cookieSession = require('cookie-session');
@@ -239,37 +239,31 @@ app.use('/remove-item-cart',remove_item_cartRoute)
 const authSummaryRouter = require('./api/auth/summary');
 app.use('/api/auth/summary', authSummaryRouter)
 
+
+
+
+
 /*เงื่อนไขอัพโหลดไฟล์เข้าserver และ อัพโหลดข้อมูลต่างๆ */
 const storage = multer.diskStorage({
   destination: function (req, file, cb) {
-    cb(null, 'uploads/') // save uploaded files to uploads directory
+    cb(null, 'uploads/') // ส่งไฟล์ไปยัง โฟลเดอ uplads
   },
   filename: function (req, file, cb) {
-    cb(null, file.fieldname + '-' + Date.now() + path.extname(file.originalname)); // generate unique filename
+    cb(null, file.fieldname + '-' + Date.now() + path.extname(file.originalname)); // สร้างชื่อไฟล์
   }
 });
 
+const checkslipRoute = require('./api/auth/checkslip');
+app.use('/api/checkslip', checkslipRoute )
 
-//generateqrcode test 
-const generateQR = require('./controller/generateQR');
-app.use('/generateqrcode',generateQR)
-
-app.get('/generateqrcode',function(req,res){
-  res.render('pages/generateqrcode',{})
-                    
-})
 
 const upload = multer({ storage: storage });
 
 app.post('/upload', upload.single('file'), (req, res) => {
-
   if (!req.file) {
-
     return res.status(400).send('กรุณาเลือกรูป');
   }
-
   const user_id = req.session.user.id;
-
   if (!user_id) {
     return res.status(401).send('Unauthorized. Please login first.');
   }

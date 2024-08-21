@@ -91,26 +91,24 @@
         <div class="modal-dialog modal-dialog-centered ">
           <div class="modal-content">
             <div class="modal-header">
-              <h1 class="modal-title fs-5" id="exampleModalLabel">วิธีการชำระเงิน</h1>
+              <h1 class="modal-title fs-5" id="exampleModalLabel"> กรุณาอัพโหลดสลิป</h1>
               <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
-            <div class="modal-body">
-              กรุณาอัพโหลดสลิป
-            </div>
-            <div class="mx-2">
-              <label for="file">เลือกรูปภาพ</label>
-              <input class="form-control mt-2 " type="file" name="file" id="file">
-            </div>
-            
+    
             <div class="modal-footer">
               
-              <form method="post" action="/customer_checkout">
-                <button class="btn btn-primary ">
-                  อัพโหลดสลิป
-                </button>
-              </form>
+              <!-- ส่วนของการส่งรูปภาพไปให้ api  -->
+              <form method="post" action="/api/checkslip" enctype="multipart/form-data">
+                <label for="file">เลือกรูปภาพ</label>
+                <input class="form-control mt-2 " type="file" name="file" id="file" accept="image/">
+                <div class="d-flex justify-content-center mt-2">
+                <button class="btn btn-primary ">อัพโหลดสลิป</button>
+                  
+                </div>
+                     </form>
+              <!-- ส่วนของการส่งรูปภาพไปให้ api  -->
 
-              <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Close</button>
+              
               
             </div>
           </div>

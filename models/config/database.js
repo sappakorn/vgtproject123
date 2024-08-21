@@ -9,6 +9,18 @@ const con = mysql.createConnection({
   port:3377 
 });
 
+/* 
+docker database
+const con = mysql.createConnection({
+  host: '172.25.9.84',
+  user: 'root',
+  password:'root',
+  database: 'my-db',
+  port:3306 
+});
+
+*/
+
 con.connect((err) => {
   if (err) {
     console.error('Database connection failed:', err.stack);
