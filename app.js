@@ -85,6 +85,9 @@ app.get('/', function (req, res) { //หน้าแรกของเว็บ
     return console.log("select error")
   }
 })
+app.get('/admin', function (req, res) {
+  res.render('pages/admin', { session: req.session })
+})
 
 app.get('/index1', function (req, res) {
   res.render('pages/index1', { session: req.session })
