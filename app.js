@@ -16,7 +16,7 @@ app.use(express.json());
 app.use(cookieSession({
   name: 'session',
   keys: ['key1', 'key2'],
-  maxAge: 3600 * 1000, // 1 ชม.
+  maxAge: 36_000_000, // 10 ชม. // 1ชม 3600*1000
   secure: false, // ใช้งานใน Product จริงให้ใช้ true
   httpOnly: true // ช่วยป้องกันการโจมตีแบบ XSS
 }));
