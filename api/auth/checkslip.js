@@ -6,7 +6,6 @@ const fs = require('fs');
 const FormData = require('form-data');
 const path = require('path');
 
-
 const storage = multer.diskStorage({
     destination: (req, file, cb) => {
         const dir = 'public/uploads/slips';
@@ -17,15 +16,15 @@ const storage = multer.diskStorage({
         cb(null, Date.now() + path.extname(file.originalname)); // Append timestamp to file name
     },
 });
+
 const upload = multer({ storage: storage });
 
-
-
 router.post('/', upload.single('file'), async (req, res) => {
+    let filePath;
     try {
-        const filePath = req.file.path;
+         filePath = req.file.path;
         console.log('File Path:', filePath); // ตรวจสอบเส้นทางไฟล์ที่ถูกบันทึก
-        
+
         const formData = new FormData();
         formData.append('files', fs.createReadStream(filePath));
 
@@ -35,16 +34,24 @@ router.post('/', upload.single('file'), async (req, res) => {
                 ...formData.getHeaders()
             }
         });
+
         if (response.status === 200) {
-            console.log('Request successful');
             res.json(response.data);
         } else {
             throw new Error('Failed to send a request');
         }
     } catch (error) {
-        console.log('Error during fetching data:', error);
-        res.status(500).json({ error: 'Something went wrong' });
+        console.error('Error occurred:', error.message);
+        // จัดการข้อผิดพลาดและส่งข้อความตอบกลับไปยัง client
+        res.status(500).json({ error: error.message });
+    } finally {
+        // ลบไฟล์ชั่วคราวหลังจากส่งข้อมูลเสร็จสิ้น
+        fs.unlink(filePath, (err) => {
+            if (err) console.error('Failed to delete file:', err);
+            else console.log('Temporary file deleted successfully');
+        });
     }
+    
 });
 module.exports = router; 
 
