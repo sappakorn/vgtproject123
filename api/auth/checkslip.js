@@ -6,7 +6,6 @@ const fs = require('fs');
 const FormData = require('form-data');
 const path = require('path');
 
-
 const storage = multer.diskStorage({
     destination: (req, file, cb) => {
         const dir = 'public/uploads/slips';
@@ -37,10 +36,6 @@ router.post('/', upload.single('file'), async (req, res) => {
         });
 
         if (response.status === 200) {
-            const amount = response.data.amount;
-            const transDate = data.transDate; // '20240725'
-            const transTime = data.transTime; // '22:41:27'
-            
             res.json(response.data);
         } else {
             throw new Error('Failed to send a request');
