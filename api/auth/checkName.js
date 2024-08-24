@@ -5,3 +5,5 @@ const con = require('../../models/config/database');
 router.get('/', (req,res) => {
     const receiverName = 'SAPPKORN K'
 })
+
+module.exports = router;
