@@ -18,18 +18,13 @@
  
 
   <style>
-  *{
+  *{  margin: 0;
+      padding: 0;
       font-family: "Kanit", sans-serif;
       font-weight: 500;
       font-style: normal;
       }
-    a {
-      font-size: 2rem !important;
-    }
-
-    button {
-      font-size: 2rem !important;
-    }
+    
 
     .modal-header,
     .modal-footer {
@@ -66,61 +61,114 @@
       <div class="mt-2">
         <br>
       </div>
+<div class="container">
+  <div class="row">
+   
 
-      <div class="container mt-2">
-        <a href="home" class="btn   form-control py-4  " style="background:#8fe93b;">
-          ระบบขายสินค้า
-          <img src="/img/cart.png" style="max-width: 2rem; height:auto; margin-left: 10px;">
-        </a>
-      </div>
- 
-      <div class="container mt-2">
-        <a href="qrcode" class="btn   form-control py-4  " style="background:#9BCF53 ">
-          ระบบการค้างชำระเงิน
-          <img src="/img/cashback.png" style="max-width: 2rem; height:auto; margin-left: 10px;">
-        </a>
-      </div>
+    
+    <div class="col col-xl-2 mt-2 product-item" style="max-height: auto; padding-right: 0px !important; padding-left: 0px !important; margin-right: 0px !important;">
+      <div class="d-flex justify-content-center ">
+        <div class="card pt-2" id="product-items" style="width: 9.5rem; height: 13rem;;background:#613eff ;">
+          <a href="home" class="btn form-control" >
+            <img src="/img/cart.png" style="height: 100px !important; object-fit: contain; " >
+              <div class="card-body ">
+                  <p class="card-title text-center text-white" >
+                    ระบบขายสินค้า
+                  </p>  
+              </div>
+            </a>
+        </div>
+      </div> 
+    </div>
+    
+    <div class="col col-xl-2 mt-2 product-item" style="max-height: auto; padding-right: 0px !important; padding-left: 0px !important; margin-right: 0px !important;">
+      <div class="d-flex justify-content-center ">
+        <div class="card pt-2" id="product-items" style="width: 9.5rem; height: 13rem;;background:#ffaa0d ;">
+          <a href="add_product" class="btn form-control" >
+            <img src="/img/add.png" style="height: 100px !important; object-fit: contain;" >
+              <div class="card-body ">
+                  <p class="card-title text-center text-white ">
+                    เพิ่มสินค้าใหม่
+                  </p>  
+              </div>
+            </a>
+        </div>
+      </div> 
+    </div>
 
-      <div class="container mt-2">
-        <a href="add_product" class="btn   form-control py-4  " style="background:#a9dd60 ;">
-          เพิ่มสินค้าใหม่
-          <img src="/img/add.png" style="max-width: 2rem; height:auto; margin-left: 10px;">
-        </a>
-      </div>
+    <div class="col col-xl-2 mt-2 product-item" style="max-height: auto; padding-right: 0px !important; padding-left: 0px !important; margin-right: 0px !important;">
+      <div class="d-flex justify-content-center ">
+        <div class="card pt-2" id="product-items" style="width: 9.5rem; height: 13rem;;background:#12ff42 ;">
+          <a href="add_product" class="btn form-control" >
+            <img src="/img/in-stock.png" style="height: 100px !important; object-fit: contain;" >
+              <div class="card-body ">
+                  <p class="card-title text-center  ">
+                    สต็อกสินค้า
+                  </p>  
+              </div>
+            </a>
+        </div>
+      </div> 
+    </div>
 
-      <div class="container mt-2">
-        <form method="post" action="/history_card">
-          <button type="submit" class="btn  form-control py-4" style="background: #BFEA7C ;">
-            ดูประวัติการขาย
-            <img src="/img/folder.png" style="max-width: 2rem; height:auto; margin-left: 10px;">
-          </button>
-        </form>
-      </div>
+    <div class="col col-xl-2 mt-2 product-item" style="max-height: auto; padding-right: 0px !important; padding-left: 0px !important; margin-right: 0px !important;">
+      <div class="d-flex justify-content-center ">
+        <div class="card pt-2" id="product-items" style="width: 9.5rem; height: 13rem;;background:#ff5117 ;">
+          <form method="post" action="/history_card">
+            <button type="submit" class="btn form-control  form-control py-4" >
+              
+              <img src="/img/folder.png" style="max-width: 4rem; height:auto; margin-left: 10px;">
+              <div class="mt-4 card-title text-center text-white">
+                ดูประวัติการขาย
+              </div>
+            </button>
+          </form>
+        </div>
+      </div> 
+    </div>
+
+    <div class="col col-xl-2 mt-2 product-item" style="max-height: auto; padding-right: 0px !important; padding-left: 0px !important; margin-right: 0px !important;">
+      <div class="d-flex justify-content-center ">
+        <div class="card pt-2" id="product-items" style="width: 9.5rem; height: 13rem;;background:#fbff12 ;">
+          <a href="#" class="btn form-control " >
+            <img src="/img/cashback.png" style="height: 100px !important; object-fit: contain;" >
+              <div class="card-body ">
+                  <p class="card-title text-center  ">
+                    ระบบการค้างชำระเงิน
+                  </p>  
+              </div>
+            </a>
+        </div>
+      </div> 
+    </div>
+
+    <div class="col col-xl-2 mt-2 product-item" style="max-height: auto; padding-right: 0px !important; padding-left: 0px !important; margin-right: 0px !important;">
+      <div class="d-flex justify-content-center ">
+        <div class="card pt-2" id="product-items" style="width: 9.5rem; height: 13rem;background:#b50300 ; ">
+          <form action="./api/auth/logout" method="post">
+            <button class="btn form-control    py-4  " type="submit" style="color: white;">
+              
+              <img src="/img/enter.png" style="height: 100px !important; object-fit: contain;">
+              <p class="card-title text-center  ">
+                ออกจากระบบ
+              </p>  
+            </button>
+          </form>
+        </div>
+      </div> 
+    </div>
+
+    
+    
+  </div>
+
+</div>
+
 
       
-      <div class="container mt-2">
-        <a href="stock" class="btn   form-control py-4  " style="background:#a9dd60 ">
-          สต็อกสินค้า
-          <img src="/img/inventory (3).png" style="max-width: 2rem; height:auto; margin-left: 10px;">
-        </a>
-      </div>
+
+
       
-      <div class="container mt-2">
-        <a href="qrcode" class="btn   form-control py-4  " style="background:#9BCF53 ">
-          QR Code
-          <img src="/img/qr-code.png" style="max-width: 2rem; height:auto; margin-left: 10px;">
-        </a>
-      </div>
-
-      <div class="container mt-2">
-        <form action="./api/auth/logout" method="post">
-          <button class="btn   form-control py-4  " type="submit" style="background:#416D19 ; color: wheat;">
-            Logout
-            <img src="/img/enter.png" style="max-width: 2rem; height:auto; margin-left: 10px;">
-          </button>
-        </form>
-      </div>
-
 
       <!-- boostrap js -->
       <script src="/bootstrap/js/bootstrap.bundle.min.js"></script>
