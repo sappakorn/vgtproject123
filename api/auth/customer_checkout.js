@@ -12,14 +12,14 @@ router.get('/', (req, res) => {
     const productlist = req.session.currentList.productlist;
     const count_product = productlist.reduce((total, product) => total + product.quantity, 0);
     const customer_id = req.session.customer.customer_id;
-
+    const summary = req.session.currentList.amount
     con.beginTransaction(err => {
         if (err) {
             return res.status(500).send('error database');
         }
 
         let checkErorr = false;
-        let sum = 0;
+        
         const order_data = {
             product_name: [],
             summary: [],
@@ -33,8 +33,7 @@ router.get('/', (req, res) => {
         productlist.forEach((item, index) => {
             const product_id = item.product_id;
             const quantityToReduce = count_product;
-            const totalprice = quantityToReduce * item.productPrice
-            sum += totalprice;
+            
             
             const checkStock = "select quantity from products where product_id = ? ";
             con.query(checkStock, [product_id], (err, result) => {
@@ -100,16 +99,18 @@ router.get('/', (req, res) => {
                                         order_data.product_price.push(item.productPrice)
                                     })
                                     const insert_history = "INSERT INTO history_product(user_id, date_time, order_data,summary,customer_id) VALUES (?, ?, ?, ?,?)";
-                                    con.query(insert_history, [st_id, currentTime, JSON.stringify(order_data),sum,customer_id], function(err, result2) {
+                                    con.query(insert_history, [st_id, currentTime, JSON.stringify(order_data),summary,customer_id], function(err, result2) {
                                         if (err) {
                                             return con.rollback(() => {
                                                 res.status(500).send('Error inserting history');
                                             });
                                         }
 
-                                        console.log(sum);
-                                        console.log(req.session.cart123);
-                                        res.redirect('customer_reciept');
+                                        req.session.currentList = []
+                                        req.session.customer.customer_store_id = ""
+                                        
+                                        console.log(req.session);
+                                        res.redirect('/customer_receipt');
                                     });
                                 })
                             })

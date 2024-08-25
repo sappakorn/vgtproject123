@@ -192,10 +192,10 @@ router.post('/', upload.single('file'), async (req, res) => {
                             })
 
                         }else{
-                            console.log("Name : "+isCustomerNameMath)
-                            console.log("Name : "+isCustomerLNameMath)
-                            console.log("Name : "+isamountMath)
-                            console.log("Name : "+isBankMath)
+                            console.log("cusName : "+isCustomerNameMath)
+                            console.log("cusLastName : "+isCustomerLNameMath)
+                            console.log("amount : "+isamountMath)
+                            console.log("BankName : "+isBankMath)
                             res.send("isCustomerNameMath && isCustomerLNameMath && isamountMath && isBankMath   NOT math !! ")
                         }
                     })

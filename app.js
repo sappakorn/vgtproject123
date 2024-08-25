@@ -178,11 +178,11 @@ const confirm_orderRoute = require('./controller/confirm_order')
 app.use('/confirm_order',confirm_orderRoute)
 
 
-// แสดงสินค้าที่มาจากตะกร้าสินค้า ใช้ produclist ในการ เช็กเงื่อนไขต่อ 
-/* const customer_checkoutRoute =require('./api/auth/customer_checkout')
-app.use('/customer_checkout',customer_checkoutRoute) */
+//  ใช้ produclist ในการ เช็กเงื่อนไขต่อ 
+const customer_checkoutRoute =require('./api/auth/customer_checkout')
+app.use('/customer_checkout',customer_checkoutRoute) 
 
-
+//หลังจากเช็กสำเร็จและบันทึกลงฐานข้อมูล
 const customer_receiptRoute = require('./controller/customer_receipt')
 app.use('/customer_receipt',customer_receiptRoute );
 
