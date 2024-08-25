@@ -14,14 +14,23 @@ router.get('/', function (req, res) {
    const productlist = req.session.cart123 || [];
    const count_product = productlist.reduce((total, product) => total + product.quantity, 0);
    const store_id = productlist[0].store_id;
+   if (!req.session.currentList) {
+      req.session.currentList = {};
+   }
+
    var sum = 0;
    productlist.forEach((item, index)=>{
       sum +=  item.quantity*item.productPrice
    })
-   
    const amount  = parseFloat(sum)
-   console.log(typeof(amount));
    
+
+   req.session.currentList.productlist = productlist
+   req.session.currentList.amount = amount
+   console.log(req.session.currentList.productlist)
+   console.log( req.session.currentList.amount)
+
+
    const myPrompyPay  = "SELECT pp_number FROM usersprofile WHERE user_id = ?";
    con.query(myPrompyPay,[store_id] , (err,result)=>{
       if(err){
@@ -42,7 +51,8 @@ router.get('/', function (req, res) {
                res.render('pages/confirm_order',{
                   productlist:productlist,
                   count_product:count_product,
-                  qrcodeUrl : url
+                  qrcodeUrl : url,
+                  amount:amount
                })  
 
             }

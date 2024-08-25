@@ -9,9 +9,10 @@ function getCurrentTime() {
 }
 
 router.get('/', (req, res) => {
-    const productlist = req.session.cart123 || [];
+    const productlist = req.session.currentList.productlist;
     const count_product = productlist.reduce((total, product) => total + product.quantity, 0);
-        
+    const customer_id = req.session.customer.customer_id;
+
     con.beginTransaction(err => {
         if (err) {
             return res.status(500).send('error database');
@@ -98,8 +99,8 @@ router.get('/', (req, res) => {
                                         order_data.product_type.push(item.productType)
                                         order_data.product_price.push(item.productPrice)
                                     })
-                                    const insert_history = "INSERT INTO history_product(user_id, date_time, order_data,summary) VALUES (?, ?, ?, ?)";
-                                    con.query(insert_history, [st_id, currentTime, JSON.stringify(order_data),sum], function(err, result2) {
+                                    const insert_history = "INSERT INTO history_product(user_id, date_time, order_data,summary,customer_id) VALUES (?, ?, ?, ?,?)";
+                                    con.query(insert_history, [st_id, currentTime, JSON.stringify(order_data),sum,customer_id], function(err, result2) {
                                         if (err) {
                                             return con.rollback(() => {
                                                 res.status(500).send('Error inserting history');

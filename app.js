@@ -247,10 +247,7 @@ app.use('/api/auth/summary', authSummaryRouter)
 const checkslipRoute = require('./api/auth/checkslip');
 app.use('/api/checkslip', checkslipRoute );
 
-const checkslip2Route = require('./api/auth/checkTime')
-app.use('/checkTime',checkslip2Route);
-const checkNameRoute = require('./api/auth/checkName')
-app.use('/checkName',checkNameRoute )
+
 
 
 /*เงื่อนไขอัพโหลดไฟล์เข้าserver และ อัพโหลดข้อมูลต่างๆ */

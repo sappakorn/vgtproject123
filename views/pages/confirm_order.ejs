@@ -86,7 +86,7 @@
       </div>
 
       <!-- แสดง alert ให้อัพโหดล สลิป  -->
-
+      
       <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
         <div class="modal-dialog modal-dialog-centered ">
           <div class="modal-content">
@@ -122,18 +122,22 @@
 
       <div class="d-flex justify-content-center mt-3" style="width: 100%;">
           <div class="card rounded-2 p-1 " style="width: 20rem;">
+            <div class="text-center p-3 bg-success-subtle">
+              <h3>ทั้งหมด  <%= count_product %> รายการ </h3>
+              <h3><%= amount %> บาท</h3>
+            </div>
+            
           <% productlist.forEach((product, index) => { %>
-                  <div class="d-flex  text-center px-1" style="width: 19rem;">
+                  <div class="d-flex  text-center p-2" style="width: 19rem;">
                       <img src="<%= product.product_img %>" class="me-4" alt="..." style="height: 50px !important;width: 50px !important;; object-fit: contain;">
                       <div class="">
-                      <h5><%= product.productName %> ราคา <%= product.productPrice %></h5>
+                      <p><%= product.productName %> ราคา <%= product.productPrice %></p>
                       <h5 ></h5>
                       <p class="card-text">จำนวน <%= product.quantity %> / <%= product.productType %></p>
                       </div>
                   </div>
+                  
 
-                  <input type="hidden" name="productlist" value="<%= productlist %>">
-                  <input type="hidden" name="count_product" value="<%= count_product %>">
                   <% if ( index < productlist.length - 1 ) { %>
                     <hr>
                   <% } %>
