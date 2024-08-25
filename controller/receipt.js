@@ -3,7 +3,7 @@ const route = express.Router();
 const con = require('../models/config/database');
 
 route.get('/', function (req, res) {
-
+    const user_id = req.session.user.id;
     const show_history = "SELECT * FROM history_product ORDER BY id DESC LIMIT 1";
     con.query(show_history, function (err, result) {
       if (err) {
@@ -17,7 +17,8 @@ route.get('/', function (req, res) {
         res.render('pages/receipt', {
           orderData: orderData,
           Date_time: Date_time,
-          sum: sum
+          sum: sum,
+          historyData:historyData
         });
       }
     });

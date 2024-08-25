@@ -116,7 +116,7 @@ router.post('/', (req, res) => {
                                         console.log(sum);
                                         console.log(req.session);
                                         console.log("บันทึกลงฐานข้อมูลแล้ว");
-                                        return res.render('pages/cart', { message_save: "บันทึกข้อมูลสำเร็จ" });
+                                        res.redirect('/receipt');
                                     });
                                 });
                             });

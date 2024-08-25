@@ -1,72 +1,61 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>ชื่อร้าน</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
 
-  <!-- jquery -->
-  <script src="jquery/jquery.js"></script>
-  <!--  -->
 
-  <!-- boostrap css -->
+<link rel="stylesheet" href="/bootstrap/css/bootstrap.min.css">
+<link href="https://fonts.googleapis.com/css2?family=Kanit:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap" rel="stylesheet">
 
-  <link rel="stylesheet" href="/bootstrap/css/bootstrap.min.css">
 
-  <!--  -->
-  <link href="https://fonts.googleapis.com/css2?family=Kanit:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap" rel="stylesheet">
-
-  
-  <style>
-    * {
-      padding: 0px;
-      margin: 0px;
-      font-family: "Kanit", sans-serif;
+<style>
+* {
+    padding: 0px;
+    margin: 0px;
+    font-family: "Kanit", sans-serif;
     font-weight: 500;
     font-style: normal;
-    }
+}
 
-    #fixed-bottoms {
-      padding-top: 10px;
-      border-top: 1px solid #2d2c2c;
-      background-color: #242424;
-    }
-    .position-relative {
-      position: relative;
-    }
+#fixed-bottoms {
+    padding-top: 10px;
+    border-top: 1px solid #2d2c2c;
+    background-color: #242424;
+}
 
-    .product-img {
-      width: 100%;
-      height: auto;
-    }
+.position-relative {
+    position: relative;
+}
 
-    .soldOutImage {
-      top: 30px;
-      left: 7px;
-      width: 93%;
-      height: 30%;
-      object-fit: cover;
-      opacity: 0.9;
-      z-index: 10;
-      pointer-events: none; 
-      transform: rotate(-25deg);
-    }
-  </style>
+.product-img {
+    width: 100%;
+    height: auto;
+}
 
-
+.soldOutImage {
+    top: 30px;
+    left: 7px;
+    width: 93%;
+    height: 30%;
+    object-fit: cover;
+    opacity: 0.9;
+    z-index: 10;
+    pointer-events: none;
+    transform: rotate(-25deg);
+}
+</style>
 
 </head>
-
 <body>
-  <div class="container-fluid mt-0 fixed-top"
+    <div class="container-fluid mt-0 fixed-top"
     style="box-shadow: 0px 5px 10px rgba(0, 0, 0, 0.120); background-color: #ffffff;">
     <nav class="navbar navbar-expand-lg d-flex justify-content-between align-items-center">
-      <a class="navbar-brand d-flex"  href="/menu">
+      <a class="navbar-brand d-flex" href="/menu">
         <img style="width:54; height:40px;" src="/img/logo-sm.png" alt="">
         <p style="color:#ff7300;font-size: 15px;padding-top: 15px;">VGTPROJECT</p>
       </a>
-      
       <div style="display: flex; align-items: center;">
         <a href="cart"><img src="/img/shopping-cart.png" style="height: 30px; width: 30px; margin-right: 10px;"
             alt=""></a>
@@ -82,7 +71,7 @@
       </div>
     </nav>
     <div class="d-flex justify-content-between pb-2" id="findbrabra">
-    
+
       <!-- Dropdown -->
       <div class="btn-group">
         <button type="button" class="btn btn-primary  dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">
@@ -97,15 +86,12 @@
         </ul>
       </div>
       <!--  -->
-   
       <!-- ค้นหาแบบพิม -->
       <input class="form-control ms-3" oninput="searchProduct(this)" type="text" id="searchBox"
         placeholder="ค้นหาสินค้า...">
       <!--  -->
-
     </div>
   </div>
-
   <div class="">
     <br>
     <br>
@@ -121,7 +107,7 @@
       <div class="mt-5 display-1 text-center no-results-message" style="display: none;">ไม่มีสินค้าที่ค้นหา</div>
     </div>
     <div class="row">
-       
+
       <% product_list.forEach(product=> { %>
         <div class="col col-xl-2 mt-2 product-item"
           style="max-height: auto; padding-right: 0px !important; padding-left: 0px !important; margin-right: 0px !important;">
@@ -131,59 +117,119 @@
 
             <div class="card pt-2" id="product-items" style="width: 10rem;">
 
-              <% if (product.quantity === 0) { %>
-              <img src="/img/out-off-stock.png" class="soldOutImage position-absolute">
-              <% } %>
-              <img src="<%= product.product_img %>" class="card-img-top" alt="..."
-                style="height: 100px !important; object-fit: contain;">
+              <% if (product.quantity===0) { %>
+                <img src="/img/out-off-stock.png" class="soldOutImage position-absolute">
+                <% } %>
+                  <img src="<%= product.product_img %>" class="card-img-top" alt="..."
+                    style="height: 100px !important; object-fit: contain;">
 
-              <h5 class="card-title text-center  ">
-                <%= product.productname %>
-              </h5>
+                  <h5 class="card-title text-center  ">
+                    <%= product.productname %>
+                  </h5>
 
-              <div class="card-body ">
-                <div>
-                  <p class="card-text text-center ">
-                    <%= product.price %> บาท / <%= product.unit %>
-                  </p>
-                </div>
-              </div>
+                  <div class="card-body ">
+                    <div>
+                      <p class="card-text text-center ">
+                        <%= product.price %> บาท / <%= product.unit %>
+                      </p>
+                    </div>
+                  </div>
 
-              <!-- ซ่อนไว้ -->
-              <input name="product_id" class="d-none" value="<%= product.product_id %>">
-              <input name="productType" class="d-none" value="<%= product.unit %>">
-              <input name="productName" class="d-none" value="<%= product.productname %>">
-              <input name="productPrice" class="d-none" value="<%= product.price %>">
-              <input name="numberOfitem" class="d-none" >
-              <input name="quantity" class="d-none" value="<%= product.quantity %>">
-              <input type="text" name="count_product" class="d-none" value="1">
-              <!--  -->
-              <% if(product.quantity === 0){ %>
-                <div class="p-2">
-                  <button type="button" class="btn btn-secondary form-control" style="font-size: 0.8rem;" disabled>สินค้าหมด</button>
-                </div>
-              <% } else { %>
-                <div class="p-2">
-                  <button type="submit" class="btn btn-success addToCartButton form-control" style="font-size: 0.8rem;">เพิ่ม</button>
-                </div>
-              <% } %>
+                  <!-- ซ่อนไว้ -->
+                  <input name="product_id" class="d-none" value="<%= product.product_id %>">
+                  <input name="productType" class="d-none" value="<%= product.unit %>">
+                  <input name="productName" class="d-none" value="<%= product.productname %>">
+                  <input name="productPrice" class="d-none" value="<%= product.price %>">
+                  <input name="numberOfitem" class="d-none">
+                  <input name="quantity" class="d-none" value="<%= product.quantity %>">
+                  <input type="text" name="count_product" class="d-none" value="1">
+                  <!--  -->
+                  <% if(product.quantity===0){ %>
+                    <div class="p-2">
+                      <button type="button" class="btn btn-secondary form-control" style="font-size: 0.8rem;"
+                        disabled>สินค้าหมด</button>
+                    </div>
+                    <% } else { %>
+                      <div class="p-2">
+                        <button type="submit" class="btn btn-success addToCartButton form-control"
+                          style="font-size: 0.8rem;">เพิ่ม</button>
+                      </div>
+                      <% } %>
 
 
             </div>
           </form>
         </div>
         <% }); %>
-        
+
     </div>
   </div>
 
 
+
+  <script src="/bootstrap/js/bootstrap.bundle.min.js"></script>
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/js/bootstrap.bundle.min.js" integrity="sha384-HwwvtgBNo3bZJJLYd8oVXjrBZt8cqVSpeBNS5n7C8IVInixGAoxmnlMuBnhbgrkm" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
   <script>
     $(document).ready(function () {
-      updateCartItemCount(); //ฟังก์ชันแสดงจำนวนสินค้าที่มีในตะกร้า
-    });
+  // อัปเดตจำนวนสินค้าในตะกร้าเมื่อโหลดหน้าเว็บ
+  updateCartItemCount();
 
-    // ฟังก์ชันสำหรับอัปเดตจำนวนสินค้าที่แสดงใน <P>
+  // เมื่อกดปุ่มเพิ่มสินค้า
+  $('.addToCartButton').click(function (e) {
+    e.preventDefault(); // ป้องกันการส่งฟอร์มแบบดั้งเดิม
+
+    // ดึงข้อมูลฟอร์มของสินค้า
+    var form = $(this).closest('form');
+    var formData = form.serialize(); // แปลงข้อมูลฟอร์มเป็น string
+
+    // ส่งข้อมูลไปยังเซิร์ฟเวอร์ด้วย AJAX
+    $.ajax({
+      url: form.attr('action'), // URL ที่ฟอร์มจะส่งไป
+      type: 'POST',
+      data: formData,
+      success: function (response) {
+        // แสดงการแจ้งเตือน
+        Swal.fire({
+          icon: 'success',
+          title: 'เพิ่มในตะกร้าแล้ว!',
+          showConfirmButton: false,
+          timer: 800
+        });
+
+        // อัปเดตจำนวนสินค้าในตะกร้า
+        updateCartItemCount();
+      },
+      error: function (xhr, status, error) {
+        // แสดงข้อความผิดพลาดถ้ามี
+        Swal.fire({
+          icon: 'error',
+          title: 'เกิดข้อผิดพลาด',
+          text: 'ไม่สามารถเพิ่มสินค้าลงในตะกร้าได้',
+        });
+      }
+    });
+  });
+
+  // ฟังก์ชันสำหรับอัปเดตจำนวนสินค้าที่แสดงใน <P>
+  function updateCartItemCount() {
+    // เรียกใช้ API เพื่อดึงข้อมูลจำนวนสินค้าใน session
+    $.get('/cart_items_count', function (data) {
+      // อัปเดตจำนวนสินค้าใน <P> tag
+      if (data.count === 0) {
+        $('#numberOfItems').text("0");
+      } else {
+        $('#numberOfItems').text(data.count);
+      }
+    })
+      .fail(function (error) {
+        console.log("ตะกร้าว่าง")
+      });
+  }
+});
+
+
     function updateCartItemCount() {
       // เรียกใช้ API เพื่อดึงข้อมูลจำนวนสินค้าใน session
       $.get('/cart_items_count', function (data) {
@@ -193,17 +239,13 @@
         } else {
           $('#numberOfItems').text(data.count);
         }
-
       })
         .fail(function (error) {
-
           console.log("ตะกร้าว่าง")
         });
     }
-  </script>
 
-  <script>
-    
+
     function searchProduct(input) {
       var searchText = input.value.toLowerCase();
       var products = document.getElementsByClassName('product-item');
@@ -236,16 +278,6 @@
       var noResultsMessage = document.querySelector('.no-results-message');
       noResultsMessage.style.display = 'none';
     }
-
-  </script>
-
-
-  <!-- boostrap js -->
-  <script src="/bootstrap/js/bootstrap.bundle.min.js"></script>
-  <!--  -->
-
-
-
+  </script>   
 </body>
-
 </html>

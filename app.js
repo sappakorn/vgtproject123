@@ -131,10 +131,7 @@ app.get('/paylater', function (req, res) {
   res.render('pages/paylater', {});
 });
 
-//qrcode
-app.get('/qrcode', function (req, res) {
-  res.render('pages/qrcode', {});
-});
+
 
 //แก้ไขสต็อกสินค้า
 const edit_stockRoute = require('./controller/edit_stock')
@@ -153,6 +150,8 @@ app.get('/end_of_sale', function (req, res) {
 
   return res.render('pages/receipt', { messageerror: "ทำรายการสำเร็จ" });
 })
+
+
 
 //หน้า home  มีการแสดงสินค้า
 const homeRoute = require('./controller/home')
@@ -173,6 +172,12 @@ app.post('/confirm_order', (req, res) => {
   console.log(req.session.cart123)
   res.status(200).send('Data received');
 });
+
+const qrRoute = require('./controller/qrcode')
+app.use('/qrcode',qrRoute)
+
+
+
 
 const confirm_orderRoute = require('./controller/confirm_order')
 app.use('/confirm_order',confirm_orderRoute)

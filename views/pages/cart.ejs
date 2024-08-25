@@ -169,16 +169,23 @@
         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
       </div>
       <div class="modal-body">
-        กรุณาตรวจสอบรายการให้แน่ใจก่อนกดชำระเงิน
+        
+      <p>กรุณาตรวจสอบรายการ</p>
+      <p>ให้แน่ใจก่อนกดชำระเงิน</p>  
+       
       </div>
       <div class="modal-footer">
         
         <form action="./api/auth/summary" method="post">
-          <button class="btn btn-success">ชำระเงินสด</button>
+          <button type="submit" class="btn btn-success">เงินสด</button>
+        </form> 
+
+        <form method="post" action="/qrcode">
+          <input type="hidden" name="amount" value="<%= totalPrice %>">
+          <button type="submit" class="btn btn-info">  QR code  </button>
         </form>
-        <button class="btn btn-info"> แสกน QR code จ่าย </button>
+        
         <button class="btn btn-warning"> จ่ายทีหลัง </button>
-        <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Close</button>
         
       </div>
     </div>
