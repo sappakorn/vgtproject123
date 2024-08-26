@@ -45,38 +45,41 @@
       <br>
       <form action="/editUsers" method="post">
 
-        dataList
-
         <% dataList.forEach((data,index)=>  { %>
-            <label for="">id </label>
-            <input type="hidden" name="id" value="<%= data.user_id %>">
-            <label for="">phone </label>
+    
+          <input type="hidden" name="id" value="<%= user_id %>">
+          <dir>
+             <label for="">phone </label>
             <input type="text" name="phone" value="<%= data.phone %>">
+          </dir>
+          <dir>
             <label for="">first_name </label>
             <input type="text" name="first_name" value="<%= data.first_name %>">
-            <label for="">last_name </label>
+          </dir>
+          <dir>
+             <label for="">last_name </label>
             <input type="text" name="last_name" value="<%= data.last_name %>">
-            <label for="">uselocation_shopr_id </label>
-            <input type="text" name="lo_shop" value="<%= data.location_shop %>">
+          </dir>
+          <dir>
+             <label for="">uselocation_shopr_id </label>
+            <input type="text" name="location_shop" value="<%= data.location_shop %>">
+          </dir>
+          <dir>
             <label for="">name_shop </label>
             <input type="text"  name="name_shop" value="<%= data.name_shop %>">
-            <label for="">pp_number </label>
+          </dir>
+          <dir>
+               <label for="">pp_number </label>
             <input type="text" name="pp_number" value="<%= data.pp_number %>">
-    
+          </dir>
+            
         <% }) %>
-
-        
+   
         <button type="submit"> save </button>
       </form>
       
-
     </div>
   </div>
-
-  
-
- 
- 
 
 
   <!-- offcanvas ************* -->

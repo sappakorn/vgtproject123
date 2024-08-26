@@ -15,7 +15,8 @@ router.post('/',(req,res)=>{
         res.send(err)
       }
       res.render('pages/selectAdmin',{
-        dataList : result
+        dataList : result,
+        user_id:id
       })
       
     })
