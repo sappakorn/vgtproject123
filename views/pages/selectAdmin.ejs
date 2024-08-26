@@ -48,9 +48,10 @@
         dataList
 
         <% dataList.forEach((data,index)=>  { %>
+            <label for="">id </label>
+            <input type="hidden" name="id" value="<%= data.user_id %>">
             <label for="">phone </label>
             <input type="text" name="phone" value="<%= data.phone %>">
-            
             <label for="">first_name </label>
             <input type="text" name="first_name" value="<%= data.first_name %>">
             <label for="">last_name </label>
