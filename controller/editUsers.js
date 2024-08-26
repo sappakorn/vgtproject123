@@ -4,7 +4,6 @@ const router = express.Router()
 router.post('/', function (req, res) {
     
     const phone = req.body.phone;
-    const password = req.body.password;
     const first_name = req.body.first_name;
     const last_name = req.body.last_name;
     const lo_shop = req.body.lo_shop;
@@ -14,9 +13,17 @@ router.post('/', function (req, res) {
     console.log(phone+password+first_name+last_name+lo_shop+name_shop+pp_number)
     
     //update 
+    const sql = "  ";
+    con.query(sql,[id], (err,result)=>{
 
-    
-
+      if(err){
+        res.send(err)
+      }else{
+        res.send('success')
+      }
+      
+      
+    })
 })
 
 module.exports = router;

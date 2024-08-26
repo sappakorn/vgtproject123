@@ -87,40 +87,19 @@ app.get('/', function (req, res) { //หน้าแรกของเว็บ
 })
 
 //หน้าแอดมิน
-app.get('/admin', function (req, res) {
-
-  const sql = "select name_shop,user_id from usersprofile ";
-  con.query(sql, (err, result) => {
-    if(err){
-      console.log('err database')
-    }
-    console.log(result)
-    res.render('pages/admin', { 
-        usersList : result
-    })
-
-  });
+const adminRoute = require('./controller/admin')
+app.use('/admin',adminRoute)
 
 
-})
 
+//
 const routeUpdateuser = require('./controller/editUsers')
 app.use('/editUsers',routeUpdateuser)
 
-app.post('/findShopName',(req,res)=>{
-  const id = req.body.user_id
-  const sql = "select * from usersprofile where user_id = ? ";
-  con.query(sql,[id], (err,result)=>{
-    if(err){
-      res.send(err)
-    }
-    res.render('pages/selectAdmin',{
-      dataList : result
-    })
-  })
-    
+//ค้นหาด้วยชื่อร้าน และ แก้ไขชื่อร้าน
+const findShopNameRoute = require('./controller/findShopName')
+app.use('/findShopName',findShopNameRoute)
 
-})
 
 
 app.get('/index1', function (req, res) {

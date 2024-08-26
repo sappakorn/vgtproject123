@@ -110,6 +110,8 @@ router.post('/', upload.single('file'), async (req, res) => {
         });
 
         if (response.status === 200) {
+            
+            const transRef = response.data.data.transRef
             console.log(response.data)
             if (response.data.success === true) {
                 // ข้อมูลเวลาที่ได้รับ
