@@ -86,9 +86,42 @@ app.get('/', function (req, res) { //หน้าแรกของเว็บ
   }
 })
 
+//หน้าแอดมิน
 app.get('/admin', function (req, res) {
-  res.render('pages/admin', { session: req.session })
+
+  const sql = "select name_shop,user_id from usersprofile ";
+  con.query(sql, (err, result) => {
+    if(err){
+      console.log('err database')
+    }
+    console.log(result)
+    res.render('pages/admin', { 
+        usersList : result
+    })
+
+  });
+
+
 })
+
+const routeUpdateuser = require('./controller/editUsers')
+app.use('/editUsers',routeUpdateuser)
+
+app.post('/findShopName',(req,res)=>{
+  const id = req.body.user_id
+  const sql = "select * from usersprofile where user_id = ? ";
+  con.query(sql,[id], (err,result)=>{
+    if(err){
+      res.send(err)
+    }
+    res.render('pages/selectAdmin',{
+      dataList : result
+    })
+  })
+    
+
+})
+
 
 app.get('/index1', function (req, res) {
   res.render('pages/index1', { session: req.session })
@@ -250,6 +283,7 @@ app.use('/api/auth/summary', authSummaryRouter)
 
 
 const checkslipRoute = require('./api/auth/checkslip');
+const { result } = require('lodash');
 app.use('/api/checkslip', checkslipRoute );
 
 

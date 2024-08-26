@@ -43,36 +43,37 @@
       <h1>ร้านค้า</h1>
       แก้ไขข้อมูลของร้านค้า 
       <br>
+      <form action="/editUsers" method="post">
 
-        <div class="dropdown">
-          <button class="btn btn-secondary dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
-            เลือกร้าน
-          </button>
-          <ul class="dropdown-menu">
+        dataList
 
-            <% usersList.forEach((users,index)=>  { %>
-            <li>
-              
-              <form action="/findShopName" method="post">
-                <button class="dropdown-item" type="submit" > <%= users.name_shop %></button>
-                <input type="hidden" name="user_id" value="<%= users.user_id %>">
-              </form>
-   
-            </li>
-            <% }) %>
+        <% dataList.forEach((data,index)=>  { %>
+            <label for="">phone </label>
+            <input type="text" name="phone" value="<%= data.phone %>">
+            <label for="">password </label>
+            <input type="text" name="password" value="<%= data.password %>">
+            <label for="">first_name </label>
+            <input type="text" name="first_name" value="<%= data.first_name %>">
+            <label for="">last_name </label>
+            <input type="text" name="last_name" value="<%= data.last_name %>">
+            <label for="">uselocation_shopr_id </label>
+            <input type="text" name="lo_shop" value="<%= data.location_shop %>">
+            <label for="">name_shop </label>
+            <input type="text"  name="name_shop" value="<%= data.name_shop %>">
+            <label for="">pp_number </label>
+            <input type="text" name="pp_number" value="<%= data.pp_number %>">
+    
+        <% }) %>
 
-          </ul>
-        </div>
-
+        
+        <button type="submit"> save </button>
+      </form>
+      
 
     </div>
   </div>
 
-  <div class="container mt-5">
-    <div style="width: 100%;height: 800px;background-color: antiquewhite;">
-      <h1>ลูกค้า</h1>
-    </div>
-  </div>
+  
 
  
  
