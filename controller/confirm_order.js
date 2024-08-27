@@ -14,54 +14,65 @@ router.get('/', function (req, res) {
    const productlist = req.session.cart123 || [];
    const count_product = productlist.reduce((total, product) => total + product.quantity, 0);
    const store_id = productlist[0].store_id;
+
+   req.session.currentList = null
    if (!req.session.currentList) {
-      req.session.currentList = {};
+      req.session.currentList = []
    }
 
    var sum = 0;
-   productlist.forEach((item, index)=>{
-      sum +=  item.quantity*item.productPrice
+   productlist.forEach((item, index) => {
+      sum += item.quantity * item.productPrice
+      req.session.currentList[index] = {
+         product_id: item.product_id,
+         productName: item.productName,
+         productType: item.productType,
+         store_id: item.store_id,
+         productPrice: item.productPrice,
+         quantity: item.quantity
+      };
+
    })
-   const amount  = parseFloat(sum)
+   const amount = parseFloat(sum)
+   req.session.customer_amount = amount
+   console.log("currentProduct send to customer_checkout")
+   console.log(req.session.currentList)
+   console.log(req.session.customer_amount)
    
 
-   req.session.currentList.productlist = productlist
-   req.session.currentList.amount = amount
-   console.log(req.session.currentList.productlist)
-   console.log( req.session.currentList.amount)
 
 
-   const myPrompyPay  = "SELECT pp_number FROM usersprofile WHERE user_id = ?";
-   con.query(myPrompyPay,[store_id] , (err,result)=>{
-      if(err){
+   const myPrompyPay = "SELECT pp_number FROM usersprofile WHERE user_id = ?";
+   con.query(myPrompyPay, [store_id], (err, result) => {
+      if (err) {
          console.log('Error Query')
-      }else{
+      } else {
          const pp_number = result[0].pp_number;
-         const payload = generatePayload(pp_number, {amount});
+         const payload = generatePayload(pp_number, { amount });
          const option = {
-            color:{
+            color: {
                dark: '#000',
                light: '#fff'
             }
          }
-         QRcode.toDataURL(payload,option, (err,url)=>{ //สร้างQRcode เพื่อให้เก็บไว้ใน URL ของมัน และส่ง ให้กับหน้าconfirm_order
+         QRcode.toDataURL(payload, option, (err, url) => { //สร้างQRcode เพื่อให้เก็บไว้ใน URL ของมัน และส่ง ให้กับหน้าconfirm_order
             if (err) {
                console.log("send error")
-            }else{
-               res.render('pages/confirm_order',{
-                  productlist:productlist,
-                  count_product:count_product,
-                  qrcodeUrl : url,
-                  amount:amount
-               })  
+            } else {
+               res.render('pages/confirm_order', {
+                  productlist: productlist,
+                  count_product: count_product,
+                  qrcodeUrl: url,
+                  amount: amount
+               })
 
             }
          })
 
-         
+
       }
    })
-  
+
 
 });
 

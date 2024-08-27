@@ -9,7 +9,7 @@ function getCurrentTime() {
 }
 
 router.get('/', (req, res) => {
-    const productlist = req.session.currentList.productlist;
+    const productlist = req.session.currentList;
     const count_product = productlist.reduce((total, product) => total + product.quantity, 0);
     const customer_id = req.session.customer.customer_id;
     const summary = req.session.currentList.amount
@@ -108,7 +108,6 @@ router.get('/', (req, res) => {
 
                                         req.session.currentList = []
                                         req.session.customer.customer_store_id = ""
-                                        
                                         console.log(req.session);
                                         res.redirect('/customer_receipt');
                                     });
