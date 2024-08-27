@@ -77,6 +77,38 @@
    
         <button type="submit"> save </button>
       </form>
+
+      <form action="/editCustomers" method="post">
+
+        <% dataList.forEach((data,index)=>  { %>
+    
+          <input type="hidden" name="id" value="<%= customer_id %>">
+          <dir>
+             <label for="">phone </label>
+            <input type="text" name="phone" value="<%= data.phone %>">
+          </dir>
+          <dir>
+            <label for="">first_name </label>
+            <input type="text" name="first_name" value="<%= data.first_name %>">
+          </dir>
+          <dir>
+             <label for="">last_name </label>
+            <input type="text" name="last_name" value="<%= data.last_name %>">
+          </dir>
+          <dir>
+             <label for="">address</label>
+            <input type="text" name="address" value="<%= data.address %>">
+          </dir>
+          <dir>
+            <label for="">bank </label>
+            <input type="text"  name="bank" value="<%= data.bank %>">
+          </dir>
+          
+            
+        <% }) %>
+   
+        <button type="submit"> save </button>
+      </form>
       
     </div>
   </div>
