@@ -170,7 +170,7 @@
         <% usersList.forEach((users,index)=>  { %>
         <li>
           <form action="/findCustomers" method="post">
-            <button class="dropdown-item" type="submit"> <%= users.name_shop %></button>
+            <button class="dropdown-item" type="submit"> <%= users.first_name %></button>
             <input type="hidden" name="customer_id" value="<%= users.customer_id %>">
           </form>
         </li>

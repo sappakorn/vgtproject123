@@ -98,7 +98,9 @@ app.use('/editUsers',routeUpdateuser)
 const findShopNameRoute = require('./controller/findShopName')
 app.use('/findShopName',findShopNameRoute)
 
-
+//ลูกค้า
+const customerRoute = require('./controller/customer')
+app.use('/customer',customerRoute)
 
 //หน้าลูกค้า
 const routeUpdatecustomer = require('./controller/editCustomers')

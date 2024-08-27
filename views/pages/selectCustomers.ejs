@@ -110,16 +110,15 @@
 <body>
 
   <!-- Navbar -->
-  <nav class="navbar navbar-dark sticky-top">
+  <nav class="navbar navbar-dark bg-dark sticky-top">
     <div class="container-fluid m-1">
-      <a class="navbar-brand d-flex align-items-center" href="/customer_home">
-        <!-- โลโก้ของเว็บไซต์ -->
-        <img src="/img/logo-sm.png" alt="VGTPROJECT Logo">
-        <!-- ชื่อของเว็บไซต์ -->
-        <p>VGTPROJECT</p>
+      <!-- โลโก้และชื่อแบรนด์ -->
+      <a class="navbar-brand d-flex" href="/customer_home">
+        <img style="width:54; height:40px;" src="/img/logo-sm.png" alt="โลโก้ VGTPROJECT">
+        <p style="color:#ff7300;font-size: 15px;padding-top: 15px;">VGTPROJECT</p>
       </a>
-      <!-- ปุ่มเปิดเมนู offcanvas -->
-      <button class="btn btn-dark border border-1 border-white" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasExample" aria-controls="offcanvasExample">
+      <!-- ปุ่มเปิด Offcanvas -->
+      <button class="btn btn-dark border border-1 border-white " type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasExample" aria-controls="offcanvasExample">
         <!-- ไอคอนเมนู -->
         <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-list" viewBox="0 0 16 16">
           <path fill-rule="evenodd" d="M2.5 12a.5.5 0 0 1 .5-.5h10a.5.5 0 0 1 0 1H3a.5.5 0 0 1-.5-.5m0-4a.5.5 0 0 1 .5-.5h10a.5.5 0 0 1 0 1H3a.5.5 0 0 1-.5-.5m0-4a.5.5 0 0 1 .5-.5h10a.5.5 0 0 1 0 1H3a.5.5 0 0 1-.5-.5"/>
@@ -128,63 +127,70 @@
     </div>
   </nav>
 
+
   <div class="container mt-5">
-    <h1>จัดการร้านค้า</h1>
-    <p>แก้ไขข้อมูลของร้านค้า</p>
-    <form action="/editUsers" method="post">
-      <% dataList.forEach((data, index) => { %>
-        <input type="hidden" name="id" value="<%= user_id %>">
+      <h1>ลูกค้า</h1>
+      <p>แก้ไขข้อมูลของลูกค้า</p>
+      <br>
+      <form action="/editCustomers" method="post">
 
-        <div>
-          <label for="phone">phone</label>
-          <input type="text" name="phone" value="<%= data.phone %>">
-        </div>
+        <% dataList.forEach((data,index)=>  { %>
+          <input type="hidden" name="id" value="<%= customer_id %>">
 
-        <div>
-          <label for="first_name">first_name</label>
-          <input type="text" name="first_name" value="<%= data.first_name %>">
-        </div>
+          <div>
+            <label for="phone">เบอร์โทรศัพท์</label>
+            <input type="text" name="phone" value="<%= data.phone %>">
+          </div>
+          
+          <div>
+            <label for="first_name">ชื่อ</label>
+            <input type="text" name="first_name" value="<%= data.first_name %>">
+          </div>
+          
+          <div>
+            <label for="last_name">นามสกุล</label>
+            <input type="text" name="last_name" value="<%= data.last_name %>">
+          </div>
+          
+          <div>
+            <label for="address">ที่อยู่</label>
+            <input type="text" name="address" value="<%= data.address %>">
+          </div>
+          
+          <div>
+            <label for="bank">ธนาคาร</label>
+            <input type="text" name="bank" value="<%= data.bank %>">
+          </div>
 
-        <div>
-          <label for="last_name">last_name</label>
-          <input type="text" name="last_name" value="<%= data.last_name %>">
-        </div>
+        <% }) %>
 
-        <div>
-          <label for="location_shop">location_shop</label>
-          <input type="text" name="location_shop" value="<%= data.location_shop %>">
-        </div>
+        <button type="submit">บันทึก</button>
+      </form>
+    </div>
 
-        <div>
-          <label for="name_shop">name_shop</label>
-          <input type="text" name="name_shop" value="<%= data.name_shop %>">
-        </div>
 
-        <div>
-          <label for="pp_number">pp_number</label>
-          <input type="text" name="pp_number" value="<%= data.pp_number %>">
-        </div>
 
-      <% }) %>
-      <button type="submit">บันทึก</button>
-    </form>
-  </div>
 
-  <!-- เมนู Offcanvas -->
+  
+
+  <!-- Offcanvas เมนู -->
   <div class="offcanvas offcanvas-start" tabindex="-1" id="offcanvasExample" aria-labelledby="offcanvasExampleLabel">
     <div class="offcanvas-header">
-      <!-- หัวข้อของเมนู Offcanvas -->
+      <!-- หัวข้อเมนู -->
       <h5 class="offcanvas-title" id="offcanvasExampleLabel">เมนูหลัก</h5>
       <!-- ปุ่มปิด Offcanvas -->
       <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></button>
     </div>
-    <div class="offcanvas-body">
-      <!-- ปุ่มในเมนู Offcanvas -->
-      <button>ภาพรวมระบบ</button>
-      <button>จัดการร้านค้า</button>
-      <button>รายการสินค้า</button>
-      <button>จัดการคำสั่งซื้อ</button>
-      <button>รายงาน</button>
+    <div class="offcanvas-body d-flex justify-content-center">
+      <!-- ปุ่มเมนูต่าง ๆ -->
+      <div class="container vh-100">
+        <button style="width: 310px; background-color: #ff7300;">ภาพรวมระบบ</button>
+        <button style="width: 310px; background-color: #ff7300;">จัดการร้านค้า</button>
+        <button style="width: 310px; background-color: #ff7300;">รายการสินค้า</button>
+        <button style="width: 310px; background-color: #ff7300;">จัดการคำสั่งซื้อ</button>
+        <button style="width: 310px; background-color: #ff7300;">จัดการคำสั่งซื้อ</button>
+        <button style="width: 310px; background-color: #ff7300;">รายงาน</button>
+      </div>
     </div>
   </div>
 
