@@ -91,14 +91,24 @@ const adminRoute = require('./controller/admin')
 app.use('/admin',adminRoute)
 
 
-
-//
 const routeUpdateuser = require('./controller/editUsers')
 app.use('/editUsers',routeUpdateuser)
 
 //ค้นหาด้วยชื่อร้าน และ แก้ไขชื่อร้าน
 const findShopNameRoute = require('./controller/findShopName')
 app.use('/findShopName',findShopNameRoute)
+
+//ลูกค้า
+const customerRoute = require('./controller/customer')
+app.use('/customer',customerRoute)
+
+//หน้าลูกค้า
+const routeUpdatecustomer = require('./controller/editCustomers')
+app.use('/editCustomers',routeUpdatecustomer)
+
+//ค้นหาด้วยชื่อ และ แก้ไขชื่อ
+const findCustomersRoute = require('./controller/findCustomers')
+app.use('/findCustomers',findCustomersRoute)
 
 
 
