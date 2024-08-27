@@ -111,6 +111,7 @@
   </style>
 </head>
 
+
 <body>
 
   <!-- Navbar -->
@@ -167,11 +168,11 @@
         เลือกลูกค้า
       </button>
       <ul class="dropdown-menu">
-        <% usersList.forEach((users,index)=>  { %>
+        <% customerList .forEach((customer,index)=>  { %>
         <li>
           <form action="/findCustomers" method="post">
-            <button class="dropdown-item" type="submit"> <%= users.first_name %></button>
-            <input type="hidden" name="customer_id" value="<%= users.customer_id %>">
+            <button class="dropdown-item" type="submit"> <%= customer.first_name %></button>
+            <input type="hidden" name="customer_id" value="<%= customer.customer_id %>">
           </form>
         </li>
         <% }) %>

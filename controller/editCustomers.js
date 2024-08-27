@@ -12,7 +12,7 @@ router.post('/', function (req, res) {
     const bank = req.body.bank;
 
     //update 
-    const sql_customer = `UPDATE customers SET phone = ?, first_name = ?, last_name = ?, address = ?, bank = ?,  WHERE customer_id = ?`;
+    const sql_customer = `UPDATE customers SET phone = ?, first_name = ?, last_name = ?, address = ?, bank = ?  WHERE customer_id = ?`;
     con.query(sql_customer , [phone, first_name, last_name, address, bank, id], (err, result) => {
       if (err) {
         res.status(500).send(err);

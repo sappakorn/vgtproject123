@@ -4,7 +4,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Admin Dashboard</title>
+  <title>Customer Dashboard</title>
 
   <!-- Bootstrap CSS -->
   <link rel="stylesheet" href="/bootstrap/css/bootstrap.min.css">
@@ -131,34 +131,33 @@
   <div class="container mt-5">
       <h1>ลูกค้า</h1>
       <p>แก้ไขข้อมูลของลูกค้า</p>
-      <br>
       <form action="/editCustomers" method="post">
 
         <% dataList.forEach((data,index)=>  { %>
           <input type="hidden" name="id" value="<%= customer_id %>">
 
           <div>
-            <label for="phone">เบอร์โทรศัพท์</label>
+            <label for="phone">phone</label>
             <input type="text" name="phone" value="<%= data.phone %>">
           </div>
           
           <div>
-            <label for="first_name">ชื่อ</label>
+            <label for="first_name">first_name</label>
             <input type="text" name="first_name" value="<%= data.first_name %>">
           </div>
           
           <div>
-            <label for="last_name">นามสกุล</label>
+            <label for="last_name">last_name</label>
             <input type="text" name="last_name" value="<%= data.last_name %>">
           </div>
           
           <div>
-            <label for="address">ที่อยู่</label>
+            <label for="address">address</label>
             <input type="text" name="address" value="<%= data.address %>">
           </div>
           
           <div>
-            <label for="bank">ธนาคาร</label>
+            <label for="bank">bank</label>
             <input type="text" name="bank" value="<%= data.bank %>">
           </div>
 
