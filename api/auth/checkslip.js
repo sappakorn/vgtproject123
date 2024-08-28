@@ -1,4 +1,5 @@
 const express = require('express');
+const app = express()
 const router = express.Router();
 const multer = require('multer');
 const axios = require('axios');
@@ -8,7 +9,9 @@ const path = require('path');
 const moment = require('moment');
 const con = require('../../models/config/database');
 const { result } = require('lodash');
+const cors = require('cors')
 
+app.use(cors())
 
 function getBankCode(bankName) {
     let bankCode;
@@ -91,11 +94,13 @@ const upload = multer({ storage: storage });
 
 router.post('/', upload.single('file'), async (req, res) => {
 
-    const totalPrice = req.session.currentList.amount; //ยังไม่ลบ session จนกว่าจำชำระเงินเสร็จ
+    const totalPrice = req.session.customer_amount
+    console.log('total = '+totalPrice) //ยังไม่ลบ session จนกว่าจำชำระเงินเสร็จ
 
 
+  
     let filePath;
-    try {
+      try { 
         filePath = req.file.path;
 
         console.log('File Path:', filePath); // ตรวจสอบเส้นทางไฟล์ที่ถูกบันทึก
@@ -103,13 +108,17 @@ router.post('/', upload.single('file'), async (req, res) => {
         const formData = new FormData();
 
         formData.append('files', fs.createReadStream(filePath));
-
-        const response = await axios.post('https://api.slipok.com/api/line/apikey/26331', formData, {
+        //formData.append('log', 'true')  ทำในกรณีใช้แค่ร้านเดียว error.response?.data.message จะได้ 400 และ response error
+   
+        response = await axios.post('https://api.slipok.com/api/line/apikey/26331', formData, {
             headers: {
                 'x-authorization': 'SLIPOK38ZLUD1',
-                ...formData.getHeaders()
+                ...formData.getHeaders(),
+           
             }
-        });
+        })
+        
+        
         if (response.status === 200) {
             const transRef = response.data.data.transRef
 
@@ -122,6 +131,7 @@ router.post('/', upload.single('file'), async (req, res) => {
 
                 if (result[0].count > 0) {
                     res.send("พบสลิปซ้ำ"+transRef);
+                    return
                 } else {
                     const insertQuery = "INSERT INTO slipref(tranRef) VALUES(?)";
                     con.query(insertQuery, [transRef], (err, result) => {
@@ -166,7 +176,8 @@ router.post('/', upload.single('file'), async (req, res) => {
                                         const bankCode = getBankCode(bankName) //เปรียนชื่อธนาคาร จากฐานข้อมูลให้เป็น รหัสธนาคาร เพื่อเปรียบกับ Api 
                                         const isBankMath = bankCode === response.data.data.sendingBank //เปรียบเทียบ แบงค์ ผู้โอนในระบบ และ apiตอบกลับมา
                                         const isamountMath = totalPrice === amount; // ตรวจสอบ ราคา ที่โอน และ ที่ apiตอบกลับมา 
-
+                                        console.log("totalprice from session"+totalPrice)
+                                        console.log("amount from API "+amount)
                                         const isCustomerNameMath = senderFName === customer_fname; // ตรวจสอบชื่อในระบบ ว่าตรงกับ Apiตอบกลับมาไหม
                                         const isCustomerLNameMath = senderLName === customer_lname.charAt(0) // ตรวจสอบนามสกุลในระบบตัวแรก ว่าตรงกับ Apiตอบกลับมาไหม
 
@@ -182,20 +193,26 @@ router.post('/', upload.single('file'), async (req, res) => {
                                                 const isUserLnameMath = receiverLName === user_lname.charAt(0);
 
                                                 if (isUserFnameMath && isUserLnameMath) {
+
+                                                    fs.unlink(filePath, (err) => {
+                                                        if (err) console.error('Failed to delete file:', err);
+                                                        else console.log('ลบไฟล์slip');
+                                                    });
+
                                                     console.log("userFName : " + isUserFnameMath)
                                                     console.log("userLname : " + isUserLnameMath)
                                                     console.log("customerName : " + isCustomerNameMath)
                                                     console.log("customerLName : " + isCustomerLNameMath)
                                                     console.log("ราคา : " + isamountMath)
                                                     console.log("BankCode : " + isBankMath)
-
                                                     console.log("SlipOk")
 
-                                                    res.redirect('/customer_checkout',)
+                                                    res.redirect('/customer_checkout')
+
                                                 } else {
                                                     console.log("userFName : " + isUserFnameMath)
                                                     console.log("userLname : " + isUserLnameMath)
-
+                                                    console.log(req.session.currentList.productlist)
                                                     res.send('โอนไม่ตรงกับบัญชีร้าน')
                                                 }
 
@@ -225,18 +242,16 @@ router.post('/', upload.single('file'), async (req, res) => {
 
         } else {
             throw new Error('Failed to send a request');
-        }
-    } catch (error) {
-        console.error('Error occurred:', error.message);
-        // จัดการข้อผิดพลาดและส่งข้อความตอบกลับไปยัง client
-        res.status(500).json({ error: error.message });
+        } 
+      } catch (error) {
+        res.send(error);
     } finally {
         // ลบไฟล์ชั่วคราวหลังจากส่งข้อมูลเสร็จสิ้น
         fs.unlink(filePath, (err) => {
             if (err) console.error('Failed to delete file:', err);
             else console.log('Temporary file deleted successfully');
         });
-    }
+    }  
 
 });
 module.exports = router;

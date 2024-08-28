@@ -6,9 +6,6 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>ชื่อร้าน</title>
 
-  <!-- jquery -->
-  <script src="jquery/jquery.js"></script>
-  <!--  -->
 
   <!-- boostrap css -->
   <link rel="stylesheet" href="/bootstrap/css/bootstrap.min.css">
@@ -27,7 +24,10 @@
       font-weight: 500;
       font-style: normal;
     }
-
+    /*  text{
+      color:#048a88
+      
+    }  */
     #fixed-bottoms {
       padding-top: 10px;
       border-top: 1px solid #2d2c2c;
@@ -88,13 +88,17 @@
       <h5 class="offcanvas-title" id="offcanvasRightLabel">ตะกร้าสินค้า</h5>
       <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></button>
     </div>
-    <div class="offcanvas-body" id="cartItems">
+    <div class="offcanvas-body mt-2" id="cartItems">
       <!-- รายการสินค้าในตะกร้าจะถูกเพิ่มเข้ามาที่นี่ -->
     </div>
 
     <form id="checkoutForm" method="post" action="">
-      <div class="text-center mt-2">
-        <button id="checkout-button" class="btn btn-success form-control py-2 rounded-0 ">ชำระเงิน</button>
+      <div class="text-center mx-4">
+        <button id="checkout-button" class="btn btn-success form-control my-2 py-2 " ><h4>ชำระเงิน</h4></button>
+      </div>
+      <div class="align-content-center border border-primary-subtle-1  bg-primary text-light  text-center pt-3 pb-2 sticky-bottom">
+        
+        <h4>ราคารวม   <label for="totalPrice" id="totalPrice"></label>  บาท</h4>  
       </div>
     </form>
   </div>
@@ -179,10 +183,9 @@
     </div>
   </div>
   
-  <br><br><br><br><br><br><br><br>
-  <div class="align-content-center border border-primary-subtle-1  bg-primary-subtle  text-center py-3 sticky-bottom">
-    ราคารวม
-    <label for="totalPrice" id="totalPrice"></label> <!-- แสดงราคารวม -->
+  <dir class="vh-100"></dir>
+  <div class="align-content-center border border-primary-subtle-1  bg-primary text-light  text-center pt-3 pb-2 sticky-bottom">
+    <h4>ราคารวม   <label for="totalPrice" id="totalPrice2"></label>  บาท</h4>  
   </div>
 
 <!-- boostrap js -->
@@ -248,7 +251,6 @@
       }
 
       sessionStorage.setItem('cart', JSON.stringify(cart));
-
       updateCartItemCount();
       updateCartItems();
       updateProductCount(productId);
@@ -265,29 +267,64 @@
     let totalprice = cart.reduce((sum, item) => sum + (item.productPrice * item.quantity), 0);
     $('#numberOfItems').text(totalItems);
     $('#totalPrice').text(totalprice);
+    $('#totalPrice2').text(totalprice)
+  }
+
+  function removeFromCart(productId) {
+    // ดึงข้อมูลตะกร้าจาก sessionStorage
+    let cart = JSON.parse(sessionStorage.getItem('cart')) || [];
+    
+    // กรองสินค้าที่ไม่ตรงกับ productId ที่ต้องการลบ
+    cart = cart.filter(item => item.product_id !== productId);
+    
+    // บันทึกตะกร้าที่อัปเดตแล้วกลับไปยัง sessionStorage
+    sessionStorage.setItem('cart', JSON.stringify(cart));
+    
+    // อัปเดตการแสดงผลตะกร้า (ถ้ามี)
+    updateCartItemCount();
+    updateCartItems();
+    updateProductCount(productId);
   }
 
   function updateCartItems() {
     let cart = JSON.parse(sessionStorage.getItem('cart')) || [];
     let cartItemsHtml = '';
-
+    
     cart.forEach(item => {
       cartItemsHtml += `
-        <div class="cart-item">
-          <h6>${item.productName}</h6>
-          <p>${item.productPrice} บาท / ${item.productType}     จำนวน: ${item.quantity}</p>
-          <button class="btn btn-sm btn-danger remove-item" data-product-id="${item.product_id}">ลบ</button>
+        <div class="cart-item my-2 border border-1 border-dark rounded rounded-3 p-1"  >
+          
+          <button type="button" class="btn-close text-end" data-bs-dismiss="modal" value="${item.product_id}" aria-label="Close" id="clearCartButton"></button>
+          
+          <div class="d-flex justify-content-around" >
+            <div class="" >
+              <h5>${item.productName}</h5>
+              <h5>  จำนวน ${item.quantity}  ${item.productType} </h5>
+            </div>  
+            <img src="${item.product_img}"  alt="..." style="height: 80px !important; object-fit: contain;">
+          </div>
+          <div class="text-center " style="border-top: 1px solid #e5e5e5" >
+            <strong> <h5 style="color:#004746">${item.productPrice}   บาท </h5></strong>
+          
+          </div>
+          
+          
+          
         </div>
       `;
     });
     $('#cartItems').html(cartItemsHtml);
 
-    // เพิ่ม event listener สำหรับปุ่มลบสินค้า
-    $('.remove-item').click(function() {
-      let productId = $(this).data('product-id');
-      deleteitem(productId);
-    });
+    document.addEventListener('click', function(e) {
+    if (e.target && e.target.id == 'clearCartButton') {
+        const productId = e.target.value;
+        removeFromCart(productId);
+    }
+});
+    
   }
+
+
 
   function updateProductCount(productId) {
     let cart = JSON.parse(sessionStorage.getItem('cart')) || [];
@@ -313,6 +350,7 @@
         });
       } else {
         addButton.prop("disabled", false);
+        
       }
     } else {
       countLabel.text(0);
@@ -349,14 +387,19 @@
         product_img: productCard.find('input[name="product_img"]').val(),
         productPrice: parseFloat(productCard.find('input[name="productPrice"]').val()),
         quantity: 1,
-        
-        
       };
       
       let totalQuantity = parseInt(productCard.find('input[name="quantity"]').val());
       let currentQuantity = parseInt(productCard.find('#count').text());
 
       if (currentQuantity < totalQuantity) {
+        Swal.fire({
+          position: "center",
+          icon: "success",
+          title: "เพิ่มสินค้าแล้ว",
+          showConfirmButton: false,
+          timer: 750
+        });
         addToCart(product);
       } else {
         Swal.fire({
