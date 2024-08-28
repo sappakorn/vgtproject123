@@ -56,7 +56,7 @@ router.get('/', (req, res) => {
                 if (currentStock < quantityToReduce) {
                     checkErorr = true;
                     return con.rollback(() => {
-                        res.status(404).send('out of stock3' + product_id);
+                        res.status(404).send('out of stock id = ' + product_id);
                     });
                 } else {
                     const qtt = currentStock - quantityToReduce;
@@ -108,10 +108,9 @@ router.get('/', (req, res) => {
                                             });
                                         }
 
-                                        req.session.currentList = []
-                                        req.session.customer.customer_store_id = ""
+                                        
                                         console.log(req.session);
-                                        res.redirect('/customer_receipt');
+                                        res.redirect('/lineNotify');
                                     });
                                 })
                             })

@@ -4,6 +4,8 @@ const con = require('../models/config/database');
 
 route.get('/', function (req, res) {
     
+    req.session.currentList = [];
+    req.session.customer.customer_store_id = ""
     const customer_name = req.session.customer.customer_name;
     console.log('Customer:' + req.session.customer.customer_id + " online")
     console.log('Customer_name :' + req.session.customer.customer_name)

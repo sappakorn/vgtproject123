@@ -152,6 +152,9 @@ app.get('/paylater', function (req, res) {
 
 
 
+const routeNotify = require('./api/auth/lineNotify');
+app.use('/lineNotify',routeNotify)
+
 //แก้ไขสต็อกสินค้า
 const edit_stockRoute = require('./controller/edit_stock')
 app.use('/edit_stock',edit_stockRoute);

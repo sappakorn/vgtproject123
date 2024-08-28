@@ -28,7 +28,8 @@ router.post('/', async (req, res) => {
           req.session.customer = { 
             customer_id : user.customer_id, 
             key : sessionKey,
-            customer_name : user.first_name 
+            customer_name : user.first_name ,
+            customer_phone : user.phone
           }
           console.log(req.session);
           res.setHeader('x-session-key', sessionKey);
