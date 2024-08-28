@@ -12,7 +12,8 @@ router.get('/', (req, res) => {
     const productlist = req.session.currentList;
     const count_product = productlist.reduce((total, product) => total + product.quantity, 0);
     const customer_id = req.session.customer.customer_id;
-    const summary = req.session.currentList.amount
+    const summary = req.session.customer_amount
+    console.log(summary)
     con.beginTransaction(err => {
         if (err) {
             return res.status(500).send('error database');
@@ -102,6 +103,7 @@ router.get('/', (req, res) => {
                                     con.query(insert_history, [st_id, currentTime, JSON.stringify(order_data),summary,customer_id], function(err, result2) {
                                         if (err) {
                                             return con.rollback(() => {
+                                                console.log(err)
                                                 res.status(500).send('Error inserting history');
                                             });
                                         }
