@@ -4,7 +4,6 @@ const con = require("../models/config/database");
 
 
 
-
 history_info.post('/', async (req, res) => {
 
     const history_id = req.body.history_id

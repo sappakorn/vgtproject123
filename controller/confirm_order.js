@@ -21,6 +21,8 @@ router.get('/', function (req, res) {
    }
 
    var sum = 0;
+
+
    productlist.forEach((item, index) => {
       sum += item.quantity * item.productPrice
       req.session.currentList[index] = {
