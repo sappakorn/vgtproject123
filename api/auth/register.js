@@ -33,6 +33,7 @@ router.post('/', async function (req, res, next) {
     con.query(sql, [phone_number, hashedPassword, first_name, last_name, location_shop, name_shop], function (err, result) {
 
       if (err) {
+        console.log(err)
         /*  มีหมายเลขนี้แล้ว */
         return res.render('pages/register', { messageerror: "หมายเลขนี้ถูกใช้แล้ว" }); 
       }
