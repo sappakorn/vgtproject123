@@ -12,8 +12,8 @@ const { count } = require('console');
 app.use(express.static(path.join(__dirname, 'download')));
 
 const config = {
-    channelAccessToken: '/umbljKQcmA3rSWGzkV+91wp7bRAMuhwkY1uCcRz5DW8/4IV7j7G1GAqDfs9au5OU+lu47H38YZzHi/qxeQWEsg6mcROuzR0Y/dnQbVoXlM1TPRPcYtCyOASwmVYDBGm0q46ajSz1IdXsLDOXUvkcQdB04t89/1O/w1cDnyilFU=',
-    channelSecret: '2e3b6f1857f3d50a1e87730458f349de'
+    channelAccessToken: process.env.token,
+    channelSecret: process.env.secretcode
 }
 
 app.post('/webhook', line.middleware(config), (req, res) => {
