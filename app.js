@@ -195,6 +195,9 @@ app.post('/confirm_order', (req, res) => {
   res.status(200).send('Data received');
 });
 
+
+
+
 const qrRoute = require('./controller/qrcode')
 app.use('/qrcode',qrRoute)
 
@@ -274,6 +277,7 @@ app.use('/api/auth/summary', authSummaryRouter)
 const checkslipRoute = require('./api/auth/checkslip');
 const { result } = require('lodash');
 app.use('/api/checkslip', checkslipRoute );
+
 
 
 

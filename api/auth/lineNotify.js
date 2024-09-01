@@ -12,9 +12,21 @@ const { count } = require('console');
 app.use(express.static(path.join(__dirname, 'download')));
 
 const config = {
-    channelAccessToken: process.env.token,
-    channelSecret: process.env.secretcode
+    channelAccessToken: '/umbljKQcmA3rSWGzkV+91wp7bRAMuhwkY1uCcRz5DW8/4IV7j7G1GAqDfs9au5OU+lu47H38YZzHi/qxeQWEsg6mcROuzR0Y/dnQbVoXlM1TPRPcYtCyOASwmVYDBGm0q46ajSz1IdXsLDOXUvkcQdB04t89/1O/w1cDnyilFU=',
+    channelSecret: '2e3b6f1857f3d50a1e87730458f349de'
 }
+
+app.post('/webhook', line.middleware(config), (req, res) => {
+    Promise
+        .all(req.body.events.map(handleEvents))
+        .then((result) => res.status(200).json(result))  // การตอบกลับด้วยสถานะโค้ด 200
+        .catch((err) => {
+            console.error(err);
+            res.status(500).end();
+        });
+  });
+
+
 
 router.get('/', (req, res) =>  {
     
@@ -170,7 +182,7 @@ router.get('/', (req, res) =>  {
         }
     };
 
-    client.pushMessage("U804c8bd86015d82202138ecbb668f531", flexMessage)
+    client.pushMessage("U804c8bd86015d82202138ecbb668f531", flexMessage) //ไอดีนุที่ถูกส่ง
         .then(() => {
             console.log('Message sent');
             res.redirect('/customer_home') 
@@ -178,35 +190,15 @@ router.get('/', (req, res) =>  {
         .catch((err) => {
             console.error(err);
     });
-    
-    
-    
-    
 
+    function handleEvents(event) {
+
+        console.log(event.source.userId);
+    
+    }
+    
+ 
 })
-
-
-app.get('/webhook', line.middleware(config), (req, res) => {
-
-    
-    Promise
-        .all(req.body.events.map(handleEvent))
-        .then((result) => res.json(result))
-        .catch((err) => {
-            console.error(err);
-            res.status(500).end();
-        });
-
-        
-        console.log(req.session)
-        
-});
-
-
-
-
-
-
 
 
 
