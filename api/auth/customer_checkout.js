@@ -33,30 +33,32 @@ router.get('/', (req, res) => {
 
         productlist.forEach((item, index) => {
             const product_id = item.product_id;
-            const quantityToReduce = count_product;
+            var quantityToReduce = item.quantity;
             
-            
+            console.log(quantityToReduce)
             const checkStock = "select quantity from products where product_id = ? ";
             con.query(checkStock, [product_id], (err, result) => {
                 if (err) {
                     checkErorr = true;
                     return con.rollback(() => {
-                        res.status(500).send('checkstock failed1');
+                        console.log("err database  1")
+                        
                     });
                 }
 
                 if (result.length === 0) {
                     checkErorr = true;
                     return con.rollback(() => {
-                        res.status(404).send('Product not found2');
+                        console.log("err database  2")
                     });
                 }
 
                 const currentStock = result[0].quantity;
+
                 if (currentStock < quantityToReduce) {
                     checkErorr = true;
                     return con.rollback(() => {
-                        res.status(404).send('out of stock id = ' + product_id);
+                        console.log('out of stock id = ' + product_id);
                     });
                 } else {
                     const qtt = currentStock - quantityToReduce;
@@ -65,7 +67,7 @@ router.get('/', (req, res) => {
                         if (err) {
                             checkErorr = true;
                             return con.rollback(() => {
-                                res.status(500).send('Error updating stock4');
+                                console.log("error update 1")
                             });
                         }
 

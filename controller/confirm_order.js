@@ -38,8 +38,8 @@ router.get('/', function (req, res) {
    const amount = parseFloat(sum)
    req.session.customer_amount = amount
    console.log("currentProduct send to customer_checkout")
-   console.log(req.session.currentList)
-   console.log(req.session.customer_amount)
+   console.log(req.session)
+   
    
 
 

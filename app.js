@@ -324,6 +324,13 @@ app.post('/upload', upload.single('file'), (req, res) => {
   });
 });
 
+
+
+/* const update_store = require('./controller/update_store');
+app.use('/update_store',update_store);
+ */
+
+
 app.listen(port, () => {
   console.log(`Server is running on port ${port} `);
 });
