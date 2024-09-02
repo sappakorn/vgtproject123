@@ -330,6 +330,8 @@ const update_storeRoute = require('./controller/update_store');
 app.use('/update_store',update_storeRoute);
  
 
+const paylaterRoute = require('./controller/paylater')
+app.use('paylater',paylaterRoute)
 
 app.listen(port, () => {
   console.log(`Server is running on port ${port} `);
