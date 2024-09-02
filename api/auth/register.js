@@ -23,8 +23,6 @@ router.post('/', async function (req, res, next) {
     return res.render('pages/register', { messageerror: "รหัสผ่านไม่ตรงกัน" });
   }
 
-  
-
   try {
 
     // เข้ารหัสรหัสผ่าน
