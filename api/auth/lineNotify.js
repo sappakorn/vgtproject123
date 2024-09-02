@@ -16,6 +16,18 @@ const config = {
     channelSecret: process.env.secretcode
 }
 
+app.post('/webhook', line.middleware(config), (req, res) => {
+    Promise
+        .all(req.body.events.map(handleEvents))
+        .then((result) => res.status(200).json(result))  // การตอบกลับด้วยสถานะโค้ด 200
+        .catch((err) => {
+            console.error(err);
+            res.status(500).end();
+        });
+  });
+
+
+
 router.get('/', (req, res) =>  {
     
     const customer_amount = req.session.customer_amount //ยอดรวม
@@ -170,7 +182,7 @@ router.get('/', (req, res) =>  {
         }
     };
 
-    client.pushMessage("U804c8bd86015d82202138ecbb668f531", flexMessage)
+    client.pushMessage("U804c8bd86015d82202138ecbb668f531", flexMessage) //ไอดีนุที่ถูกส่ง
         .then(() => {
             console.log('Message sent');
             res.redirect('/customer_home') 
@@ -178,35 +190,15 @@ router.get('/', (req, res) =>  {
         .catch((err) => {
             console.error(err);
     });
-    
-    
-    
-    
 
+    function handleEvents(event) {
+
+        console.log(event.source.userId);
+    
+    }
+    
+ 
 })
-
-
-app.get('/webhook', line.middleware(config), (req, res) => {
-
-    
-    Promise
-        .all(req.body.events.map(handleEvent))
-        .then((result) => res.json(result))
-        .catch((err) => {
-            console.error(err);
-            res.status(500).end();
-        });
-
-        
-        console.log(req.session)
-        
-});
-
-
-
-
-
-
 
 
 
