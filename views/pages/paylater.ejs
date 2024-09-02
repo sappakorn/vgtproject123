@@ -46,9 +46,36 @@
         </nav>
     </div>
     <div class="mt-2">
-        <br><br>
+        <br>
     </div>
-    <h2 class="text-center">รายการค้างชำระ</h2>
+    <h2 class="text-center">เพิ่มรายการใหม่</h2>
+
+    <div class="container ">
+        <form class="row g-3">
+            <div class="col-md-6">
+              <label for="inputEmail4" class="form-label">ชื่อผู้ค้างชำระ</label>
+              <input type="email" class="form-control" id="inputEmail4">
+            </div>
+            <div class="col-md-6">
+              <label for="inputPassword4" class="form-label">จำนวนเงิน</label>
+              <input type="password" class="form-control" id="inputPassword4" placeholder="0000">
+            </div>
+            <div class="col-12">
+              <label for="inputAddress" class="form-label">ข้อมูลที่อยู่</label>
+              <input type="text" class="form-control" id="inputAddress" placeholder="กรอกข้อมูลที่อยู่ลูกค้า">
+            </div>
+            
+           
+            <div class="col-12">
+              <button type="submit" class="btn btn-primary">เพิ่มรายการค้างชำระ</button>
+            </div>
+          </form> 
+    </div>
+
+<br>
+    <hr class="my-y">
+    
+    <h2 class="text-center mt-3">รายการค้างชำระ</h2>
     <div class="container">
         <div class="row justify-content-center">
             
@@ -137,34 +164,7 @@
                         </div>
                     </form>
                 </div>
-                <div class="col mt-2 product-item "
-                style="max-height: auto; padding-right: 0px !important; padding-left: 0px !important; margin-right: 0px !important;">
-                <form  method="post" class="d-flex justify-content-center " action="#" >
-                    <div class="card pt-2" id="product-items" style="width: 22rem;">
-                        <div class="d-flex justify-content-center">
-                            <h3>สถานะ :</h3>
-                            <h3 class=" " style="color: rgb(255, 0, 0);"> ค้างชำระ </h3>
-                        </div>
-                        
-                        <h5 class="card-title text-center ">
-                            นาย สายสอง สกสกรพก
-                        </h5>
-                        <div class="text-center  ">
-                            วันที่ 10/10/2900
-                        </div>
-                        <div class="text-center  ">
-                            900 บาท  
-                        </div>
-
-
-                        <div class="p-2 ">
-                            <button type="submit" class="btn btn-outline-primary form-control " style="font-size: 0.8rem;">ยืนยันเพื่อเปลี่ยนสถานะ</button>
-                        </div>
-
-
-                    </div>
-                </form>
-            </div>
+                
                     
            
         </div>
