@@ -3,7 +3,7 @@ const router = express.Router();
 const con = require('../models/config/database');
 
 router.get('/', function (req, res) {
-    const id = req.session.user.id
+    const id = req.session.user.user_id
     const selectProduct = `SELECT * FROM products WHERE user_id = ?  ORDER BY productname ASC `;
 
     con.query(selectProduct, [id], function (err, productResult) {

@@ -3,7 +3,7 @@ const router = express.Router();
 
 router.post('/', (req, res) => {
 
-    if(req.session.user.id && req.session.user ){
+    if(req.session.user.user_id && req.session.user ){
         req.session = null;
         console.log('logout success!');
         return res.render('pages/index1', { message_success : "ออกจากระบบสำเร็จ" });

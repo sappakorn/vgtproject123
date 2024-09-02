@@ -3,7 +3,7 @@ const route = express.Router();
 const con = require('../models/config/database');
 
 route.get('/', function (req, res) {
-    const user_id = req.session.user.id;
+    const user_id = req.session.user.user_id;
     const show_history = "SELECT * FROM history_product ORDER BY id DESC LIMIT 1";
     con.query(show_history, function (err, result) {
       if (err) {

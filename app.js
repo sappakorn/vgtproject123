@@ -301,7 +301,7 @@ app.post('/upload', upload.single('file'), (req, res) => {
   if (!req.file) {
     return res.status(400).send('กรุณาเลือกรูป');
   }
-  const user_id = req.session.user.id;
+  const user_id = req.session.user.user_id;
   if (!user_id) {
     return res.status(401).send('Unauthorized. Please login first.');
   }
@@ -325,10 +325,10 @@ app.post('/upload', upload.single('file'), (req, res) => {
 });
 
 
-
-/* const update_store = require('./controller/update_store');
-app.use('/update_store',update_store);
- */
+//แก้ไขข้อมูลร้านของ ร้านค้าทำเอง
+const update_storeRoute = require('./controller/update_store');
+app.use('/update_store',update_storeRoute);
+ 
 
 
 app.listen(port, () => {

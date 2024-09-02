@@ -4,7 +4,7 @@ const con = require("../models/config/database");
 
 
 history.post('/', async (req, res) => {
-    const id = req.session.user.id
+    const id = req.session.user.user_id
     console.log(id)
     const show_history =`
     SELECT 

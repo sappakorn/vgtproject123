@@ -84,7 +84,7 @@ router.post('/', (req, res) => {
                                 console.log(currentTime);
                                 req.session.datetime = currentTime;
 
-                                const user_idd = parseInt(req.session.user.id);
+                                const user_idd = parseInt(req.session.user.user_id);
                                 const qr_nameshop = "SELECT name_shop FROM usersprofile WHERE user_id = ?";
                                 con.query(qr_nameshop, [user_idd], function(err, reslt) {
                                     if (err) {

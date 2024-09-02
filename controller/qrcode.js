@@ -14,7 +14,7 @@ router.post('/', function (req, res) {
 
 
    const amount = parseFloat(req.body.amount) 
-   const user_id = req.session.user.id;
+   const user_id = req.session.user.user_id;
    const myPrompyPay  = "SELECT * FROM usersprofile WHERE user_id = ?";
    con.query(myPrompyPay,[user_id] , (err,result)=>{
       
