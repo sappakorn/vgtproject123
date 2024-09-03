@@ -33,7 +33,6 @@ function handleEvents(event) {
     if (event.type === 'follow' || event.type === 'message') {
         const userId = event.source.userId;
         console.log('User ID:', userId);
-        sql = "insert into usersprofile (?) "
     }
     console.log(events)
 }
@@ -171,7 +170,6 @@ router.get('/', (req, res) => {
             console.log(line_id)
             client.pushMessage(line_id, flexMessage)
                 .then(() => {
-                    console.log('Message sent' );
                     res.redirect('/customer_home')
                 })
                 .catch((err) => {

@@ -1,6 +1,6 @@
 const express = require('express');
 const app = express();
-const port =  3300; //3412
+const port =  80; //3412
 const bodyParser = require('body-parser');
 const multer = require('multer');
 const cookieSession = require('cookie-session');
