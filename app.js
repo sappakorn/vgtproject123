@@ -10,6 +10,7 @@ const path = require('path');
 const con = require('./models/config/database')
 const cors = require('cors')
 const flash = require('connect-flash')
+const bcrypt = require('bcryptjs')
 app.use(cors());
 app.use(express.json());
 
@@ -80,19 +81,19 @@ app.use('/bootstrap', express.static(__dirname + '/node_modules/bootstrap/dist')
 
 
 app.get('/', function (req, res) { //หน้าแรกของเว็บ
-
+  
   try {
     store_list = "select phone,user_id,name_shop,location_shop from usersprofile"
     con.query(store_list, function (error, result) {
       if (error) {
-        return console.log("select error")
+        return console.log("select error"+error)
       }
       res.render('pages/index', {
         list_store: result,
       })
     });
   } catch (error) {
-    return console.log("select error")
+    return console.log("select error"+error)
   }
 })
 
