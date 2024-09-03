@@ -12,7 +12,6 @@
   <link href="https://fonts.googleapis.com/css2?family=Kanit&display=swap" rel="stylesheet">
 
   <style>
-    /* ตั้งค่าสไตล์พื้นฐานสำหรับ body */
     body {
       margin: 0;
       padding: 0;
@@ -20,12 +19,10 @@
       background-color: #f4f6f9;
     }
 
-    /* สไตล์สำหรับ Navbar */
     .navbar {
       background-color: #ff7300;
     }
 
-    /* สไตล์สำหรับข้อความใน Navbar */
     .navbar-brand p {
       margin: 0;
       font-size: 18px;
@@ -33,7 +30,6 @@
       padding-left: 10px;
     }
 
-    /* สไตล์สำหรับหัวข้อ (H1) */
     .container h1 {
       font-size: 2.5rem;
       color: #333;
@@ -41,33 +37,29 @@
       text-align: center;
     }
 
-    /* สไตล์สำหรับปุ่ม dropdown */
     .dropdown-toggle {
       background-color: #ff7300;
       border: none;
       color: white;
+      border-radius: 5px;
     }
 
-    /* สไตล์สำหรับเมนู dropdown */
     .dropdown-menu {
       background-color: #fff;
       border-radius: 5px;
       box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
     }
 
-    /* สไตล์สำหรับรายการใน dropdown */
     .dropdown-item {
       color: #333;
       padding: 10px 20px;
     }
 
-    /* สไตล์สำหรับรายการใน dropdown เมื่อ hover */
     .dropdown-item:hover {
       background-color: #ff7300;
       color: white;
     }
 
-    /* สไตล์สำหรับ section container */
     .section-container {
       background-color: #fff;
       border-radius: 8px;
@@ -76,36 +68,39 @@
       margin-top: 40px;
     }
 
-    /* สไตล์สำหรับ offcanvas */
     .offcanvas {
       background-color: #2d2d2d;
     }
 
-    /* สไตล์สำหรับหัวข้อใน offcanvas */
     .offcanvas-title {
       color: #ff7300;
     }
 
-    /* สไตล์สำหรับปุ่มปิดใน offcanvas */
     .btn-close {
       background-color: #ff7300;
     }
 
-    /* สไตล์สำหรับปุ่มต่างๆ ใน offcanvas */
     .offcanvas-body .container button {
       background-color: #ff7300;
       color: white;
       border: none;
       border-radius: 5px;
-      padding: 10px;
-      margin-bottom: 10px;
+      padding: 15px;
+      margin-bottom: 15px;
       font-size: 18px;
+      width: 100%;
       transition: background-color 0.3s ease;
     }
 
-    /* สไตล์สำหรับปุ่มใน offcanvas เมื่อ hover */
     .offcanvas-body .container button:hover {
       background-color: #e66400;
+    }
+
+    /* Responsive adjustments */
+    @media (max-width: 768px) {
+      .offcanvas-body .container button {
+        width: 100%;
+      }
     }
 
   </style>
@@ -118,16 +113,14 @@
   <nav class="navbar navbar-dark bg-dark sticky-top">
     <div class="container-fluid m-1">
       <a class="navbar-brand d-flex" href="/">
-        <img style="width:54; height:40px;" src="/img/logo-sm.png" alt="">
+        <img style="width:54px; height:40px;" src="/img/logo-sm.png" alt="">
         <p style="color:#ff7300;font-size: 15px;padding-top: 15px;">VGTPROJECT</p>
       </a>
-      <button class="btn btn-dark border border-1 border-white " type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasExample" aria-controls="offcanvasExample">
+      <button class="btn btn-dark border border-1 border-white" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasExample" aria-controls="offcanvasExample">
         <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-list" viewBox="0 0 16 16">
           <path fill-rule="evenodd" d="M2.5 12a.5.5 0 0 1 .5-.5h10a.5.5 0 0 1 0 1H3a.5.5 0 0 1-.5-.5m0-4a.5.5 0 0 1 .5-.5h10a.5.5 0 0 1 0 1H3a.5.5 0 0 1-.5-.5m0-4a.5.5 0 0 1 .5-.5h10a.5.5 0 0 1 0 1H3a.5.5 0 0 1-.5-.5"/>
         </svg>
       </button>
-      
-    </div>
     </div>
   </nav>
 
@@ -136,9 +129,6 @@
     <h1>ร้านค้า</h1>
     <h4>แก้ไขข้อมูลของร้านค้า</h4>
     <br>
-    <br>
-    <br>
-    <!-- Dropdown สำหรับเลือกร้านค้า -->
     <div class="dropdown">
       <button class="btn btn-secondary dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
         เลือกร้าน
@@ -161,14 +151,12 @@
     <h1>ลูกค้า</h1>
     <h4>แก้ไขข้อมูลของลูกค้า</h4>
     <br>
-    <br>
-    <br>
     <div class="dropdown">
       <button class="btn btn-secondary dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
         เลือกลูกค้า
       </button>
       <ul class="dropdown-menu">
-        <% customerList .forEach((customer,index)=>  { %>
+        <% customerList.forEach((customer,index)=>  { %>
         <li>
           <form action="/findCustomers" method="post">
             <button class="dropdown-item" type="submit"> <%= customer.first_name %></button>
@@ -187,13 +175,13 @@
       <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></button>
     </div>
     <div class="offcanvas-body d-flex justify-content-center">
-      <div class="container vh-100">
-        <button style="width: 310px;">ภาพรวมระบบ</button>
-        <button style="width: 310px;">จัดการร้านค้า</button>
-        <button style="width: 310px;">รายการสินค้า</button>
-        <button style="width: 310px;">จัดการคำสั่งซื้อ</button>
-        <button style="width: 310px;">จัดการคำสั่งซื้อ</button>
-        <button style="width: 310px;">รายงาน</button>
+      <div class="container">
+        <button>ภาพรวมระบบ</button>
+        <button>จัดการร้านค้า</button>
+        <button>รายการสินค้า</button>
+        <button>จัดการคำสั่งซื้อ</button>
+        <button>จัดการคำสั่งซื้อ</button>
+        <button>รายงาน</button>
       </div>
     </div>
   </div>

@@ -1,12 +1,12 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="th">
 
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Admin Dashboard</title>
+  <title>แดชบอร์ดผู้ดูแลระบบ</title>
 
-  <!-- Bootstrap CSS -->
+  <!-- ลิงก์ไปยังไฟล์ CSS ของ Bootstrap -->
   <link rel="stylesheet" href="/bootstrap/css/bootstrap.min.css">
   <link href="https://fonts.googleapis.com/css2?family=Kanit&display=swap" rel="stylesheet">
 
@@ -37,6 +37,7 @@
       padding-left: 10px;
       font-size: 18px;
       font-weight: bold;
+      color: #ff7300; /* สีชื่อเว็บไซต์ */
     }
 
     /* ตั้งค่ารูปแบบของ container */
@@ -45,6 +46,7 @@
       background-color: #ffffff; /* สีพื้นหลังของ container */
       border-radius: 8px; /* ขอบมน */
       box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* เงาของ container */
+      margin-top: 20px; /* เพิ่มระยะห่างด้านบน */
     }
 
     /* ตั้งค่ารูปแบบของหัวข้อ */
@@ -78,6 +80,14 @@
       border: none;
       border-radius: 4px;
       cursor: pointer;
+      width: 100%; /* ให้ปุ่มเต็มความกว้าง */
+      font-size: 16px; /* ขนาดตัวอักษร */
+      font-weight: bold; /* น้ำหนักตัวอักษร */
+    }
+
+    /* ตั้งค่ารูปแบบของปุ่ม submit เมื่อ hover */
+    form button[type="submit"]:hover {
+      background-color: #e66400;
     }
 
     /* ตั้งค่ารูปแบบของ header ใน offcanvas */
@@ -104,6 +114,11 @@
       font-size: 16px;
       text-align: left;
     }
+
+    /* ตั้งค่ารูปแบบของปุ่มใน offcanvas เมื่อ hover */
+    .offcanvas-body button:hover {
+      background-color: #e66400;
+    }
   </style>
   
 </head>
@@ -114,7 +129,7 @@
     <div class="container-fluid m-1">
       <a class="navbar-brand d-flex align-items-center" href="/">
         <!-- โลโก้ของเว็บไซต์ -->
-        <img src="/img/logo-sm.png" alt="VGTPROJECT Logo">
+        <img src="/img/logo-sm.png" alt="โลโก้ VGTPROJECT">
         <!-- ชื่อของเว็บไซต์ -->
         <p>VGTPROJECT</p>
       </a>
@@ -136,32 +151,32 @@
         <input type="hidden" name="id" value="<%= user_id %>">
 
         <div>
-          <label for="phone">phone</label>
+          <label for="phone">เบอร์โทรศัพท์</label>
           <input type="text" name="phone" value="<%= data.phone %>">
         </div>
 
         <div>
-          <label for="first_name">first_name</label>
+          <label for="first_name">ชื่อ</label>
           <input type="text" name="first_name" value="<%= data.first_name %>">
         </div>
 
         <div>
-          <label for="last_name">last_name</label>
+          <label for="last_name">นามสกุล</label>
           <input type="text" name="last_name" value="<%= data.last_name %>">
         </div>
 
         <div>
-          <label for="location_shop">location_shop</label>
+          <label for="location_shop">ที่ตั้งร้านค้า</label>
           <input type="text" name="location_shop" value="<%= data.location_shop %>">
         </div>
 
         <div>
-          <label for="name_shop">name_shop</label>
+          <label for="name_shop">ชื่อร้านค้า</label>
           <input type="text" name="name_shop" value="<%= data.name_shop %>">
         </div>
 
         <div>
-          <label for="pp_number">pp_number</label>
+          <label for="pp_number">หมายเลขบัญชี</label>
           <input type="text" name="pp_number" value="<%= data.pp_number %>">
         </div>
 
