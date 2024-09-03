@@ -176,7 +176,8 @@ router.get('/', (req, res) => {
                     console.error(err);
                 });
         }else{
-            res.redirect('/customer_home')
+            req.flash('linenotify_success', 'ชำระเงินสำเร็จ');
+            res.redirect('/receipt')
         } 
     })
 })

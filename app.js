@@ -91,6 +91,7 @@ app.get('/', function (req, res) { //หน้าแรกของเว็บ
       res.render('pages/index', {
         list_store: result,
       })
+     
     });
   } catch (error) {
     return console.log("select error"+error)

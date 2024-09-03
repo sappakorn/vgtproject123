@@ -8,7 +8,10 @@ const con = mysql.createConnection({
   user: process.env.DB_USER,
   password:process.env.DB_PASSWORD,
   database: process.env.DB_DATABASE,
-  port:process.env.DB_PORT
+  port:process.env.DB_PORT,
+  waitForConnections: true,
+  connectionLimit: 10, // จำนวน connection ที่ pool สามารถจัดการพร้อมกันได้
+  queueLimit: 0, // ไม่มีการจำกัดจำนวน request ที่รอคิว
 });
 
 con.connect((err) => {
