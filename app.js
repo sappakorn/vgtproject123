@@ -9,6 +9,7 @@ const ejs = require('ejs');
 const path = require('path');
 const con = require('./models/config/database')
 const cors = require('cors')
+const flash = require('connect-flash')
 app.use(cors());
 app.use(express.json());
 
@@ -16,10 +17,19 @@ app.use(express.json());
 app.use(cookieSession({
   name: 'session',
   keys: ['key1', 'key2'],
-  maxAge: 36_000_000, // 10 ชม. // 1ชม 3600*1000
+  maxAge: 24 * 60 * 60 * 1000, // 10 ชม. // 1ชม 3600*1000
   secure: false, // ใช้งานใน Product จริงให้ใช้ true
   httpOnly: true // ช่วยป้องกันการโจมตีแบบ XSS
 }));
+
+app.use(flash())
+// Middleware เพื่อให้ใช้ flash message ในทุก view
+app.use((req, res, next) => {
+  res.locals.successMessage = req.flash('success');
+  res.locals.errorMessage = req.flash('error');
+  next();
+});
+
 // สร้างคีย์ 
 function generateSessionKey() {
   return crypto.randomBytes(16).toString('hex');
@@ -329,6 +339,11 @@ const update_storeRoute = require('./controller/update_store');
 app.use('/update_store',update_storeRoute);
  
 
+const paylaterRoute = require('./controller/paylater_page')
+app.use('/paylater_page',paylaterRoute)
+
+const insert_paylaterRoute = require('./controller/insert_paylater')
+app.use('/insert_paylater',insert_paylaterRoute)
 
 app.listen(port, () => {
   console.log(`Server is running on port ${port} `);
