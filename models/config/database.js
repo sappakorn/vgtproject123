@@ -2,14 +2,14 @@ const mysql = require('mysql');
 require('dotenv').config();
 
 //ทดลองบนเครื่อง
-/* const con = mysql.createConnection({
+/*const con = mysql.createConnection({
   host: 'localhost',
   user: 'root',
   password:'',
   database: 'my-db',
   port:3377 
-}); 
- */
+}); */
+ 
 
 //บน server cloud
 const con = mysql.createConnection({
