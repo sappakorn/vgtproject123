@@ -62,50 +62,52 @@
       
     </a>
     
-    <button class="navbar-toggler button_login" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasDarkNavbar" aria-controls="offcanvasDarkNavbar" aria-label="Toggle navigation">
-      เข้าสู่ระบบ </span>
+    <button class="navbar-toggler button_login" style="background-color: #ffffff;" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasDarkNavbar" aria-controls="offcanvasDarkNavbar" aria-label="Toggle navigation">
+      <img src="/img/key.png" style="width: 2rem;" > เข้าสู่ระบบ </span>
     </button>
-    <div class="offcanvas offcanvas-end text-bg-dark" tabindex="-1" id="offcanvasDarkNavbar" aria-labelledby="offcanvasDarkNavbarLabel" style="border-radius: 15px;">
+    <div class="offcanvas offcanvas-end text-bg-dark ms-3" tabindex="-1" id="offcanvasDarkNavbar" aria-labelledby="offcanvasDarkNavbarLabel" style="border-radius: 15px;">
       <div class="offcanvas-header">
         <h5 class="offcanvas-title" id="offcanvasDarkNavbarLabel">
-          <h2>กรุณาเข้าสู่ระบบเพื่อเลือกสินค้า</h2>
+          <h2><a class="nav-link text-danger" style="font-size: 18px;"> คุณยังไม่ได้เข้าสู่ระบบ</a></h2>
         </h5>
         <button type="button" class="btn-close btn-close-white" data-bs-dismiss="offcanvas" aria-label="Close"></button>
       </div>
       <div class="offcanvas-body">
         <ul class="navbar-nav justify-content-end flex-grow-1 pe-3">
-          <li class="nav-item text-center m-2" style="border: solid 3px #2c4e2f; background-color: #A4D3B7; box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); border-radius: 15px;">
-            <a class="nav-link active" href="/index1" style="font-size: 20px; color: #2c4e2f;">
+          <li class="nav-item  text-center m-2 " style="border: solid 3px #2c4e2f; background-color:rgb(137, 175, 138); box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); border-radius: 15px;">
+            <a class="nav-link active" href="/index1" style="font-size: 25px; color: #000000;">
               เข้าสู่ระบบร้านค้า
-              <img src="/img/vendor.png" style="max-width: 2rem; height:auto; margin-left: 20px;">
+              <img src="/img/store_color.png" style="max-width: 4rem; height:auto; margin-left: 20px;">
             </a>
           </li>
     
-          <li class="nav-item text-center m-2" style="border: solid 3px #2c4e2f; background-color: #A4D3B7; box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); border-radius: 15px;">
-            <a class="nav-link active" href="/customer_login" style="font-size: 20px; color: #2c4e2f;">
+          <li class="nav-item  text-center m-2" style="border: solid 3px #2c4e2f; background-color: #ffffff; box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); border-radius: 15px;">
+            <a class="nav-link active" href="/customer_login" style="font-size: 25px; color: #2c4e2f;">
               เข้าสู่ระบบลูกค้า
-              <img src="/img/customer.png" style="max-width: 2rem; height:auto; margin-left: 20px;">
+              <img src="/img/customer.png" style="max-width: 4rem; height:auto; margin-left: 20px;">
             </a>
           </li>
     
-          <li class="nav-item text-center m-2" style="border: solid 3px #2c4e2f; background-color: #A4D3B7; box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); border-radius: 15px;">
-            <a class="nav-link active" href="/customer_register" style="font-size: 20px; color: #2c4e2f;">
-              สมัครสมาชิก
-              <img src="/img/people.png" style="max-width: 2rem; height:auto; margin-left: 20px;">
+          <li class="nav-item  text-center m-2" style="border: solid 3px #2c4e2f; background-color: #A4D3B7; box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); border-radius: 15px;">
+            <a class="nav-link active" href="/register" style="font-size: 25px; color: #2c4e2f;">
+              สมัครเป็นร้านค้า
+              <img src="/img/register_store.png" style="max-width:4rem; height:auto; margin-left: 20px;">
             </a>
           </li>
-    
-          <li class="nav-item">
-            <a class="nav-link text-danger" style="font-size: 18px;">สถานะ : ไม่ได้เข้าสู่ระบบ...</a>
+          <li class="nav-item  text-center m-2" style="border: solid 3px #2c4e2f; background-color: #ffffff; box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); border-radius: 15px;">
+            <a class="nav-link active" href="/customer_register" style="font-size: 25px; color: #2c4e2f;">
+              สมัครสมาชิกลูกค้า
+              <img src="/img/people.png" style="max-width: 4.5rem; height:auto; margin-left: 20px;">
+            </a>
           </li>
-    
-          <li class="nav-item">
-            <a class="nav-link text-success" href="https://line.me/R/ti/p/~@709iyrta" style="font-size: 18px;">
+
+          <li class="nav-item  text-center m-2 rounded-3" style=" background-color: #00b41b;">
+            <a class="nav-link " href="https://www.facebook.com/NeBSK" style="font-size: 30px;color:white">
               ติดต่อแอดมิน
-              <img src="/img/help-desk.png" style="max-width: 1.5rem; height:auto; margin-left: 10px;">
+              <img src="/img/help-desk.png" style="width: 5rem; height:auto; margin-left: 10px;">
             </a>
           </li>
-    
+
         </ul>
       </div>
     </div>
